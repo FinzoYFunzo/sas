@@ -311,7 +311,7 @@ func isArg(arg string) bool {
 	case "F", "files":
 	case "V", "version":
 	case "h", "help":
-	case "Y", "yay":
+	case "Y", "sas":
 	case "W", "web":
 	case "P", "show":
 	case "B", "build":
@@ -372,7 +372,7 @@ func isArg(arg string) bool {
 	case "x", "regex":
 	case "machinereadable":
 	case "disable-sandbox":
-	// yay options
+	// sas options
 	case "aururl":
 	case "aurrpcurl":
 	case "save":
@@ -456,8 +456,8 @@ func isOp(op string) bool {
 	case "S", "sync":
 	case "T", "deptest":
 	case "U", "upgrade":
-	// yay specific
-	case "Y", "yay":
+	// sas specific
+	case "Y", "sas":
 	case "W", "web":
 	case "B", "build":
 	case "P", "show":
@@ -509,7 +509,7 @@ func hasParam(arg string) bool {
 	case "print-format":
 	case "gpgdir":
 	case "color":
-	// yay params
+	// sas params
 	case "aururl":
 	case "aurrpcurl":
 	case "mflags":
@@ -665,7 +665,7 @@ func (a *Arguments) Parse() error {
 			// Handle args incompatible with -Syu
 			if a.ExistsArg("c", "clean") {
 				fmt.Println(gotext.Get("the clean command requires an operation to be specified"))
-				fmt.Println(gotext.Get("did you mean yay -Scc (clean caches) or yay -Ycc (clean orphaned packages)?"))
+				fmt.Println(gotext.Get("did you mean sas -Scc (clean caches) or sas -Ycc (clean orphaned packages)?"))
 
 				return errors.New(gotext.Get("invalid option"))
 			}

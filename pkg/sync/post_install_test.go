@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Jguer/yay/v13/pkg/dep"
-	settingslua "github.com/Jguer/yay/v13/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/dep"
+	settingslua "github.com/FinzoYFunzo/sas/pkg/settings/lua"
 )
 
 func TestPostInstallEvent(t *testing.T) {

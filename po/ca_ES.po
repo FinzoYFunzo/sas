@@ -195,8 +195,8 @@ msgstr ""
 "Resol els conflictes automàticament utilitzant la funció ask de pacman."
 
 #: main.go:65
-msgid "Avoid running yay as root/sudo."
-msgstr "Eviteu executar el yay com a root / sudo."
+msgid "Avoid running sas as root/sudo."
+msgstr "Eviteu executar el sas com a root / sudo."
 
 #: cmd.go:53
 msgid "Build and install a PKGBUILD"
@@ -367,8 +367,8 @@ msgid "Groups"
 msgstr "Grups"
 
 #: cmd.go:141
-msgid "If no operation is specified 'yay -Syu' will be performed"
-msgstr "Si no s'especifica una operació \"yay -Syu\" serà utilitzat"
+msgid "If no operation is specified 'sas -Syu' will be performed"
+msgstr "Si no s'especifica una operació \"sas -Syu\" serà utilitzat"
 
 #: cmd.go:142
 msgid ""
@@ -565,12 +565,12 @@ msgid "Print arch news"
 msgstr "Imprimeix les notícies d'arch"
 
 #: cmd.go:62
-msgid "Print current yay configuration"
-msgstr "Imprimeix la configuració de yay actual"
+msgid "Print current sas configuration"
+msgstr "Imprimeix la configuració de sas actual"
 
 #: cmd.go:61
-msgid "Print default yay configuration"
-msgstr "Imprimeix la configuració per defecte de yay"
+msgid "Print default sas configuration"
+msgstr "Imprimeix la configuració per defecte de sas"
 
 #: cmd.go:57
 msgid "Print pkgbuild of packages"
@@ -688,8 +688,8 @@ msgid "Size of pacman cache %s: %s"
 msgstr "Mida de la memòria cau del pacman %s: %s"
 
 #: print.go:98
-msgid "Size of yay cache %s: %s"
-msgstr "Mida de la memòria cau del yay %s: %s"
+msgid "Size of sas cache %s: %s"
+msgstr "Mida de la memòria cau del sas %s: %s"
 
 #: cmd.go:198
 msgid "Skip package build if in cache and up to date"
@@ -817,8 +817,8 @@ msgid "Votes"
 msgstr "Vots"
 
 #: print.go:87
-msgid "Yay version v%s"
-msgstr "Versió del yay: v%s"
+msgid "Sas version v%s"
+msgstr "Versió del sas: v%s"
 
 #: pkg/menus/menu.go:50
 msgid "[N]one"
@@ -862,9 +862,9 @@ msgstr "la comprovació del paquet ha fallat: %s ha trobat un error"
 
 #: pkg/settings/parser/parser.go:667
 msgid ""
-"did you mean yay -Scc (clean caches) or yay -Ycc (clean orphaned packages)?"
+"did you mean sas -Scc (clean caches) or sas -Ycc (clean orphaned packages)?"
 msgstr ""
-"volies dir yay -Scc (elimina les memòries cau) or yay -Ycc (elimina els "
+"volies dir sas -Scc (elimina les memòries cau) or sas -Ycc (elimina els "
 "paquets orfes)"
 
 #: cmd.go:48
@@ -1121,13 +1121,13 @@ msgid "unknown-version"
 msgstr "versió desconeguda"
 
 #: cmd.go:224
-msgid "use 'yay {-h --help}' for global options"
-msgstr "utilitza \"yay {-h --help}\" per a les opcions globals"
+msgid "use 'sas {-h --help}' for global options"
+msgstr "utilitza \"sas {-h --help}\" per a les opcions globals"
 
 #: cmd.go:139
-msgid "use 'yay {-h --help}' with an operation for available options"
+msgid "use 'sas {-h --help}' with an operation for available options"
 msgstr ""
-"utilitza \"yay {-h --help}\" amb una operació per veure les opcions "
+"utilitza \"sas {-h --help}\" amb una operació per veure les opcions "
 "disponibles"
 
 #: pkg/text/input.go:47

@@ -1,8 +1,8 @@
 package dep
 
 import (
-	"github.com/Jguer/yay/v13/pkg/db"
-	aur "github.com/Jguer/yay/v13/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	aur "github.com/FinzoYFunzo/sas/pkg/query"
 )
 
 func pkgSatisfies(name, version, dep string) bool {

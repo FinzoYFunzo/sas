@@ -3,8 +3,8 @@ package mock
 import (
 	"time"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 
 	alpm "github.com/Jguer/dyalpm"
 )

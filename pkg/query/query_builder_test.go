@@ -11,10 +11,10 @@ import (
 
 	"github.com/Jguer/aur"
 
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	mockaur "github.com/Jguer/yay/v13/pkg/dep/mock"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	mockaur "github.com/FinzoYFunzo/sas/pkg/dep/mock"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -535,16 +535,16 @@ func TestSourceQueryBuilderTieDoesNotSeparateSources(t *testing.T) {
 		{
 			desc:      "sort-by-metric topdown",
 			bottomUp:  false,
-			wantNames: []string{"yay", "ruby-yard", "yay-git"},
+			wantNames: []string{"sas", "rubs-sard", "sas-git"},
 		},
 		{
 			desc:      "sort-by-metric bottomup",
 			bottomUp:  true,
-			wantNames: []string{"yay-git", "ruby-yard", "yay"},
+			wantNames: []string{"sas-git", "rubs-sard", "sas"},
 		},
 	}
 
-	mockDB, mockAUR := newYayQueryBuilderMocks()
+	mockDB, mockAUR := newSasQueryBuilderMocks()
 
 	for _, tc := range testCases {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -555,7 +555,7 @@ func TestSourceQueryBuilderTieDoesNotSeparateSources(t *testing.T) {
 				"", parser.ModeAny, "", tc.bottomUp,
 				false, true)
 
-			queryBuilder.Execute(t.Context(), mockDB, []string{"yay"})
+			queryBuilder.Execute(t.Context(), mockDB, []string{"sas"})
 
 			gotNames := make([]string, len(queryBuilder.results))
 			for i, result := range queryBuilder.results {
@@ -582,89 +582,89 @@ func TestSourceQueryBuilderSortByFields(t *testing.T) {
 			desc:      "sort-by-base topdown",
 			sortBy:    "base",
 			bottomUp:  false,
-			wantNames: []string{"yay-git", "yay", "ruby-yard"},
+			wantNames: []string{"sas-git", "sas", "rubs-sard"},
 		},
 		{
 			desc:      "sort-by-base bottomup",
 			sortBy:    "base",
 			bottomUp:  true,
-			wantNames: []string{"ruby-yard", "yay", "yay-git"},
+			wantNames: []string{"rubs-sard", "sas", "sas-git"},
 		},
 		{
 			desc:      "sort-by-modified topdown",
 			sortBy:    "modified",
 			bottomUp:  false,
-			wantNames: []string{"yay-git", "yay", "ruby-yard"},
+			wantNames: []string{"sas-git", "sas", "rubs-sard"},
 		},
 		{
 			desc:      "sort-by-modified bottomup",
 			sortBy:    "modified",
 			bottomUp:  true,
-			wantNames: []string{"ruby-yard", "yay", "yay-git"},
+			wantNames: []string{"rubs-sard", "sas", "sas-git"},
 		},
 		{
 			desc:      "sort-by-name topdown",
 			sortBy:    "name",
 			bottomUp:  false,
-			wantNames: []string{"yay-git", "yay", "ruby-yard"},
+			wantNames: []string{"sas-git", "sas", "rubs-sard"},
 		},
 		{
 			desc:      "sort-by-name bottomup",
 			sortBy:    "name",
 			bottomUp:  true,
-			wantNames: []string{"ruby-yard", "yay", "yay-git"},
+			wantNames: []string{"rubs-sard", "sas", "sas-git"},
 		},
 		{
 			desc:      "sort-by-popularity topdown",
 			sortBy:    "popularity",
 			bottomUp:  false,
-			wantNames: []string{"yay", "yay-git", "ruby-yard"},
+			wantNames: []string{"sas", "sas-git", "rubs-sard"},
 		},
 		{
 			desc:      "sort-by-popularity bottomup",
 			sortBy:    "popularity",
 			bottomUp:  true,
-			wantNames: []string{"ruby-yard", "yay-git", "yay"},
+			wantNames: []string{"rubs-sard", "sas-git", "sas"},
 		},
 		{
 			desc:      "sort-by-votes topdown",
 			sortBy:    "votes",
 			bottomUp:  false,
-			wantNames: []string{"yay", "yay-git", "ruby-yard"},
+			wantNames: []string{"sas", "sas-git", "rubs-sard"},
 		},
 		{
 			desc:      "sort-by-votes bottomup",
 			sortBy:    "votes",
 			bottomUp:  true,
-			wantNames: []string{"ruby-yard", "yay-git", "yay"},
+			wantNames: []string{"rubs-sard", "sas-git", "sas"},
 		},
 		{
 			desc:      "sort-by-submitted topdown",
 			sortBy:    "submitted",
 			bottomUp:  false,
-			wantNames: []string{"yay-git", "yay", "ruby-yard"},
+			wantNames: []string{"sas-git", "sas", "rubs-sard"},
 		},
 		{
 			desc:      "sort-by-submitted bottomup",
 			sortBy:    "submitted",
 			bottomUp:  true,
-			wantNames: []string{"ruby-yard", "yay", "yay-git"},
+			wantNames: []string{"rubs-sard", "sas", "sas-git"},
 		},
 		{
 			desc:      "sort-by-metric topdown",
 			sortBy:    "",
 			bottomUp:  false,
-			wantNames: []string{"yay", "ruby-yard", "yay-git"},
+			wantNames: []string{"sas", "rubs-sard", "sas-git"},
 		},
 		{
 			desc:      "sort-by-metric bottomup",
 			sortBy:    "",
 			bottomUp:  true,
-			wantNames: []string{"yay-git", "ruby-yard", "yay"},
+			wantNames: []string{"sas-git", "rubs-sard", "sas"},
 		},
 	}
 
-	mockDB, mockAUR := newYayQueryBuilderMocks()
+	mockDB, mockAUR := newSasQueryBuilderMocks()
 
 	for _, tc := range testCases {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -675,7 +675,7 @@ func TestSourceQueryBuilderSortByFields(t *testing.T) {
 				tc.sortBy, parser.ModeAny, "", tc.bottomUp,
 				false, false)
 
-			queryBuilder.Execute(t.Context(), mockDB, []string{"yay"})
+			queryBuilder.Execute(t.Context(), mockDB, []string{"sas"})
 
 			gotNames := make([]string, len(queryBuilder.results))
 			for i, result := range queryBuilder.results {
@@ -757,7 +757,7 @@ func TestSourceQueryBuilderChromeRanking(t *testing.T) {
 	assert.Equal(t, []string{"google-chrome", "chromedriver", "chromeos-apk-git", "chromexup"}, gotNames)
 }
 
-func newYayQueryBuilderMocks() (*mock.DBExecutor, *mockaur.MockAUR) {
+func newSasQueryBuilderMocks() (*mock.DBExecutor, *mockaur.MockAUR) {
 	mockDB := &mock.DBExecutor{
 		ReposFn: func() []string {
 			// Match pacman.conf parsing order for source separation.
@@ -767,10 +767,10 @@ func newYayQueryBuilderMocks() (*mock.DBExecutor, *mockaur.MockAUR) {
 			mockDB := mock.NewDB("extra")
 			return []mock.IPackage{
 				&mock.Package{
-					PBase:         "ruby-yard",
-					PName:         "ruby-yard",
+					PBase:         "rubs-sard",
+					PName:         "rubs-sard",
 					PVersion:      "0.9.34-5",
-					PDescription:  "YARD is a Ruby Documentation tool. The Y stands for \"Yay!\"",
+					PDescription:  "YARD is a Ruby Documentation tool. The Y stands for \"Sas!\"",
 					PSize:         1,
 					PISize:        1,
 					PDB:           mockDB,
@@ -792,14 +792,14 @@ func newYayQueryBuilderMocks() (*mock.DBExecutor, *mockaur.MockAUR) {
 					ID:             1911141,
 					LastModified:   1765742501,
 					Maintainer:     "jguer",
-					Name:           "yay",
+					Name:           "sas",
 					NumVotes:       2461,
 					OutOfDate:      0,
-					PackageBase:    "yay",
+					PackageBase:    "sas",
 					PackageBaseID:  115973,
 					Popularity:     34.903162,
 					URL:            "https://github.com/Jguer/yay",
-					URLPath:        "/cgit/aur.git/snapshot/yay.tar.gz",
+					URLPath:        "/cgit/aur.git/snapshot/sas.tar.gz",
 					Version:        "12.5.7-1",
 				},
 				{
@@ -808,14 +808,14 @@ func newYayQueryBuilderMocks() (*mock.DBExecutor, *mockaur.MockAUR) {
 					ID:             1911143,
 					LastModified:   1765742519,
 					Maintainer:     "jguer",
-					Name:           "yay-git",
+					Name:           "sas-git",
 					NumVotes:       55,
 					OutOfDate:      0,
-					PackageBase:    "yay-git",
+					PackageBase:    "sas-git",
 					PackageBaseID:  129573,
 					Popularity:     1.850171,
 					URL:            "https://github.com/Jguer/yay",
-					URLPath:        "/cgit/aur.git/snapshot/yay-git.tar.gz",
+					URLPath:        "/cgit/aur.git/snapshot/sas-git.tar.gz",
 					Version:        "12.5.7.r0.g44dfda05-1",
 				},
 			}, nil

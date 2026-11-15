@@ -10,13 +10,13 @@ import (
 	"github.com/Jguer/aur"
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/download"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/download"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
-// yay -Gp.
+// sas -Gp.
 func printPkgbuilds(dbExecutor download.DBSearcher, aurClient aur.QueryClient,
 	httpClient *http.Client, logger *text.Logger, targets []string,
 	mode parser.TargetMode, aurURL string,
@@ -47,7 +47,7 @@ func printPkgbuilds(dbExecutor download.DBSearcher, aurClient aur.QueryClient,
 	return nil
 }
 
-// yay -G.
+// sas -G.
 func getPkgbuilds(ctx context.Context, dbExecutor download.DBSearcher, aurClient aur.QueryClient,
 	run *runtime.Runtime, targets []string, force bool,
 ) error {

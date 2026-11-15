@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
 )
 
 func (c *Configuration) ParseCommandLine(a *parser.Arguments) error {
@@ -12,12 +12,12 @@ func (c *Configuration) ParseCommandLine(a *parser.Arguments) error {
 		return err
 	}
 
-	c.extractYayOptions(a)
+	c.extractSasOptions(a)
 
 	return nil
 }
 
-func (c *Configuration) extractYayOptions(a *parser.Arguments) {
+func (c *Configuration) extractSasOptions(a *parser.Arguments) {
 	for option, value := range a.Options {
 		if c.handleOption(option, value.First()) {
 			a.DelArg(option)

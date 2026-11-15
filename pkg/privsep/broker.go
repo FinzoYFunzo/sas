@@ -19,9 +19,9 @@ import (
 	"time"
 )
 
-// BrokerArg is the hidden first argument that turns the yay binary into the
+// BrokerArg is the hidden first argument that turns the sas binary into the
 // privileged broker. It is handled in main() before any configuration is read.
-const BrokerArg = "--yas-privsep-broker"
+const BrokerArg = "--sas-privsep-broker"
 
 const dialTimeout = 10 * time.Second
 
@@ -40,7 +40,7 @@ func IsBrokerInvocation(args []string) bool {
 }
 
 func parseBrokerArgs(args []string) (*brokerConfig, error) {
-	fs := flag.NewFlagSet("yas-broker", flag.ContinueOnError)
+	fs := flag.NewFlagSet("sas-broker", flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
 
 	cfg := &brokerConfig{}
@@ -86,24 +86,24 @@ func parseBrokerArgs(args []string) (*brokerConfig, error) {
 // first by sudo (launcher), which validates the arguments and re-executes
 // itself detached from sudo's session, then as the detached daemon that
 // serves requests. Detaching lets sudo exit right away, so sudo never keeps
-// relaying (and stealing) terminal input during the yay session.
+// relaying (and stealing) terminal input during the sas session.
 func BrokerMain(args []string) int {
 	rest := args[2:]
 
 	cfg, err := parseBrokerArgs(rest)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "yas-broker:", err)
+		fmt.Fprintln(os.Stderr, "sas-broker:", err)
 		return 2
 	}
 
 	if os.Geteuid() != 0 && !insecureTestMode {
-		fmt.Fprintln(os.Stderr, "yas-broker: must be started as root (through sudo)")
+		fmt.Fprintln(os.Stderr, "sas-broker: must be started as root (through sudo)")
 		return 1
 	}
 
 	if !cfg.daemon {
 		if err := launchDaemon(rest); err != nil {
-			fmt.Fprintln(os.Stderr, "yas-broker:", err)
+			fmt.Fprintln(os.Stderr, "sas-broker:", err)
 			return 1
 		}
 
@@ -144,7 +144,7 @@ func launchDaemon(rest []string) error {
 }
 
 func newAuditLogger() *log.Logger {
-	if w, err := syslog.New(syslog.LOG_AUTHPRIV|syslog.LOG_NOTICE, "yas-broker"); err == nil {
+	if w, err := syslog.New(syslog.LOG_AUTHPRIV|syslog.LOG_NOTICE, "sas-broker"); err == nil {
 		return log.New(w, "", 0)
 	}
 
@@ -163,7 +163,7 @@ func runDaemon(cfg *brokerConfig, audit *log.Logger) error {
 		return errors.New("not a unix socket")
 	}
 
-	// The listening side must be exactly the yay process that launched us.
+	// The listening side must be exactly the sas process that launched us.
 	// Another process of the same user cannot fake its pid in SO_PEERCRED.
 	cred, err := peerCred(uc)
 	if err != nil {
@@ -352,7 +352,7 @@ func (b *broker) runPTY(argv []string, req *Request, frames <-chan frame) (code 
 		select {
 		case f, ok := <-frames:
 			if !ok {
-				// yay went away. Hang up the pty, as when a terminal window is
+				// sas went away. Hang up the pty, as when a terminal window is
 				// closed: pacman gets SIGHUP, which aborts it at a prompt but
 				// never interrupts a transaction being committed. Without this
 				// a pacman waiting at "[Y/n]" would keep the broker (root) and

@@ -130,7 +130,7 @@ func TestBrokerEndToEnd(t *testing.T) {
 	assert.Contains(t, err.Error(), "forbidden")
 	assert.NotContains(t, out.String(), "ARGS:")
 
-	// The broker exits when yay closes the session.
+	// The broker exits when sas closes the session.
 	inW.Close()
 	require.NoError(t, c.Close())
 
@@ -142,7 +142,7 @@ func TestBrokerEndToEnd(t *testing.T) {
 	}
 }
 
-// TestBrokerRejectsImpostorListener: the broker only talks to the exact yay
+// TestBrokerRejectsImpostorListener: the broker only talks to the exact sas
 // process (pid) that launched it.
 func TestBrokerRejectsImpostorListener(t *testing.T) {
 	fx := newFixture(t)
@@ -168,7 +168,7 @@ func TestBrokerRejectsImpostorListener(t *testing.T) {
 }
 
 // TestClientRejectsUnprivilegedBroker: a process of the same user that
-// connects to yay's socket is not accepted as the broker.
+// connects to sas's socket is not accepted as the broker.
 func TestClientRejectsUnprivilegedBroker(t *testing.T) {
 	if os.Getuid() == 0 {
 		t.Skip("needs an unprivileged user")
@@ -208,7 +208,7 @@ func TestParseBrokerArgs(t *testing.T) {
 	assert.True(t, filepath.IsAbs(cfg.pacman), "pacman is resolved to an absolute path")
 }
 
-// TestBrokerExitsWhenClientDiesMidRequest: if yay dies while pacman waits at
+// TestBrokerExitsWhenClientDiesMidRequest: if sas dies while pacman waits at
 // a prompt, the broker must not linger as an orphan root process.
 func TestBrokerExitsWhenClientDiesMidRequest(t *testing.T) {
 	fx := newFixture(t)
@@ -242,7 +242,7 @@ func TestBrokerExitsWhenClientDiesMidRequest(t *testing.T) {
 		}
 	}
 
-	// yay "dies".
+	// sas "dies".
 	require.NoError(t, c.Close())
 
 	select {

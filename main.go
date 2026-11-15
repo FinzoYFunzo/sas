@@ -11,17 +11,17 @@ import (
 
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/db/ialpm"
-	"github.com/Jguer/yay/v13/pkg/privsep"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/lua"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db/ialpm"
+	"github.com/FinzoYFunzo/sas/pkg/privsep"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 var (
-	yayVersion = "13.0.0"            // To be set by compiler.
+	sasVersion = "13.0.0"            // To be set by compiler.
 	localePath = "/usr/share/locale" // To be set by compiler.
 )
 
@@ -35,10 +35,10 @@ func initGotext() {
 		// Should fix in gotext to support this
 		locales := strings.Split(lc, ":")
 		if len(locales) > 0 && locales[0] != "" {
-			gotext.Configure(localePath, locales[0], "yay")
+			gotext.Configure(localePath, locales[0], "sas")
 		}
 	} else {
-		gotext.Configure(localePath, cmp.Or(os.Getenv("LC_ALL"), os.Getenv("LC_MESSAGES"), os.Getenv("LANG")), "yay")
+		gotext.Configure(localePath, cmp.Or(os.Getenv("LC_ALL"), os.Getenv("LC_MESSAGES"), os.Getenv("LANG")), "sas")
 	}
 }
 
@@ -47,7 +47,7 @@ func newSignalContext() (context.Context, context.CancelFunc) {
 }
 
 func main() {
-	// yas: the same binary acts as the privileged broker when launched
+	// sas: the same binary acts as the privileged broker when launched
 	// through sudo with this hidden argument. Handled before reading any
 	// user configuration.
 	if privsep.IsBrokerInvocation(os.Args) {
@@ -75,12 +75,12 @@ func main() {
 	initGotext()
 
 	if os.Geteuid() == 0 {
-		fallbackLog.Warnln(gotext.Get("Avoid running yay as root/sudo."))
+		fallbackLog.Warnln(gotext.Get("Avoid running sas as root/sudo."))
 	}
 
 	configPath := settings.GetConfigPath()
 	// Parse config
-	cfg, err := settings.NewConfig(fallbackLog, configPath, yayVersion)
+	cfg, err := settings.NewConfig(fallbackLog, configPath, sasVersion)
 	if err != nil {
 		if str := err.Error(); str != "" {
 			fallbackLog.Errorln(str)
@@ -92,7 +92,7 @@ func main() {
 	}
 
 	if errS := cfg.RunMigrations(fallbackLog,
-		settings.DefaultMigrations(), configPath, yayVersion); errS != nil {
+		settings.DefaultMigrations(), configPath, sasVersion); errS != nil {
 		fallbackLog.Errorln(errS)
 	}
 
@@ -122,13 +122,13 @@ func main() {
 	}
 
 	if cfg.SaveConfig {
-		if errS := cfg.Save(configPath, yayVersion); errS != nil {
+		if errS := cfg.Save(configPath, sasVersion); errS != nil {
 			fallbackLog.Errorln(errS)
 		}
 	}
 
 	// Build run
-	run, err := runtime.NewRuntime(cfg, cmdArgs, yayVersion)
+	run, err := runtime.NewRuntime(cfg, cmdArgs, sasVersion)
 	if err != nil {
 		if str := err.Error(); str != "" {
 			fallbackLog.Errorln(str)

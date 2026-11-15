@@ -1,4 +1,4 @@
-module github.com/Jguer/yay/v13
+module github.com/FinzoYFunzo/sas
 
 require (
 	github.com/Jguer/aur v1.3.1

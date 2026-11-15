@@ -1,7 +1,7 @@
 -- Warn when an AUR package's maintainer changes between upgrades.
 --
 -- The known maintainer for each package is stored in a plain text cache file
--- inside the yay cache directory (build_dir). On the first upgrade for a
+-- inside the sas cache directory (build_dir). On the first upgrade for a
 -- package the current maintainer is recorded without any warning. On
 -- subsequent upgrades:
 --   * same maintainer  → debug "match correct"
@@ -13,7 +13,7 @@
 -- Format: one "pkgname=maintainer" entry per line.
 
 -- missing reliable cfg getter
-local cache_dir = (os.getenv("XDG_CACHE_HOME") or (os.getenv("HOME") .. "/.cache")) .. "/yay"
+local cache_dir = (os.getenv("XDG_CACHE_HOME") or (os.getenv("HOME") .. "/.cache")) .. "/sas"
 local cache_file = cache_dir .. "/maintainer_cache"
 
 local function load_cache()
@@ -38,10 +38,10 @@ local function save_cache(cache)
   f:close()
 end
 
-yay.create_autocmd("UpgradeSelect", {
+sas.create_autocmd("UpgradeSelect", {
   desc = "warn on AUR maintainer changes",
   callback = function(event)
-    yay.log.info("checking for AUR maintainer changes")
+    sas.log.info("checking for AUR maintainer changes")
     local cache = load_cache()
     local dirty = false
 
@@ -53,9 +53,9 @@ yay.create_autocmd("UpgradeSelect", {
           cache[pkg.name] = pkg.maintainer
           dirty = true
         elseif cached == pkg.maintainer then
-          yay.log.debug("match correct: " .. pkg.name .. " " .. pkg.maintainer)
+          sas.log.debug("match correct: " .. pkg.name .. " " .. pkg.maintainer)
         else
-          yay.log.error("new maintainer, double check build files: ", pkg.name,
+          sas.log.error("new maintainer, double check build files: ", pkg.name,
             "(was: " .. cached .. ", now: " .. pkg.maintainer .. ")")
           cache[pkg.name] = pkg.maintainer
           dirty = true
@@ -64,7 +64,7 @@ yay.create_autocmd("UpgradeSelect", {
     end
 
     if dirty then
-      yay.log.info("saving maintainer cache:", cache_file)
+      sas.log.info("saving maintainer cache:", cache_file)
       save_cache(cache)
     end
 

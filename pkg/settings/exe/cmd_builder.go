@@ -17,10 +17,10 @@ import (
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/privsep"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/privsep"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 const SudoLoopDuration = 241
@@ -96,7 +96,7 @@ func NewCmdBuilder(cfg *settings.Configuration, runner Runner, logger *text.Logg
 		PacmanConfigPath: cfg.PacmanConf,
 		PacmanDBPath:     dbPath,
 		KeepSrc:          cfg.KeepSrc,
-		PrivSepEnabled:   true, // yas: privilege separation is not optional
+		PrivSepEnabled:   true, // sas: privilege separation is not optional
 		Runner:           runner,
 		Log:              logger,
 	}
@@ -227,7 +227,7 @@ func (c *CmdBuilder) deElevateCommand(ctx context.Context, cmd *exec.Cmd) *exec.
 		"--service-type=oneshot",
 		"--pipe", "--wait", "--pty", "--quiet",
 		"-p", "DynamicUser=yes",
-		"-p", "CacheDirectory=yay",
+		"-p", "CacheDirectory=sas",
 		"-E", "HOME=/tmp",
 	}
 
@@ -293,7 +293,7 @@ func (c *CmdBuilder) BuildPacmanCmd(ctx context.Context, args *parser.Arguments,
 	return exec.CommandContext(ctx, argArr[0], argArr[1:]...)
 }
 
-// waitLock will lock yay checking the status of db.lck until it does not exist.
+// waitLock will lock sas checking the status of db.lck until it does not exist.
 func (c *CmdBuilder) waitLock(dbPath string) {
 	lockDBPath := filepath.Join(dbPath, "db.lck")
 	if _, err := os.Stat(lockDBPath); err != nil {
@@ -353,9 +353,9 @@ func (c *CmdBuilder) refreshSudo() error {
 	return err
 }
 
-// StartPrivSep launches the privileged broker (yas). It is the only point
+// StartPrivSep launches the privileged broker (sas). It is the only point
 // where the user is asked for a password during the run. A no-op when the
-// broker is already running or yas itself runs as root.
+// broker is already running or sas itself runs as root.
 func (c *CmdBuilder) StartPrivSep() error {
 	c.privsepMu.Lock()
 	defer c.privsepMu.Unlock()
@@ -373,7 +373,7 @@ func (c *CmdBuilder) startPrivSepLocked() error {
 	}
 
 	if filepath.Base(c.SudoBin) == "su" {
-		c.privsepErr = errors.New(gotext.Get("yas does not support su as privilege elevator; use sudo, doas or run0"))
+		c.privsepErr = errors.New(gotext.Get("sas does not support su as privilege elevator; use sudo, doas or run0"))
 		return c.privsepErr
 	}
 
@@ -456,7 +456,7 @@ func (c *CmdBuilder) routeThroughBroker(cmd *exec.Cmd, args *parser.Arguments, n
 	c.privsepPending[cmd] = brokerCall{req: brokerRequest(args, noConfirm)}
 }
 
-// brokerRequest turns yay's parsed pacman arguments into a structured
+// brokerRequest turns sas's parsed pacman arguments into a structured
 // request. The broker re-validates every field; nothing here is trusted.
 func brokerRequest(args *parser.Arguments, noConfirm bool) privsep.Request {
 	req := privsep.Request{Op: args.Op}
@@ -522,7 +522,7 @@ func (c *CmdBuilder) Capture(cmd *exec.Cmd) (stdout, stderr string, err error) {
 	if _, _, ok := c.takeBrokerCall(cmd); ok {
 		// Privileged pacman always runs through the broker on a pty; there is
 		// no captured variant and no fallback to plain sudo.
-		return "", "", errors.New(gotext.Get("privileged pacman commands cannot be captured in yas"))
+		return "", "", errors.New(gotext.Get("privileged pacman commands cannot be captured in sas"))
 	}
 
 	return c.Runner.Capture(cmd)

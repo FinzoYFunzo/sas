@@ -1,4 +1,4 @@
-// Package lua loads yay's optional init.lua configuration.
+// Package lua loads sas's optional init.lua configuration.
 package lua
 
 import (
@@ -8,13 +8,13 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 
 	lua "github.com/yuin/gopher-lua"
 )
 
 const (
-	globalName   = "yay"
+	globalName   = "sas"
 	optTableName = "opt"
 )
 
@@ -36,12 +36,12 @@ func NewWithLogger(logger *text.Logger) *Engine {
 		logger:   logger,
 	}
 
-	yayTbl := state.NewTable()
-	state.SetGlobal(globalName, yayTbl)
-	state.SetField(yayTbl, optTableName, state.NewTable())
-	state.SetField(yayTbl, "abort", state.NewFunction(abort))
-	state.SetField(yayTbl, "create_autocmd", state.NewFunction(engine.createAutocmd))
-	engine.registerLog(yayTbl)
+	sasTbl := state.NewTable()
+	state.SetGlobal(globalName, sasTbl)
+	state.SetField(sasTbl, optTableName, state.NewTable())
+	state.SetField(sasTbl, "abort", state.NewFunction(abort))
+	state.SetField(sasTbl, "create_autocmd", state.NewFunction(engine.createAutocmd))
+	engine.registerLog(sasTbl)
 
 	return engine
 }
@@ -54,7 +54,7 @@ func (e *Engine) Close() {
 	e.L.Close()
 }
 
-// Apply writes recognized yay.opt values into cfg.
+// Apply writes recognized sas.opt values into cfg.
 func (e *Engine) Apply(cfg any) (unknown []string, errs []error) {
 	v := reflect.ValueOf(cfg)
 	if v.Kind() != reflect.Pointer || v.Elem().Kind() != reflect.Struct {
@@ -83,7 +83,7 @@ func (e *Engine) Apply(cfg any) (unknown []string, errs []error) {
 		}
 
 		if err := assign(sv.Field(fieldIdx), val); err != nil {
-			errs = append(errs, fmt.Errorf("yay.opt.%s: %w", string(key), err))
+			errs = append(errs, fmt.Errorf("sas.opt.%s: %w", string(key), err))
 		}
 	})
 
@@ -91,12 +91,12 @@ func (e *Engine) Apply(cfg any) (unknown []string, errs []error) {
 }
 
 func (e *Engine) optTable() (*lua.LTable, bool) {
-	yayTbl, ok := e.L.GetGlobal(globalName).(*lua.LTable)
+	sasTbl, ok := e.L.GetGlobal(globalName).(*lua.LTable)
 	if !ok {
 		return nil, false
 	}
 
-	optTbl, ok := e.L.GetField(yayTbl, optTableName).(*lua.LTable)
+	optTbl, ok := e.L.GetField(sasTbl, optTableName).(*lua.LTable)
 
 	return optTbl, ok
 }

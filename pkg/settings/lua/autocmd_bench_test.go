@@ -11,7 +11,7 @@ func makeSearchFilterEngine(b *testing.B) *Engine {
 
 	e := New()
 	if err := e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				local out = {}
 				for _, r in ipairs(event.data.results) do
@@ -34,7 +34,7 @@ func makeAURPreInstallEngine(b *testing.B) *Engine {
 
 	e := New()
 	if err := e.L.DoString(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			callback = function(_event) end,
 		})
 	`); err != nil {
@@ -51,7 +51,7 @@ func makeUpgradeSelectEngine(b *testing.B) *Engine {
 
 	e := New()
 	if err := e.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function(_event) return nil end,
 		})
 	`); err != nil {
@@ -68,7 +68,7 @@ func makePostInstallEngine(b *testing.B) *Engine {
 
 	e := New()
 	if err := e.L.DoString(`
-		yay.create_autocmd("PostInstall", {
+		sas.create_autocmd("PostInstall", {
 			callback = function(_event) end,
 		})
 	`); err != nil {

@@ -17,9 +17,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func newTestLogger() *text.Logger {
@@ -257,10 +257,10 @@ func TestInfoStoreToUpgrade(t *testing.T) {
 				logger:     newTestLogger(),
 				CmdBuilder: tt.fields.CmdBuilder,
 				OriginsByPackage: map[string]OriginInfoByURL{
-					"yay": tt.args.infos,
+					"sas": tt.args.infos,
 				},
 			}
-			got := v.ToUpgrade(context.Background(), "yay")
+			got := v.ToUpgrade(context.Background(), "sas")
 			assert.Equal(t, tt.want, got)
 		})
 	}
@@ -426,7 +426,7 @@ func TestInfoStore_Update(t *testing.T) {
 		},
 	}
 
-	file, err := os.CreateTemp("/tmp", "yay-infostore-*-test")
+	file, err := os.CreateTemp("/tmp", "sas-infostore-*-test")
 	filePath := file.Name()
 	require.NoError(t, err)
 
@@ -488,7 +488,7 @@ func TestInfoStore_Remove(t *testing.T) {
 		},
 	}
 
-	file, err := os.CreateTemp("/tmp", "yay-vcs-*-test")
+	file, err := os.CreateTemp("/tmp", "sas-vcs-*-test")
 	filePath := file.Name()
 	require.NoError(t, err)
 
@@ -535,7 +535,7 @@ func TestInfoStore_CleanOrphans(t *testing.T) {
 		},
 	}
 
-	file, err := os.CreateTemp("/tmp", "yay-vcs-*-test")
+	file, err := os.CreateTemp("/tmp", "sas-vcs-*-test")
 	filePath := file.Name()
 	require.NoError(t, err)
 

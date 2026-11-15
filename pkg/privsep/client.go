@@ -48,7 +48,7 @@ type StartOptions struct {
 	allowUnprivilegedPeer bool
 }
 
-// Client is yay's handle to a running broker.
+// Client is sas's handle to a running broker.
 type Client struct {
 	conn      *net.UnixConn
 	wmu       sync.Mutex
@@ -68,7 +68,7 @@ type listener struct {
 }
 
 func listenPrivate() (*listener, error) {
-	dir, err := os.MkdirTemp("", "yas-privsep-")
+	dir, err := os.MkdirTemp("", "sas-privsep-")
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (l *listener) Close() {
 
 // accept waits for the broker. A peer that is not root is rejected and we
 // keep waiting, so another process of the same user cannot pose as the
-// broker and receive yay's requests.
+// broker and receive sas's requests.
 func (l *listener) accept(timeout time.Duration, allowUnprivileged bool) (*Client, error) {
 	deadline := time.Now().Add(timeout)
 
@@ -241,7 +241,7 @@ func (c *Client) Run(req Request) error {
 	go func() { defer wg.Done(); c.forwardWinch(done) }()
 
 	// Stop the helpers before returning so they never steal input meant for
-	// yay's own prompts.
+	// sas's own prompts.
 	defer func() { close(done); wg.Wait() }()
 
 	for {

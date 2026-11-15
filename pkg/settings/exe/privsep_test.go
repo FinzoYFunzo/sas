@@ -11,10 +11,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/privsep"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/privsep"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 // fakeSudo logs every invocation and fails "sudo -v" (as a timed-out or
@@ -125,7 +125,7 @@ func TestPrivSepDisabledKeepsClassicPath(t *testing.T) {
 	assert.False(t, routed)
 }
 
-// yas runs pacman through the broker unconditionally.
+// sas runs pacman through the broker unconditionally.
 func TestNewCmdBuilderAlwaysEnablesPrivSep(t *testing.T) {
 	t.Parallel()
 
@@ -135,7 +135,7 @@ func TestNewCmdBuilderAlwaysEnablesPrivSep(t *testing.T) {
 	assert.True(t, b.PrivSepEnabled)
 }
 
-// When the broker cannot start, yas must refuse to run pacman instead of
+// When the broker cannot start, sas must refuse to run pacman instead of
 // silently falling back to plain `sudo pacman` (fail closed).
 func TestBrokerUnavailableFailsClosed(t *testing.T) {
 	if os.Geteuid() == 0 {

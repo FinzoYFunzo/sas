@@ -12,7 +12,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
 )
 
 type TestMakepkgBuilder struct {
@@ -88,9 +88,9 @@ func Test_downloadPKGBUILDSource(t *testing.T) {
 				},
 				test:    t,
 				want:    tc.want,
-				wantDir: "/tmp/yay-bin",
+				wantDir: "/tmp/sas-bin",
 			}
-			err := downloadPKGBUILDSource(context.Background(), cmdBuilder, filepath.Join("/tmp", "yay-bin"), false)
+			err := downloadPKGBUILDSource(context.Background(), cmdBuilder, filepath.Join("/tmp", "sas-bin"), false)
 			assert.NoError(t, err)
 			assert.Equal(t, 1, int(cmdBuilder.passes))
 		})
@@ -106,12 +106,12 @@ func Test_downloadPKGBUILDSourceError(t *testing.T) {
 		parentBuilder: &exe.CmdBuilder{MakepkgConfPath: "/etc/not.conf", MakepkgFlags: []string{"--nocheck"}, MakepkgBin: "makepkg"},
 		test:          t,
 		want:          "makepkg --nocheck --config /etc/not.conf --verifysource --skippgpcheck -f -Cc",
-		wantDir:       "/tmp/yay-bin",
+		wantDir:       "/tmp/sas-bin",
 		showError:     &exec.ExitError{},
 	}
-	err := downloadPKGBUILDSource(context.Background(), cmdBuilder, filepath.Join("/tmp", "yay-bin"), false)
+	err := downloadPKGBUILDSource(context.Background(), cmdBuilder, filepath.Join("/tmp", "sas-bin"), false)
 	assert.Error(t, err)
-	assert.EqualError(t, err, "error downloading sources: \x1b[36m/tmp/yay-bin\x1b[0m \n\t context: <nil> \n\t \n")
+	assert.EqualError(t, err, "error downloading sources: \x1b[36m/tmp/sas-bin\x1b[0m \n\t context: <nil> \n\t \n")
 }
 
 // GIVEN 5 packages
@@ -121,11 +121,11 @@ func Test_downloadPKGBUILDSourceFanout(t *testing.T) {
 	t.Parallel()
 
 	pkgBuildDirs := map[string]string{
-		"yay":     "/tmp/yay",
-		"yay-bin": "/tmp/yay-bin",
-		"yay-git": "/tmp/yay-git",
-		"yay-v11": "/tmp/yay-v11",
-		"yay-v12": "/tmp/yay-v12",
+		"sas":     "/tmp/sas",
+		"sas-bin": "/tmp/sas-bin",
+		"sas-git": "/tmp/sas-git",
+		"sas-v11": "/tmp/sas-v11",
+		"sas-v12": "/tmp/sas-v12",
 	}
 	for _, maxConcurrentDownloads := range []int{0, 3} {
 		t.Run(fmt.Sprintf("maxconcurrentdownloads set to %d", maxConcurrentDownloads), func(t *testing.T) {
@@ -157,7 +157,7 @@ func Test_downloadPKGBUILDSourceFanoutNoCC(t *testing.T) {
 		test: t,
 	}
 
-	pkgBuildDirs := map[string]string{"yay": "/tmp/yay"}
+	pkgBuildDirs := map[string]string{"sas": "/tmp/sas"}
 
 	err := downloadPKGBUILDSourceFanout(context.Background(), cmdBuilder, pkgBuildDirs, false, 0)
 	assert.NoError(t, err)
@@ -179,11 +179,11 @@ func Test_downloadPKGBUILDSourceFanoutError(t *testing.T) {
 	}
 
 	pkgBuildDirs := map[string]string{
-		"yay":     "/tmp/yay",
-		"yay-bin": "/tmp/yay-bin",
-		"yay-git": "/tmp/yay-git",
-		"yay-v11": "/tmp/yay-v11",
-		"yay-v12": "/tmp/yay-v12",
+		"sas":     "/tmp/sas",
+		"sas-bin": "/tmp/sas-bin",
+		"sas-git": "/tmp/sas-git",
+		"sas-v11": "/tmp/sas-v11",
+		"sas-v12": "/tmp/sas-v12",
 	}
 
 	err := downloadPKGBUILDSourceFanout(context.Background(), cmdBuilder, pkgBuildDirs, false, 0)

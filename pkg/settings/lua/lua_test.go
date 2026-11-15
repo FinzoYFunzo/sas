@@ -23,9 +23,9 @@ func TestApply(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.opt.build_dir = "/tmp/yay"
-		yay.opt.request_split_n = 200
-		yay.opt.devel = true
+		sas.opt.build_dir = "/tmp/sas"
+		sas.opt.request_split_n = 200
+		sas.opt.devel = true
 	`))
 
 	cfg := &testConfig{}
@@ -33,7 +33,7 @@ func TestApply(t *testing.T) {
 
 	assert.Empty(t, unknown)
 	assert.Empty(t, errs)
-	assert.Equal(t, "/tmp/yay", cfg.BuildDir)
+	assert.Equal(t, "/tmp/sas", cfg.BuildDir)
 	assert.Equal(t, 200, cfg.RequestSplitN)
 	assert.True(t, cfg.Devel)
 }
@@ -44,12 +44,12 @@ func TestApplyUnknownAndTypeMismatch(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.opt.does_not_exist = "x"
-		yay.opt.buildDir = "/tmp/nope"
-		yay.opt.requestsplitn = 200
-		yay.opt.Devel = true
-		yay.opt.devel = "not a bool"
-		yay.opt.build_dir = "/tmp/ok"
+		sas.opt.does_not_exist = "x"
+		sas.opt.buildDir = "/tmp/nope"
+		sas.opt.requestsplitn = 200
+		sas.opt.Devel = true
+		sas.opt.devel = "not a bool"
+		sas.opt.build_dir = "/tmp/ok"
 	`))
 
 	cfg := &testConfig{}
@@ -68,9 +68,9 @@ func TestApplyAppliesAnswerOptionsFromLua(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.opt.answer_clean = "All"
-		yay.opt.answer_diff = "None"
-		yay.opt.answer_edit = "Installed"
+		sas.opt.answer_clean = "All"
+		sas.opt.answer_diff = "None"
+		sas.opt.answer_edit = "Installed"
 	`))
 
 	cfg := &testConfig{}
@@ -100,9 +100,9 @@ func TestApplyNamedStructSlice(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.opt.build_dir = "/tmp/yay"
-		yay.opt.repos = {
-			["yay-pkgbuild"] = {
+		sas.opt.build_dir = "/tmp/sas"
+		sas.opt.repos = {
+			["sas-pkgbuild"] = {
 				url = "https://github.com/Jguer/yay-PKGBUILD",
 				depth = 2,
 			},
@@ -117,7 +117,7 @@ func TestApplyNamedStructSlice(t *testing.T) {
 
 	assert.Empty(t, unknown)
 	assert.Empty(t, errs)
-	assert.Equal(t, "/tmp/yay", cfg.BuildDir)
+	assert.Equal(t, "/tmp/sas", cfg.BuildDir)
 
 	// The keyed table becomes a slice sorted by repo name for determinism.
 	require.Len(t, cfg.Repos, 2)
@@ -126,7 +126,7 @@ func TestApplyNamedStructSlice(t *testing.T) {
 	assert.Equal(t, "file:///srv/pkgbuilds", cfg.Repos[0].URL)
 	assert.Equal(t, 0, cfg.Repos[0].Depth)
 
-	assert.Equal(t, "yay-pkgbuild", cfg.Repos[1].Name)
+	assert.Equal(t, "sas-pkgbuild", cfg.Repos[1].Name)
 	assert.Equal(t, "https://github.com/Jguer/yay-PKGBUILD", cfg.Repos[1].URL)
 	assert.Equal(t, 2, cfg.Repos[1].Depth)
 }
@@ -137,8 +137,8 @@ func TestApplyNamedStructSliceRejectsUnknownKey(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.opt.repos = {
-			["yay-pkgbuild"] = {
+		sas.opt.repos = {
+			["sas-pkgbuild"] = {
 				url = "https://github.com/Jguer/yay-PKGBUILD",
 				nonsense = true,
 			},
@@ -157,8 +157,8 @@ func TestApplyNamedStructSliceRejectsNameKeyInsideEntry(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.opt.repos = {
-			["yay-pkgbuild"] = {
+		sas.opt.repos = {
+			["sas-pkgbuild"] = {
 				name = "something-else",
 				url = "https://github.com/Jguer/yay-PKGBUILD",
 			},
@@ -182,7 +182,7 @@ func TestApplyRejectsSliceOfNonStructs(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.opt.tags = { "a", "b" }
+		sas.opt.tags = { "a", "b" }
 	`))
 
 	cfg := &nonStructSliceTestConfig{}
@@ -199,7 +199,7 @@ func TestApplyNamedStructSliceRejectsArrayStyleTable(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.opt.repos = {
+		sas.opt.repos = {
 			{ url = "a" },
 			{ url = "b" },
 		}

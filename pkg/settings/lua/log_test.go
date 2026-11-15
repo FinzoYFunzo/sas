@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func withColorDisabled(t *testing.T) {
@@ -34,9 +34,9 @@ func TestLogInfoWarnAndErrorUseLoggerStreams(t *testing.T) {
 	engine, stdout, stderr := newLogTestEngine(t, false)
 
 	require.NoError(t, engine.L.DoString(`
-		yay.log.info("info message")
-		yay.log.warn("warn message")
-		yay.log.error("error message")
+		sas.log.info("info message")
+		sas.log.warn("warn message")
+		sas.log.error("error message")
 	`))
 
 	require.Equal(t, "==> info message\n -> warn message\n", stdout.String())
@@ -46,14 +46,14 @@ func TestLogInfoWarnAndErrorUseLoggerStreams(t *testing.T) {
 func TestLogDebugUsesLoggerDebugGate(t *testing.T) {
 	engine, stdout, stderr := newLogTestEngine(t, false)
 
-	require.NoError(t, engine.L.DoString(`yay.log.debug("hidden")`))
+	require.NoError(t, engine.L.DoString(`sas.log.debug("hidden")`))
 	require.Empty(t, stdout.String())
 	require.Empty(t, stderr.String())
 
 	debugLogger := text.NewLogger(stdout, stderr, strings.NewReader(""), true, "lua")
 	engine.SetLogger(debugLogger)
 
-	require.NoError(t, engine.L.DoString(`yay.log.debug("visible")`))
+	require.NoError(t, engine.L.DoString(`sas.log.debug("visible")`))
 	require.Equal(t, "[DEBUG:lua] visible\n", stdout.String())
 	require.Empty(t, stderr.String())
 }
@@ -67,7 +67,7 @@ func TestLogStringifiesLuaArgumentsInOrder(t *testing.T) {
 				return "custom"
 			end,
 		})
-		yay.log.info("pkg", 12, true, nil, value)
+		sas.log.info("pkg", 12, true, nil, value)
 	`))
 
 	require.Equal(t, "==> pkg 12 true nil custom\n", stdout.String())
@@ -79,17 +79,17 @@ func TestLogWithoutLoggerDoesNotPanic(t *testing.T) {
 	t.Cleanup(engine.Close)
 
 	require.NoError(t, engine.L.DoString(`
-		yay.log.debug("debug")
-		yay.log.info("info")
-		yay.log.warn("warn")
-		yay.log.error("error")
+		sas.log.debug("debug")
+		sas.log.info("info")
+		sas.log.warn("warn")
+		sas.log.error("error")
 	`))
 }
 
 func TestLoadUsesLuaChildLogger(t *testing.T) {
 	withColorDisabled(t)
 
-	path := writeLuaFile(t, `yay.log.debug("loaded")`)
+	path := writeLuaFile(t, `sas.log.debug("loaded")`)
 	var stdout, stderr bytes.Buffer
 	logger := text.NewLogger(&stdout, &stderr, strings.NewReader(""), true, "fallback")
 

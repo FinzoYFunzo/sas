@@ -8,9 +8,9 @@ assignees: ""
 
 ### Affected Version
 
-<!-- Please ensure you are using the latest yay-git package
-Use `yay -V` to get installed version
-Example: `yay v8.1139.r0.g9ac4ab6 - libalpm v11.0.1` -->
+<!-- Please ensure you are using the latest sas-git package
+Use `sas -V` to get installed version
+Example: `sas v8.1139.r0.g9ac4ab6 - libalpm v11.0.1` -->
 
 ### Describe the bug
 
@@ -30,10 +30,10 @@ Example: `yay v8.1139.r0.g9ac4ab6 - libalpm v11.0.1` -->
 
 <!--
 Include the FULL output of any relevant commands/configs
-The current yay config can be printed with `yay -Pg`
+The current sas config can be printed with `sas -Pg`
 Paste services are only needed for excessive output (>500 lines)
-Use --debug to add pacman and yay debug logs 
-or add the following key to your ~/.config/yay/config.json to only get yay debug logs
+Use --debug to add pacman and sas debug logs 
+or add the following key to your ~/.config/sas/config.json to only get sas debug logs
 {
   "debug": true
 }

@@ -11,12 +11,12 @@ import (
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 // SyncSearch presents a query to the local repos and to the AUR.
@@ -262,7 +262,7 @@ func statistics(run *runtime.Runtime, dbExecutor db.Executor) (res struct {
 	Expln        int
 	TotalSize    int64
 	pacmanCaches map[string]int64
-	yayCache     int64
+	sasCache     int64
 },
 ) {
 	for _, pkg := range dbExecutor.LocalPackages() {
@@ -279,7 +279,7 @@ func statistics(run *runtime.Runtime, dbExecutor db.Executor) (res struct {
 		res.pacmanCaches[path] = getFolderSize(path)
 	}
 
-	res.yayCache = getFolderSize(run.Cfg.BuildDir)
+	res.sasCache = getFolderSize(run.Cfg.BuildDir)
 
 	return
 }

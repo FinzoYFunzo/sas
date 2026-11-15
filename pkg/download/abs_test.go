@@ -12,7 +12,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
 )
 
 const gitExtrasPKGBUILD = `pkgname=git-extras
@@ -274,7 +274,7 @@ func TestABSPKGBUILDRepo(t *testing.T) {
 		if path, _ := exec.LookPath(ld); path != "" {
 			ld = path
 		}
-		want = fmt.Sprintf("%s --service-type=oneshot --pipe --wait --pty --quiet -p DynamicUser=yes -p CacheDirectory=yay -E HOME=/tmp  --no-replace-objects -C /tmp/doesnt-exist clone --no-progress --single-branch https://gitlab.archlinux.org/archlinux/packaging/packages/linux.git linux", ld)
+		want = fmt.Sprintf("%s --service-type=oneshot --pipe --wait --pty --quiet -p DynamicUser=yes -p CacheDirectory=sas -E HOME=/tmp  --no-replace-objects -C /tmp/doesnt-exist clone --no-progress --single-branch https://gitlab.archlinux.org/archlinux/packaging/packages/linux.git linux", ld)
 	}
 
 	cmdBuilder := &testGitBuilder{
@@ -307,7 +307,7 @@ func TestABSPKGBUILDRepoExistsPerms(t *testing.T) {
 		if path, _ := exec.LookPath(ld); path != "" {
 			ld = path
 		}
-		want = fmt.Sprintf("%s --service-type=oneshot --pipe --wait --pty --quiet -p DynamicUser=yes -p CacheDirectory=yay -E HOME=/tmp  --no-replace-objects -C %s/linux pull --rebase --autostash", ld, dir)
+		want = fmt.Sprintf("%s --service-type=oneshot --pipe --wait --pty --quiet -p DynamicUser=yes -p CacheDirectory=sas -E HOME=/tmp  --no-replace-objects -C %s/linux pull --rebase --autostash", ld, dir)
 	}
 
 	cmdRunner := &testRunner{}

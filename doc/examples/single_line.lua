@@ -1,11 +1,11 @@
--- Reproduce yay.opt.single_line_results via RenderAUR/RenderSync.
+-- Reproduce sas.opt.single_line_results via RenderAUR/RenderSync.
 --
--- yay.opt.single_line_results only changes one thing in the built-in
+-- sas.opt.single_line_results only changes one thing in the built-in
 -- renderer: the description is joined onto the result line with a tab
 -- instead of being printed on its own indented line below. These two hooks
 -- rebuild that same layout (plus the bold/color accents) from scratch, so
 -- you have a starting point for further tweaks (drop fields, change colors,
--- add links, etc.). yay does not expose a color/text helper API to Lua, so
+-- add links, etc.). sas does not expose a color/text helper API to Lua, so
 -- every ANSI escape below is built by hand with plain Lua string functions.
 
 local ESC = string.char(27)
@@ -24,7 +24,7 @@ local function yellow(s) return sgr("33", s) end
 local function cyan(s) return sgr("36", s) end
 
 -- A given repo/package name always renders in the same one of six colors,
--- same hashing idea as yay's internal ColorHash.
+-- same hashing idea as sas's internal ColorHash.
 local function color_hash(name)
   local hash = 0
   for i = 1, #name do
@@ -72,7 +72,7 @@ local function installed_tag(version, local_version)
   return bold(green("(Installed: " .. local_version .. ")"))
 end
 
-yay.create_autocmd("RenderAUR", {
+sas.create_autocmd("RenderAUR", {
   desc = "single-line, colored AUR search results (mirrors single_line_results)",
   callback = function(event)
     local d = event.data
@@ -89,7 +89,7 @@ yay.create_autocmd("RenderAUR", {
   end,
 })
 
-yay.create_autocmd("RenderSync", {
+sas.create_autocmd("RenderSync", {
   desc = "single-line, colored sync search results (mirrors single_line_results)",
   callback = function(event)
     local d = event.data

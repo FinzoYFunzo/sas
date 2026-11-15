@@ -13,10 +13,10 @@ import (
 	gosrc "github.com/Morganamilo/go-srcinfo"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	mockaur "github.com/Jguer/yay/v13/pkg/dep/mock"
-	"github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	mockaur "github.com/FinzoYFunzo/sas/pkg/dep/mock"
+	"github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func TestGrapher_GraphFromTargetsBranches(t *testing.T) {

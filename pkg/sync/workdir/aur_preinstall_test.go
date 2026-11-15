@@ -13,10 +13,10 @@ import (
 	"github.com/stretchr/testify/require"
 	glua "github.com/yuin/gopher-lua"
 
-	"github.com/Jguer/yay/v13/pkg/dep"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	settingslua "github.com/Jguer/yay/v13/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/dep"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	settingslua "github.com/FinzoYFunzo/sas/pkg/settings/lua"
 )
 
 func TestAURPreInstallEventsFromPackageFiles(t *testing.T) {
@@ -102,7 +102,7 @@ func TestRunAURPreInstallLuaHooksRunsBasesInSortedOrder(t *testing.T) {
 		return 0
 	}))
 	require.NoError(t, engine.L.DoString(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			callback = function(event)
 				record(event.match)
 			end,
@@ -135,7 +135,7 @@ func TestRunPreDownloadSourcesHooksRunsLuaBeforeMenus(t *testing.T) {
 		return 0
 	}))
 	require.NoError(t, engine.L.DoString(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			callback = function()
 				record("lua")
 			end,
@@ -178,7 +178,7 @@ func TestRunAURPreInstallLuaHooksReturnsCallbackError(t *testing.T) {
 	t.Cleanup(engine.Close)
 
 	require.NoError(t, engine.L.DoString(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			callback = function()
 				error("blocked")
 			end,

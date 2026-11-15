@@ -10,19 +10,19 @@ const (
 	luaConfigFileName  string = "init.lua"
 	vcsFileName        string = "vcs.json" // vcsFileName holds the name of the vcs file.
 	completionFileName string = "completion.cache"
-	systemdCache       string = "/var/cache/yay" // systemd should handle cache creation
+	systemdCache       string = "/var/cache/sas" // systemd should handle cache creation
 )
 
 func GetConfigPath() string {
 	if configHome := os.Getenv("XDG_CONFIG_HOME"); configHome != "" {
-		configDir := filepath.Join(configHome, "yay")
+		configDir := filepath.Join(configHome, "sas")
 		if err := initDir(configDir); err == nil {
 			return filepath.Join(configDir, configFileName)
 		}
 	}
 
 	if configHome := os.Getenv("HOME"); configHome != "" {
-		configDir := filepath.Join(configHome, ".config", "yay")
+		configDir := filepath.Join(configHome, ".config", "sas")
 		if err := initDir(configDir); err == nil {
 			return filepath.Join(configDir, configFileName)
 		}
@@ -40,11 +40,11 @@ func GetLuaConfigPath(debug bool) string {
 	}
 
 	if configHome := os.Getenv("XDG_CONFIG_HOME"); configHome != "" {
-		candidates = append(candidates, filepath.Join(configHome, "yay", luaConfigFileName))
+		candidates = append(candidates, filepath.Join(configHome, "sas", luaConfigFileName))
 	}
 
 	if configHome := os.Getenv("HOME"); configHome != "" {
-		candidates = append(candidates, filepath.Join(configHome, ".config", "yay", luaConfigFileName))
+		candidates = append(candidates, filepath.Join(configHome, ".config", "sas", luaConfigFileName))
 	}
 
 	for _, candidate := range candidates {
@@ -60,14 +60,14 @@ func getCacheHome() (string, error) {
 	uid := os.Geteuid()
 
 	if cacheHome := os.Getenv("XDG_CACHE_HOME"); cacheHome != "" && uid != 0 {
-		cacheDir := filepath.Join(cacheHome, "yay")
+		cacheDir := filepath.Join(cacheHome, "sas")
 		if err := initDir(cacheDir); err == nil {
 			return cacheDir, nil
 		}
 	}
 
 	if cacheHome := os.Getenv("HOME"); cacheHome != "" && uid != 0 {
-		cacheDir := filepath.Join(cacheHome, ".cache", "yay")
+		cacheDir := filepath.Join(cacheHome, ".cache", "sas")
 		if err := initDir(cacheDir); err == nil {
 			return cacheDir, nil
 		}
@@ -77,7 +77,7 @@ func getCacheHome() (string, error) {
 		return systemdCache, nil // Don't create directory if systemd-run takes care of it
 	}
 
-	tmpDir := filepath.Join(os.TempDir(), "yay")
+	tmpDir := filepath.Join(os.TempDir(), "sas")
 
 	return tmpDir, initDir(tmpDir)
 }

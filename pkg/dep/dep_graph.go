@@ -14,11 +14,11 @@ import (
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/dep/topo"
-	"github.com/Jguer/yay/v13/pkg/intrange"
-	aur "github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/dep/topo"
+	"github.com/FinzoYFunzo/sas/pkg/intrange"
+	aur "github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 type InstallInfo struct {

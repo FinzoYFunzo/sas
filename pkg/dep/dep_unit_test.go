@@ -14,11 +14,11 @@ import (
 	gosrc "github.com/Morganamilo/go-srcinfo"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	mockaur "github.com/Jguer/yay/v13/pkg/dep/mock"
-	"github.com/Jguer/yay/v13/pkg/dep/topo"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	mockaur "github.com/FinzoYFunzo/sas/pkg/dep/mock"
+	"github.com/FinzoYFunzo/sas/pkg/dep/topo"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func TestDepSatisfies(t *testing.T) {
@@ -66,9 +66,9 @@ func TestTargetParsing(t *testing.T) {
 	require.Equal(t, ">=", target.Mod)
 	require.Equal(t, "1.6", target.Version)
 
-	target = ToTarget("yay")
+	target = ToTarget("sas")
 	require.Equal(t, "", target.DB)
-	require.Equal(t, "yay", target.Name)
+	require.Equal(t, "sas", target.Name)
 	require.Equal(t, "", target.Mod)
 	require.Equal(t, "", target.Version)
 }
@@ -81,7 +81,7 @@ func TestGrapher_GraphSyncPkgAndUpgrade(t *testing.T) {
 	mockDb := &mock.DBExecutor{
 		LocalPackageFn: func(s string) mock.IPackage {
 			return &mock.Package{
-				PName:    "yay",
+				PName:    "sas",
 				PVersion: "1.0.0-1",
 				PReason:  alpm.PkgReasonDepend,
 				PDB:      mock.NewDB("core"),
@@ -91,30 +91,30 @@ func TestGrapher_GraphSyncPkgAndUpgrade(t *testing.T) {
 
 	grapher := NewGrapher(mockDb, &mockaur.MockAUR{}, false, false, false, false, false, logger)
 	graph := grapher.GraphSyncPkg(context.TODO(), nil, &mock.Package{
-		PName:    "yay",
+		PName:    "sas",
 		PVersion: "1.2.0",
 		PDB:      mock.NewDB("core"),
 	}, nil)
 
-	info := graph.GetNodeInfo("yay").Value
+	info := graph.GetNodeInfo("sas").Value
 	require.NotNil(t, info)
 	require.Equal(t, Dep, info.Reason)
 	require.False(t, info.Upgrade)
 
 	upgraded := grapher.GraphSyncPkg(context.TODO(), nil, &mock.Package{
-		PName:    "yaysrc",
+		PName:    "sassrc",
 		PVersion: "2.0.0",
 		PDB:      mock.NewDB("core"),
 	}, &db.SyncUpgrade{
 		Package: &mock.Package{
-			PName: "yaysrc",
+			PName: "sassrc",
 			PDB:   mock.NewDB("core"),
 		},
 		LocalVersion: "1.0.0",
 		Reason:       alpm.PkgReasonExplicit,
 	})
 
-	upgradeInfo := upgraded.GetNodeInfo("yaysrc").Value
+	upgradeInfo := upgraded.GetNodeInfo("sassrc").Value
 	require.NotNil(t, upgradeInfo)
 	require.True(t, upgradeInfo.Upgrade)
 	require.Equal(t, "1.0.0", upgradeInfo.LocalVersion)
@@ -170,7 +170,7 @@ func TestPackagesFromSrcinfo(t *testing.T) {
 
 	srcinfo := &gosrc.Srcinfo{
 		PackageBase: gosrc.PackageBase{
-			Pkgbase: "yay",
+			Pkgbase: "sas",
 		},
 		Package: gosrc.Package{
 			Depends: []gosrc.ArchString{
@@ -180,7 +180,7 @@ func TestPackagesFromSrcinfo(t *testing.T) {
 		},
 		Packages: []gosrc.Package{
 			{
-				Pkgname: "yay",
+				Pkgname: "sas",
 				Depends: []gosrc.ArchString{
 					{Value: "pkgdep"},
 				},
@@ -214,16 +214,16 @@ func TestPackagesFromSrcinfoPkgbaseFallback(t *testing.T) {
 
 	srcinfo := &gosrc.Srcinfo{
 		PackageBase: gosrc.PackageBase{
-			Pkgbase: "yay",
+			Pkgbase: "sas",
 		},
 		Package: gosrc.Package{
-			URL:     "https://example.com/yay",
+			URL:     "https://example.com/sas",
 			Groups:  []string{"base-group"},
 			License: []string{"MIT"},
 		},
 		Packages: []gosrc.Package{
 			{
-				Pkgname: "yay",
+				Pkgname: "sas",
 			},
 		},
 	}
@@ -231,15 +231,15 @@ func TestPackagesFromSrcinfoPkgbaseFallback(t *testing.T) {
 	pkgs, err := PackagesFromSrcinfo(dbExecutor, srcinfo)
 	require.NoError(t, err)
 	require.Len(t, pkgs, 1)
-	require.Equal(t, "https://example.com/yay", pkgs[0].URL)
+	require.Equal(t, "https://example.com/sas", pkgs[0].URL)
 	require.Equal(t, []string{"base-group"}, pkgs[0].Groups)
 	require.Equal(t, []string{"MIT"}, pkgs[0].License)
 
 	// A per-package override must still win over the pkgbase value.
 	srcinfo.Packages = []gosrc.Package{
 		{
-			Pkgname: "yay",
-			URL:     "https://example.com/yay-override",
+			Pkgname: "sas",
+			URL:     "https://example.com/sas-override",
 			Groups:  []string{"override-group"},
 			License: []string{"GPL"},
 		},
@@ -248,7 +248,7 @@ func TestPackagesFromSrcinfoPkgbaseFallback(t *testing.T) {
 	pkgs, err = PackagesFromSrcinfo(dbExecutor, srcinfo)
 	require.NoError(t, err)
 	require.Len(t, pkgs, 1)
-	require.Equal(t, "https://example.com/yay-override", pkgs[0].URL)
+	require.Equal(t, "https://example.com/sas-override", pkgs[0].URL)
 	require.Equal(t, []string{"override-group"}, pkgs[0].Groups)
 	require.Equal(t, []string{"GPL"}, pkgs[0].License)
 }

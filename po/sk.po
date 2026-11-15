@@ -197,8 +197,8 @@ msgid "Automatically resolve conflicts using pacman's ask flag"
 msgstr ""
 
 #: main.go:65
-msgid "Avoid running yay as root/sudo."
-msgstr "Vyhnite sa spúšťaniu yay ako root/sudo."
+msgid "Avoid running sas as root/sudo."
+msgstr "Vyhnite sa spúšťaniu sas ako root/sudo."
 
 #: cmd.go:53
 msgid "Build and install a PKGBUILD"
@@ -369,7 +369,7 @@ msgid "Groups"
 msgstr "Skupiny"
 
 #: cmd.go:141
-msgid "If no operation is specified 'yay -Syu' will be performed"
+msgid "If no operation is specified 'sas -Syu' will be performed"
 msgstr ""
 
 #: cmd.go:142
@@ -565,11 +565,11 @@ msgid "Print arch news"
 msgstr ""
 
 #: cmd.go:62
-msgid "Print current yay configuration"
+msgid "Print current sas configuration"
 msgstr ""
 
 #: cmd.go:61
-msgid "Print default yay configuration"
+msgid "Print default sas configuration"
 msgstr ""
 
 #: cmd.go:57
@@ -688,8 +688,8 @@ msgid "Size of pacman cache %s: %s"
 msgstr "Veľkosť pacman cache %s: %s"
 
 #: print.go:98
-msgid "Size of yay cache %s: %s"
-msgstr "Veľkosť yay cache %s: %s"
+msgid "Size of sas cache %s: %s"
+msgstr "Veľkosť sas cache %s: %s"
 
 #: cmd.go:198
 msgid "Skip package build if in cache and up to date"
@@ -811,8 +811,8 @@ msgid "Votes"
 msgstr "Hlasy"
 
 #: print.go:87
-msgid "Yay version v%s"
-msgstr "Verzia Yay v%s"
+msgid "Sas version v%s"
+msgstr "Verzia Sas v%s"
 
 #: pkg/menus/menu.go:50
 msgid "[N]one"
@@ -856,7 +856,7 @@ msgstr "nepodarilo sa skontrolovať vývoj pre balíček: '%s' postihla chyba"
 
 #: pkg/settings/parser/parser.go:667
 msgid ""
-"did you mean yay -Scc (clean caches) or yay -Ycc (clean orphaned packages)?"
+"did you mean sas -Scc (clean caches) or sas -Ycc (clean orphaned packages)?"
 msgstr ""
 
 #: cmd.go:48
@@ -1119,11 +1119,11 @@ msgid "unknown-version"
 msgstr "neznáma-verzia"
 
 #: cmd.go:224
-msgid "use 'yay {-h --help}' for global options"
+msgid "use 'sas {-h --help}' for global options"
 msgstr ""
 
 #: cmd.go:139
-msgid "use 'yay {-h --help}' with an operation for available options"
+msgid "use 'sas {-h --help}' with an operation for available options"
 msgstr ""
 
 #: pkg/text/input.go:47

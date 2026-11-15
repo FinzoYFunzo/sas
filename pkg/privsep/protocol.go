@@ -1,17 +1,17 @@
-// Package privsep implements privilege separation for yay ("yas": Yet another Sudo).
+// Package privsep implements privilege separation for sas ("sas": Yet another Sudo).
 //
 // Instead of invoking sudo once per privileged pacman call (and keeping a sudo
-// timestamp alive with --sudoloop), yay launches a small privileged broker a
-// single time. The broker then runs pacman on behalf of yay over a private
+// timestamp alive with --sudoloop), sas launches a small privileged broker a
+// single time. The broker then runs pacman on behalf of sas over a private
 // unix socket, accepting only an allowlisted set of pacman operations.
 //
 // Properties:
-//   - exactly one authentication per yay run, while the user is present;
+//   - exactly one authentication per sas run, while the user is present;
 //   - no reusable sudo credential is left on the terminal (sudo -k after launch),
 //     so untrusted build code (PKGBUILDs) cannot silently obtain root;
-//   - only the yay process that launched the broker can talk to it
+//   - only the sas process that launched the broker can talk to it
 //     (SO_PEERCRED check on both ends);
-//   - the broker exits as soon as yay goes away (EOF on the socket).
+//   - the broker exits as soon as sas goes away (EOF on the socket).
 package privsep
 
 import (
@@ -40,7 +40,7 @@ const (
 
 var errFrameTooLarge = errors.New("privsep: frame too large")
 
-// Flag is a pacman option as yay parsed it, e.g. {Name: "y"} or
+// Flag is a pacman option as sas parsed it, e.g. {Name: "y"} or
 // {Name: "ignore", Value: "linux"}. The broker decides whether the option is
 // allowed and whether it takes a value; the client never sends raw argv.
 type Flag struct {

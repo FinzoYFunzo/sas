@@ -1,57 +1,40 @@
-# yay
+# sas
 
-**Yet Another Yogurt** — an AUR helper for Arch Linux, written in Go.
+**Somehow another Sudo** — an AUR helper for Arch Linux, written in Go, built
+around privilege separation: one password prompt per run and no reusable sudo
+credential.
 
-yay wraps pacman for official-repository packages and adds full AUR support:
+sas wraps pacman for official-repository packages and adds full AUR support:
 PKGBUILD downloading, cross-source dependency resolution, makepkg-based
 building, devel/VCS package tracking, and AUR voting. A single
 pacman-compatible CLI for both sources.
 
 ## Install
 
-### AUR (recommended)
-
-Use the AUR helper you already have, or install manually:
+Build from source (requires `go`, `git` and `base-devel`):
 
 ```bash
-git clone https://aur.archlinux.org/yay.git
-cd yay && makepkg -si
-```
-
-### yay-bin (no Go required)
-
-Skip the build entirely if you do not want to install Go:
-
-```bash
-git clone https://aur.archlinux.org/yay-bin.git
-cd yay-bin && makepkg -si
-```
-
-### yay-git (latest git)
-
-Track the latest development branch from git:
-
-```bash
-git clone https://aur.archlinux.org/yay-git.git
-cd yay-git && makepkg -si
+git clone https://github.com/FinzoYFunzo/sas.git
+cd sas && make
+sudo install -Dm755 sas /usr/local/bin/sas
 ```
 
 ## Documentation
 
-- [Manual — yay(8)](man.html) — complete command and option reference
+- [Manual — sas(8)](man.html) — complete command and option reference
 - [Lua API](lua.html) — init.lua hooks, autocmds, and configuration
 - [init.lua template](init-lua.html) — ready-to-copy configuration template
 
 ## Quick reference
 
 ```bash
-yay foo                     # search and install (yogurt mode)
-yay -Syu                    # full upgrade: repo + AUR
-yay -Syua                   # AUR-only upgrade
-yay -G foo                  # download PKGBUILD
-yay -Ps                     # system statistics and health check
+sas foo                     # search and install (yogurt mode)
+sas -Syu                    # full upgrade: repo + AUR
+sas -Syua                   # AUR-only upgrade
+sas -G foo                  # download PKGBUILD
+sas -Ps                     # system statistics and health check
 ```
 
 ## Source
 
-[github.com/Jguer/yay](https://github.com/Jguer/yay)
+[github.com/FinzoYFunzo/sas](https://github.com/FinzoYFunzo/sas) — a fork of [yay](https://github.com/Jguer/yay).

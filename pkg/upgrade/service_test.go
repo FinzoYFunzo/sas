@@ -14,18 +14,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	"github.com/Jguer/yay/v13/pkg/dep"
-	"github.com/Jguer/yay/v13/pkg/dep/topo"
-	"github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	settingslua "github.com/Jguer/yay/v13/pkg/settings/lua"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
-	"github.com/Jguer/yay/v13/pkg/vcs"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	"github.com/FinzoYFunzo/sas/pkg/dep"
+	"github.com/FinzoYFunzo/sas/pkg/dep/topo"
+	"github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	settingslua "github.com/FinzoYFunzo/sas/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/vcs"
 
-	mockaur "github.com/Jguer/yay/v13/pkg/dep/mock"
+	mockaur "github.com/FinzoYFunzo/sas/pkg/dep/mock"
 )
 
 func newUpgradeSelectTestService(input io.Reader, luaEngine *settingslua.Engine) *UpgradeService {
@@ -59,12 +59,12 @@ func newUpgradeSelectTestGraph(t *testing.T) *topo.Graph[string, *dep.InstallInf
 		},
 	})
 
-	graph.AddNode("yay")
-	graph.SetNodeInfo("yay", &topo.NodeInfo[*dep.InstallInfo]{
+	graph.AddNode("sas")
+	graph.SetNodeInfo("sas", &topo.NodeInfo[*dep.InstallInfo]{
 		Value: &dep.InstallInfo{
 			Reason:       dep.Explicit,
 			Source:       dep.AUR,
-			AURBase:      "yay",
+			AURBase:      "sas",
 			LocalVersion: "1.0",
 			Version:      "2.0",
 			Upgrade:      true,
@@ -143,10 +143,10 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 		Maintainer:   "morganamilo",
 	}
 
-	yayDepInfo := &dep.InstallInfo{
+	sasDepInfo := &dep.InstallInfo{
 		Reason:       dep.Explicit,
 		Source:       dep.AUR,
-		AURBase:      "yay",
+		AURBase:      "sas",
 		LocalVersion: "10.2.3",
 		Version:      "10.2.4",
 		Upgrade:      true,
@@ -157,13 +157,13 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 	coreDB := mock.NewDB("core")
 	dbExe := &mock.DBExecutor{
 		InstalledRemotePackageNamesFn: func() []string {
-			return []string{"yay", "example-git"}
+			return []string{"sas", "example-git"}
 		},
 		InstalledRemotePackagesFn: func() map[string]mock.IPackage {
 			mapRemote := make(map[string]mock.IPackage)
-			mapRemote["yay"] = &mock.Package{
-				PName:    "yay",
-				PBase:    "yay",
+			mapRemote["sas"] = &mock.Package{
+				PName:    "sas",
+				PBase:    "sas",
 				PVersion: "10.2.3",
 				PReason:  alpm.PkgReasonExplicit,
 			}
@@ -224,7 +224,7 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 	mockAUR := &mockaur.MockAUR{
 		GetFn: func(ctx context.Context, query *aur.Query) ([]aur.Pkg, error) {
 			return []aur.Pkg{
-				{Name: "yay", Version: "10.2.4", PackageBase: "yay", Maintainer: "jguer"},
+				{Name: "sas", Version: "10.2.4", PackageBase: "sas", Maintainer: "jguer"},
 				{
 					Name: "example-git", Version: "2.2.1.r69.g8a10460-1",
 					PackageBase: "example", Depends: []string{"new-dep"},
@@ -264,7 +264,7 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 				enableDowngrade: false,
 			},
 			mustExist: map[string]*dep.InstallInfo{
-				"yay":         yayDepInfo,
+				"sas":         sasDepInfo,
 				"linux":       linuxDepInfo,
 				"example-git": exampleDepInfoAUR,
 				"new-dep":     newDepInfo,
@@ -286,7 +286,7 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 				enableDowngrade: false,
 			},
 			mustExist: map[string]*dep.InstallInfo{
-				"yay":         yayDepInfo,
+				"sas":         sasDepInfo,
 				"linux":       linuxDepInfo,
 				"example-git": exampleDepInfoDevel,
 			},
@@ -306,7 +306,7 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 				enableDowngrade: false,
 			},
 			mustExist: map[string]*dep.InstallInfo{
-				"yay":   yayDepInfo,
+				"sas":   sasDepInfo,
 				"linux": linuxDepInfo,
 			},
 			mustNotExist: map[string]bool{"example-git": true, "new-dep": true},
@@ -328,12 +328,12 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 				"example-git": exampleDepInfoAUR,
 				"new-dep":     newDepInfo,
 			},
-			mustNotExist: map[string]bool{"linux": true, "yay": true},
+			mustNotExist: map[string]bool{"linux": true, "sas": true},
 			wantErr:      false,
-			wantExclude:  []string{"linux", "yay"},
+			wantExclude:  []string{"linux", "sas"},
 		},
 		{
-			name: "exclude yay",
+			name: "exclude sas",
 			fields: fields{
 				input:     strings.NewReader("1\n"),
 				output:    io.Discard,
@@ -347,9 +347,9 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 				"linux":       linuxDepInfo,
 				"example-git": exampleDepInfoAUR,
 			},
-			mustNotExist: map[string]bool{"yay": true},
+			mustNotExist: map[string]bool{"sas": true},
 			wantErr:      false,
-			wantExclude:  []string{"yay"},
+			wantExclude:  []string{"sas"},
 		},
 		{
 			name: "exclude linux",
@@ -363,7 +363,7 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 				enableDowngrade: false,
 			},
 			mustExist: map[string]*dep.InstallInfo{
-				"yay":         yayDepInfo,
+				"sas":         sasDepInfo,
 				"example-git": exampleDepInfoAUR,
 				"new-dep":     newDepInfo,
 			},
@@ -385,9 +385,9 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 			mustExist: map[string]*dep.InstallInfo{
 				"linux": linuxDepInfo,
 			},
-			mustNotExist: map[string]bool{"yay": true, "example-git": true},
+			mustNotExist: map[string]bool{"sas": true, "example-git": true},
 			wantErr:      false,
-			wantExclude:  []string{"yay", "example-git", "new-dep"},
+			wantExclude:  []string{"sas", "example-git", "new-dep"},
 		},
 		{
 			name: "exclude all",
@@ -401,9 +401,9 @@ func TestUpgradeService_GraphUpgrades(t *testing.T) {
 				enableDowngrade: false,
 			},
 			mustExist:    map[string]*dep.InstallInfo{},
-			mustNotExist: map[string]bool{"yay": true, "example-git": true, "linux": true},
+			mustNotExist: map[string]bool{"sas": true, "example-git": true, "linux": true},
 			wantErr:      false,
-			wantExclude:  []string{"yay", "example-git", "linux", "new-dep"},
+			wantExclude:  []string{"sas", "example-git", "linux", "new-dep"},
 		},
 	}
 	for _, tt := range tests {
@@ -471,10 +471,10 @@ func TestUpgradeService_GraphUpgradesMissingDep(t *testing.T) {
 		Devel:        false,
 	}
 
-	yayDepInfo := &dep.InstallInfo{
+	sasDepInfo := &dep.InstallInfo{
 		Reason:       dep.Explicit,
 		Source:       dep.AUR,
-		AURBase:      "yay",
+		AURBase:      "sas",
 		LocalVersion: "10.2.3",
 		Version:      "10.2.4",
 		Upgrade:      true,
@@ -483,13 +483,13 @@ func TestUpgradeService_GraphUpgradesMissingDep(t *testing.T) {
 
 	dbExe := &mock.DBExecutor{
 		InstalledRemotePackageNamesFn: func() []string {
-			return []string{"yay", "example-git"}
+			return []string{"sas", "example-git"}
 		},
 		InstalledRemotePackagesFn: func() map[string]mock.IPackage {
 			mapRemote := make(map[string]mock.IPackage)
-			mapRemote["yay"] = &mock.Package{
-				PName:    "yay",
-				PBase:    "yay",
+			mapRemote["sas"] = &mock.Package{
+				PName:    "sas",
+				PBase:    "sas",
 				PVersion: "10.2.3",
 				PReason:  alpm.PkgReasonExplicit,
 			}
@@ -518,9 +518,9 @@ func TestUpgradeService_GraphUpgradesMissingDep(t *testing.T) {
 		GetFn: func(ctx context.Context, query *aur.Query) ([]aur.Pkg, error) {
 			return []aur.Pkg{
 				{
-					Name:        "yay",
+					Name:        "sas",
 					Version:     "10.2.4",
-					PackageBase: "yay",
+					PackageBase: "sas",
 				},
 				{
 					Name:        "example-git",
@@ -562,7 +562,7 @@ func TestUpgradeService_GraphUpgradesMissingDep(t *testing.T) {
 				enableDowngrade: false,
 			},
 			mustExist: map[string]*dep.InstallInfo{
-				"yay":             yayDepInfo,
+				"sas":             sasDepInfo,
 				"example-git":     exampleDepInfoAUR,
 				"new-dep-missing": newDepMissingInfo,
 			},
@@ -582,7 +582,7 @@ func TestUpgradeService_GraphUpgradesMissingDep(t *testing.T) {
 				enableDowngrade: false,
 			},
 			mustExist: map[string]*dep.InstallInfo{
-				"yay": yayDepInfo,
+				"sas": sasDepInfo,
 			},
 			mustNotExist: map[string]bool{"example-git": true, "new-dep-missing": true},
 			wantErr:      false,
@@ -640,13 +640,13 @@ func TestUpgradeService_GraphUpgradesNoUpdates(t *testing.T) {
 	t.Parallel()
 	dbExe := &mock.DBExecutor{
 		InstalledRemotePackageNamesFn: func() []string {
-			return []string{"yay", "example-git"}
+			return []string{"sas", "example-git"}
 		},
 		InstalledRemotePackagesFn: func() map[string]mock.IPackage {
 			mapRemote := make(map[string]mock.IPackage)
-			mapRemote["yay"] = &mock.Package{
-				PName:    "yay",
-				PBase:    "yay",
+			mapRemote["sas"] = &mock.Package{
+				PName:    "sas",
+				PBase:    "sas",
 				PVersion: "10.2.3",
 				PReason:  alpm.PkgReasonExplicit,
 			}
@@ -833,7 +833,7 @@ func TestUpgradeService_UserExcludeUpgradesWithoutLuaHookUsesNativeMenu(t *testi
 
 	assert.ElementsMatch(t, []string{"example-git", "new-dep"}, excluded)
 	assert.True(t, graph.Exists("linux"))
-	assert.True(t, graph.Exists("yay"))
+	assert.True(t, graph.Exists("sas"))
 	assert.False(t, graph.Exists("example-git"))
 	assert.False(t, graph.Exists("new-dep"))
 }
@@ -843,7 +843,7 @@ func TestUpgradeService_UserExcludeUpgradesLuaHookPrunesGraph(t *testing.T) {
 	engine := settingslua.New()
 	defer engine.Close()
 	require.NoError(t, engine.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function()
 				return { exclude = { "example-git" } }
 			end,
@@ -858,7 +858,7 @@ func TestUpgradeService_UserExcludeUpgradesLuaHookPrunesGraph(t *testing.T) {
 
 	assert.ElementsMatch(t, []string{"example-git", "new-dep"}, excluded)
 	assert.True(t, graph.Exists("linux"))
-	assert.True(t, graph.Exists("yay"))
+	assert.True(t, graph.Exists("sas"))
 	assert.False(t, graph.Exists("example-git"))
 	assert.False(t, graph.Exists("new-dep"))
 }
@@ -868,9 +868,9 @@ func TestUpgradeService_UserExcludeUpgradesLuaHookSkipMenuAvoidsInput(t *testing
 	engine := settingslua.New()
 	defer engine.Close()
 	require.NoError(t, engine.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function()
-				return { exclude = { "yay" }, skip_menu = true }
+				return { exclude = { "sas" }, skip_menu = true }
 			end,
 		})
 	`))
@@ -881,11 +881,11 @@ func TestUpgradeService_UserExcludeUpgradesLuaHookSkipMenuAvoidsInput(t *testing
 	excluded, err := u.UserExcludeUpgrades(graph)
 	require.NoError(t, err)
 
-	assert.ElementsMatch(t, []string{"yay"}, excluded)
+	assert.ElementsMatch(t, []string{"sas"}, excluded)
 	assert.True(t, graph.Exists("linux"))
 	assert.True(t, graph.Exists("example-git"))
 	assert.True(t, graph.Exists("new-dep"))
-	assert.False(t, graph.Exists("yay"))
+	assert.False(t, graph.Exists("sas"))
 }
 
 func TestUpgradeService_UserExcludeUpgradesLuaHookFallsThroughToNativeMenu(t *testing.T) {
@@ -893,7 +893,7 @@ func TestUpgradeService_UserExcludeUpgradesLuaHookFallsThroughToNativeMenu(t *te
 	engine := settingslua.New()
 	defer engine.Close()
 	require.NoError(t, engine.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function()
 				return { exclude = { "example-git" }, skip_menu = false }
 			end,
@@ -906,9 +906,9 @@ func TestUpgradeService_UserExcludeUpgradesLuaHookFallsThroughToNativeMenu(t *te
 	excluded, err := u.UserExcludeUpgrades(graph)
 	require.NoError(t, err)
 
-	assert.ElementsMatch(t, []string{"example-git", "new-dep", "yay"}, excluded)
+	assert.ElementsMatch(t, []string{"example-git", "new-dep", "sas"}, excluded)
 	assert.True(t, graph.Exists("linux"))
-	assert.False(t, graph.Exists("yay"))
+	assert.False(t, graph.Exists("sas"))
 	assert.False(t, graph.Exists("example-git"))
 	assert.False(t, graph.Exists("new-dep"))
 }

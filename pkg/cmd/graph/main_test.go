@@ -13,11 +13,11 @@ import (
 	"github.com/Jguer/aur"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	"github.com/Jguer/yay/v13/pkg/dep"
-	mockaur "github.com/Jguer/yay/v13/pkg/dep/mock"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	"github.com/FinzoYFunzo/sas/pkg/dep"
+	mockaur "github.com/FinzoYFunzo/sas/pkg/dep/mock"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func TestGraphPackageRequiresSingleTarget(t *testing.T) {

@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 
 	"github.com/leonelquinteros/gotext"
 )
@@ -21,7 +21,7 @@ var HideMenus = false
 // NoConfirm indicates if user input should be skipped.
 var NoConfirm = false
 
-// Configuration stores yay's config.
+// Configuration stores sas's config.
 type Configuration struct {
 	AURURL                 string `json:"aururl" lua:"aururl"`
 	AURRPCURL              string `json:"aurrpcurl" lua:"aurrpcurl"`
@@ -79,7 +79,7 @@ type Configuration struct {
 	ReBuild    parser.RebuildMode `json:"rebuild" lua:"rebuild"`
 }
 
-// SaveConfig writes yay config to file.
+// SaveConfig writes sas config to file.
 func (c *Configuration) Save(configPath, version string) error {
 	c.Version = version
 
@@ -193,7 +193,7 @@ func (c *Configuration) setPrivilegeElevator() error {
 func DefaultConfig(version string) *Configuration {
 	return &Configuration{
 		AURURL:                 "https://aur.archlinux.org",
-		BuildDir:               os.ExpandEnv("$HOME/.cache/yay"),
+		BuildDir:               os.ExpandEnv("$HOME/.cache/sas"),
 		CleanAfter:             false,
 		KeepSrc:                false,
 		Editor:                 "",
