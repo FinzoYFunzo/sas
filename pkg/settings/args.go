@@ -152,9 +152,7 @@ func (c *Configuration) handleOption(option, value string) bool {
 	case "sudoloop":
 		c.SudoLoop = boolValue
 	case "privsep":
-		c.PrivSep = boolValue
-	case "noprivsep":
-		c.PrivSep = false
+		// Accepted for compatibility: privilege separation is always on in yas.
 	case "provides":
 		c.Provides = boolValue
 	case "pgpfetch":

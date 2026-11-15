@@ -2,10 +2,17 @@
 
 Separación de privilegios para yay. Proyecto del ramo Seguridad Computacional (2026-2).
 
-`yas` es yay con un modo nuevo, `--privsep`. En vez de invocar `sudo pacman`
-cada vez que necesita root (y mantener viva la credencial de sudo con
-`--sudoloop`), yay lanza **una sola vez** un proceso privilegiado pequeño, el
-*broker*. Desde ahí le pide que ejecute pacman por un canal privado.
+`yas` es un gestor de paquetes del AUR, basado en yay, construido alrededor de
+la **separación de privilegios**. No es un modo opcional: yas **siempre**
+ejecuta pacman a través de un proceso privilegiado pequeño, el *broker*, que
+lanza **una sola vez** por ejecución. En vez de invocar `sudo pacman` cada vez
+que necesita root (y mantener viva la credencial de sudo con `--sudoloop`),
+yas le pide al broker que ejecute pacman por un canal privado.
+
+No hay forma de desactivarlo. `--privsep` se acepta por compatibilidad, pero no
+hace nada; `--sudoloop` se ignora con un aviso. Si el broker no puede arrancar,
+yas **se detiene con un error**: nunca vuelve en silencio al `sudo pacman`
+clásico.
 
 ## Problema que resuelve
 
@@ -63,13 +70,14 @@ cada vez que necesita root (y mantener viva la credencial de sudo con
    menús.
 6. **Ciclo de vida acotado.** El broker termina cuando yay cierra el socket,
    incluso con `kill -9` o Ctrl+C.
-7. **Defensa en profundidad.** Con `--privsep`, makepkg corre bajo
+7. **Defensa en profundidad.** makepkg corre siempre bajo
    `setpriv --no-new-privs`, y así un PKGBUILD **no puede usar sudo** ni otros
    binarios setuid.
 8. **Auditoría.** Cada sesión, orden ejecutada, orden denegada y código de
    salida queda en el journal: `journalctl -t yas-broker`.
 
-Además, el `--sudoloop` clásico ahora **falla de forma segura**:
+El código del `--sudoloop` original también quedó corregido para que falle de
+forma segura, aunque yas ya no lo usa (la opción se ignora):
 - Hace un solo intento interactivo y nunca reintenta.
 - La renovación en segundo plano usa `sudo -n -v`, que nunca pide contraseña y
   por eso no puede sumar fallos a faillock.
@@ -100,7 +108,7 @@ caché están la `8.5.12-4` (instalada) y la `8.5.12-1`.
 pacman -Q php-sqlite                    # php-sqlite 8.5.12-4
 faillock --user "$USER"                 # anota los fallos actuales
 
-./yas --privsep -U /var/cache/pacman/pkg/php-sqlite-8.5.12-1-x86_64.pkg.tar.zst
+./yas -U /var/cache/pacman/pkg/php-sqlite-8.5.12-1-x86_64.pkg.tar.zst
 #   -> UNA sola contraseña; pacman pregunta "¿Continuar? [S/n]" como siempre
 
 pacman -Q php-sqlite                    # php-sqlite 8.5.12-1  (downgrade hecho)
@@ -108,19 +116,19 @@ sudo -n true                            # "a password is required": no quedó cr
 ps -eo args | grep -F -- --yas-privsep-broker | grep -v grep   # vacío: el broker terminó
 journalctl -t yas-broker --since -10min # session start / EXEC ... -U ... / EXIT 0 / session end
 
-./yas --privsep -U /var/cache/pacman/pkg/php-sqlite-8.5.12-4-x86_64.pkg.tar.zst   # volver
+./yas -U /var/cache/pacman/pkg/php-sqlite-8.5.12-4-x86_64.pkg.tar.zst   # volver
 ```
 
 La prueba funciona igual con `timestamp_timeout=0` en sudoers, que es el caso
 que rompía `--sudoloop`. Para una prueba larga sirve
-`./yas --privsep -Syu`: se pide la contraseña una vez al inicio y nunca más,
+`./yas -Syu`: se pide la contraseña una vez al inicio y nunca más,
 aunque la compilación dure horas o el equipo se suspenda.
 
 ## Demo: un PKGBUILD que intenta obtener root
 
 ```sh
 sudo -v && yay -B scripts/yas/sudo-probe              # yay original: "!!! obtuvo root (uid=0)"
-sudo -v && ./yas --privsep -B scripts/yas/sudo-probe  # yas: "OK: sudo bloqueado ... no new privileges"
+sudo -v && ./yas -B scripts/yas/sudo-probe            # yas: "OK: sudo bloqueado ... no new privileges"
 ```
 
 La sonda falla a propósito y nunca se instala. Con yay original, la credencial
@@ -161,7 +169,7 @@ original (depende de la zona horaria); por eso se usa `TZ=UTC`.
 | `pkg/privsep/sys_linux.go` | pty y `SO_PEERCRED` |
 | `pkg/privsep/testmode_*.go` | Modo de prueba sin root, solo con `-tags privseptest` |
 | `pkg/settings/exe/cmd_builder.go` | Integración: ruteo de `sudo pacman` al broker, `no_new_privs`, sudoloop seguro |
-| `cmd.go`, `main.go`, `pkg/settings/*` | Flag `--privsep` / opción `privsep`, entrada oculta del broker |
+| `cmd.go`, `main.go`, `pkg/settings/*` | Arranque del broker en cada operación privilegiada, entrada oculta del broker |
 | `scripts/yas/` | Sonda PKGBUILD y prueba e2e con fakes |
 
 ## Limitaciones y riesgo residual
@@ -176,7 +184,8 @@ original (depende de la zona horaria); por eso se usa `TZ=UTC`.
   `ptrace_scope=0`, otro proceso del usuario podría inyectarse en yay.
 - **El binario lanzado como root pertenece al usuario** si no se instala en una
   ruta de root.
-- `su` no está soportado con `--privsep`. `run0` y `pkexec` deberían funcionar,
+- yas no funciona con `su` como elevador. `run0` y `pkexec` deberían funcionar,
   pero no se probaron; `sudo` y `doas` son los soportados.
-- Si el broker no puede iniciarse de forma diferida (por ejemplo, en `-B`, donde
-  no se pide root al inicio), yay avisa y vuelve al `sudo pacman` clásico.
+- Si el broker no puede iniciarse, yas se detiene (falla cerrada). Es una
+  decisión de seguridad: un fallo nunca degrada a la vía insegura, aunque eso
+  signifique que la operación no se completa.

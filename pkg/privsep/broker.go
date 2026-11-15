@@ -352,8 +352,14 @@ func (b *broker) runPTY(argv []string, req *Request, frames <-chan frame) (code 
 		select {
 		case f, ok := <-frames:
 			if !ok {
-				// yay went away: let pacman finish its transaction, then exit.
+				// yay went away. Hang up the pty, as when a terminal window is
+				// closed: pacman gets SIGHUP, which aborts it at a prompt but
+				// never interrupts a transaction being committed. Without this
+				// a pacman waiting at "[Y/n]" would keep the broker (root) and
+				// the pacman db lock alive forever.
 				frames, closed = nil, true
+				_ = master.Close()
+
 				continue
 			}
 

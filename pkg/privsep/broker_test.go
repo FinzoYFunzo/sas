@@ -207,3 +207,48 @@ func TestParseBrokerArgs(t *testing.T) {
 	require.NoError(t, err)
 	assert.True(t, filepath.IsAbs(cfg.pacman), "pacman is resolved to an absolute path")
 }
+
+// TestBrokerExitsWhenClientDiesMidRequest: if yay dies while pacman waits at
+// a prompt, the broker must not linger as an orphan root process.
+func TestBrokerExitsWhenClientDiesMidRequest(t *testing.T) {
+	fx := newFixture(t)
+
+	l, err := listenPrivate()
+	require.NoError(t, err)
+	defer l.Close()
+
+	cfg := &brokerConfig{
+		socket: l.path, clientPID: os.Getpid(), clientUID: os.Getuid(),
+		pacman: fx.pacman, pacmanConf: fx.conf,
+	}
+
+	daemonErr := make(chan error, 1)
+	go func() { daemonErr <- runDaemon(cfg, quietLog()) }()
+
+	c, err := l.accept(5*time.Second, true)
+	require.NoError(t, err)
+
+	// Send a request and wait until pacman is blocked at its prompt.
+	require.NoError(t, c.sendJSON(frameRequest, Request{Op: "U", Targets: []string{fx.pkg}}))
+
+	var seen strings.Builder
+
+	for !strings.Contains(seen.String(), "Proceed?") {
+		typ, payload, err := readFrame(c.conn)
+		require.NoError(t, err)
+
+		if typ == frameOutput {
+			seen.Write(payload)
+		}
+	}
+
+	// yay "dies".
+	require.NoError(t, c.Close())
+
+	select {
+	case err := <-daemonErr:
+		require.NoError(t, err)
+	case <-time.After(5 * time.Second):
+		t.Fatal("broker kept running after the client died at a pacman prompt")
+	}
+}

@@ -214,8 +214,7 @@ func usage(logger *text.Logger) {
 		{},
 		{"--sudo <file>", gotext.Get("sudo command to use")},
 		{"--sudoflags <flags>", gotext.Get("Pass arguments to sudo")},
-		{"--sudoloop", gotext.Get("Loop sudo calls in the background to avoid timeout")},
-		{"--privsep", gotext.Get("Run pacman through a privileged broker: one password prompt, no reusable sudo credential")},
+		{"--sudoloop", gotext.Get("Ignored: yas always runs pacman through its privileged broker")},
 	})
 }
 
@@ -245,20 +244,19 @@ func handleCmd(ctx context.Context, run *runtime.Runtime,
 		return handleHelp(ctx, run, cmdArgs)
 	}
 
+	// yas: every privileged pacman call goes through the privilege-separated
+	// broker. Start it now, while the user is at the terminal; operations
+	// that only turn out to need root later start it on demand.
 	if cmdArgs.NeedRoot(run.Cfg.Mode) {
-		switch {
-		case run.Cfg.PrivSep:
-			// Ask for the password now, while the user is at the terminal.
-			if err := run.CmdBuilder.StartPrivSep(); err != nil {
-				return err
-			}
-
-			defer run.CmdBuilder.StopPrivSep()
-		case run.Cfg.SudoLoop:
-			if err := run.CmdBuilder.SudoLoop(); err != nil {
-				return err
-			}
+		if run.Cfg.SudoLoop {
+			run.Logger.Warnln(gotext.Get("--sudoloop is ignored: yas always runs pacman through its privileged broker"))
 		}
+
+		if err := run.CmdBuilder.StartPrivSep(); err != nil {
+			return err
+		}
+
+		defer run.CmdBuilder.StopPrivSep()
 	}
 
 	switch cmdArgs.Op {

@@ -36,11 +36,11 @@ chmod +x "$tmp/bin/sudo" "$tmp/bin/pacman"
 
 cd "$tmp"
 echo "### 1) -U de un paquete local: debe pedir 'sudo' una vez y propagar el exit 7"
-printf 's\n' | script -qec "./yas-test --privsep --sudo $tmp/bin/sudo --pacman $tmp/bin/pacman -U foo-1.0-1-x86_64.pkg.tar.zst; echo \"exit=\$?\"" /dev/null
+printf 's\n' | script -qec "./yas-test --sudo $tmp/bin/sudo --pacman $tmp/bin/pacman -U foo-1.0-1-x86_64.pkg.tar.zst; echo \"exit=\$?\"" /dev/null
 
 echo
 echo "### 2) -U desde una URL: el broker debe rechazarlo"
-script -qec "./yas-test --privsep --sudo $tmp/bin/sudo --pacman $tmp/bin/pacman -U https://evil.example/x-1-1-any.pkg.tar.zst; echo \"exit=\$?\"" /dev/null </dev/null
+script -qec "./yas-test --sudo $tmp/bin/sudo --pacman $tmp/bin/pacman -U https://evil.example/x-1-1-any.pkg.tar.zst; echo \"exit=\$?\"" /dev/null </dev/null
 
 echo
 echo "### 3) invocaciones del elevador (una por sesión + sudo -k):"

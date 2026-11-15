@@ -417,7 +417,6 @@ func isArg(arg string) bool {
 	case "requestsplitn":
 	case "sudoloop":
 	case "privsep":
-	case "noprivsep":
 	case "provides":
 	case "pgpfetch":
 	case "cleanmenu":

@@ -3,7 +3,7 @@
 # sudo que haya quedado en caché en la terminal.
 #
 #   sudo -v && yay -B scripts/yas/sudo-probe           -> obtiene root (uid 0)
-#   sudo -v && yas --privsep -B scripts/yas/sudo-probe -> bloqueado (no_new_privs)
+#   sudo -v && yas -B scripts/yas/sudo-probe           -> bloqueado (no_new_privs)
 #
 # build() falla siempre a propósito: la sonda nunca se instala.
 pkgname=yas-sudo-probe

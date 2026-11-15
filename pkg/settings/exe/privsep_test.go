@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/Jguer/yay/v13/pkg/privsep"
+	"github.com/Jguer/yay/v13/pkg/settings"
 	"github.com/Jguer/yay/v13/pkg/settings/parser"
 	"github.com/Jguer/yay/v13/pkg/text"
 )
@@ -120,6 +121,48 @@ func TestPrivSepDisabledKeepsClassicPath(t *testing.T) {
 	args.AddTarget("htop")
 
 	cmd := b.BuildPacmanCmd(t.Context(), args, parser.ModeAny, false)
-	_, routed := b.takeBrokerRequest(cmd)
+	_, _, routed := b.takeBrokerCall(cmd)
 	assert.False(t, routed)
+}
+
+// yas runs pacman through the broker unconditionally.
+func TestNewCmdBuilderAlwaysEnablesPrivSep(t *testing.T) {
+	t.Parallel()
+
+	logger := text.NewLogger(io.Discard, io.Discard, strings.NewReader(""), false, "test")
+	b := NewCmdBuilder(settings.DefaultConfig("test"), &MockRunner{}, logger, "")
+
+	assert.True(t, b.PrivSepEnabled)
+}
+
+// When the broker cannot start, yas must refuse to run pacman instead of
+// silently falling back to plain `sudo pacman` (fail closed).
+func TestBrokerUnavailableFailsClosed(t *testing.T) {
+	if os.Geteuid() == 0 {
+		t.Skip("needs an unprivileged user")
+	}
+
+	t.Parallel()
+
+	logger := text.NewLogger(io.Discard, io.Discard, strings.NewReader(""), false, "test")
+	runner := &MockRunner{}
+	b := &CmdBuilder{
+		SudoBin:   "su", // unsupported elevator: the broker can never start
+		PacmanBin: "pacman", PacmanConfigPath: "/etc/pacman.conf",
+		PrivSepEnabled: true, Runner: runner, Log: logger,
+	}
+
+	args := parser.MakeArguments()
+	args.Op = "S"
+	args.AddTarget("htop")
+
+	err := b.Show(b.BuildPacmanCmd(t.Context(), args, parser.ModeAny, false))
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "refusing")
+	assert.Empty(t, runner.ShowCalls, "nothing may run as root without the broker")
+
+	// Same answer for later commands, without retrying the elevator.
+	err = b.Show(b.BuildPacmanCmd(t.Context(), args, parser.ModeAny, false))
+	require.Error(t, err)
+	assert.Empty(t, runner.ShowCalls)
 }
