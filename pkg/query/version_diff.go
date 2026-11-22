@@ -4,7 +4,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 
 	alpm "github.com/Jguer/dyalpm"
 )

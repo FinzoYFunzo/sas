@@ -199,8 +199,8 @@ msgid "Automatically resolve conflicts using pacman's ask flag"
 msgstr "使用 pacman 的 ask 旗標自動解決衝突"
 
 #: main.go:65
-msgid "Avoid running yay as root/sudo."
-msgstr "避免以 root/sudo 运行 yay。"
+msgid "Avoid running sas as root/sudo."
+msgstr "避免以 root/sudo 运行 sas。"
 
 #: cmd.go:53
 msgid "Build and install a PKGBUILD"
@@ -368,8 +368,8 @@ msgid "Groups"
 msgstr "组"
 
 #: cmd.go:141
-msgid "If no operation is specified 'yay -Syu' will be performed"
-msgstr "若未指定操作，將執行「yay -Syu」"
+msgid "If no operation is specified 'sas -Syu' will be performed"
+msgstr "若未指定操作，將執行「sas -Syu」"
 
 #: cmd.go:142
 msgid ""
@@ -561,12 +561,12 @@ msgid "Print arch news"
 msgstr "顯示 Arch 新聞"
 
 #: cmd.go:62
-msgid "Print current yay configuration"
-msgstr "顯示目前的 yay 設定"
+msgid "Print current sas configuration"
+msgstr "顯示目前的 sas 設定"
 
 #: cmd.go:61
-msgid "Print default yay configuration"
-msgstr "顯示預設的 yay 設定"
+msgid "Print default sas configuration"
+msgstr "顯示預設的 sas 設定"
 
 #: cmd.go:57
 msgid "Print pkgbuild of packages"
@@ -681,8 +681,8 @@ msgid "Size of pacman cache %s: %s"
 msgstr "pacman 缓存大小 %s: %s"
 
 #: print.go:98
-msgid "Size of yay cache %s: %s"
-msgstr "yay 缓存大小 %s: %s"
+msgid "Size of sas cache %s: %s"
+msgstr "sas 缓存大小 %s: %s"
 
 #: cmd.go:198
 msgid "Skip package build if in cache and up to date"
@@ -805,8 +805,8 @@ msgid "Votes"
 msgstr "得票"
 
 #: print.go:87
-msgid "Yay version v%s"
-msgstr "Yay 版本 v%s"
+msgid "Sas version v%s"
+msgstr "Sas 版本 v%s"
 
 #: pkg/menus/menu.go:50
 msgid "[N]one"
@@ -850,8 +850,8 @@ msgstr "软件包的开发检查失败: '%s' 遇到了错误"
 
 #: pkg/settings/parser/parser.go:667
 msgid ""
-"did you mean yay -Scc (clean caches) or yay -Ycc (clean orphaned packages)?"
-msgstr "您的意思是「yay -Scc」（清理快取）或「yay -Ycc」（清理孤立套件）？"
+"did you mean sas -Scc (clean caches) or sas -Ycc (clean orphaned packages)?"
+msgstr "您的意思是「sas -Scc」（清理快取）或「sas -Ycc」（清理孤立套件）？"
 
 #: cmd.go:48
 msgid "dir"
@@ -1103,12 +1103,12 @@ msgid "unknown-version"
 msgstr "未知版本"
 
 #: cmd.go:224
-msgid "use 'yay {-h --help}' for global options"
-msgstr "使用「yay {-h --help}」查看全域選項"
+msgid "use 'sas {-h --help}' for global options"
+msgstr "使用「sas {-h --help}」查看全域選項"
 
 #: cmd.go:139
-msgid "use 'yay {-h --help}' with an operation for available options"
-msgstr "搭配操作使用「yay {-h --help}」查看可用選項"
+msgid "use 'sas {-h --help}' with an operation for available options"
+msgstr "搭配操作使用「sas {-h --help}」查看可用選項"
 
 #: pkg/text/input.go:47
 msgid "yes"

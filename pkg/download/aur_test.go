@@ -12,7 +12,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
 )
 
 func TestGetAURPkgbuild(t *testing.T) {
@@ -79,13 +79,13 @@ func TestGetAURPkgbuild(t *testing.T) {
 // THEN a clone command should be formed
 func TestAURPKGBUILDRepo(t *testing.T) {
 	t.Parallel()
-	want := "/usr/local/bin/git --no-replace-objects -C /tmp/doesnt-exist clone --no-progress https://aur.archlinux.org/yay-bin.git yay-bin"
+	want := "/usr/local/bin/git --no-replace-objects -C /tmp/doesnt-exist clone --no-progress https://aur.archlinux.org/sas-bin.git sas-bin"
 	if os.Getuid() == 0 {
 		ld := "systemd-run"
 		if path, _ := exec.LookPath(ld); path != "" {
 			ld = path
 		}
-		want = fmt.Sprintf("%s --service-type=oneshot --pipe --wait --pty --quiet -p DynamicUser=yes -p CacheDirectory=yay -E HOME=/tmp  --no-replace-objects -C /tmp/doesnt-exist clone --no-progress https://aur.archlinux.org/yay-bin.git yay-bin", ld)
+		want = fmt.Sprintf("%s --service-type=oneshot --pipe --wait --pty --quiet -p DynamicUser=yes -p CacheDirectory=sas -E HOME=/tmp  --no-replace-objects -C /tmp/doesnt-exist clone --no-progress https://aur.archlinux.org/sas-bin.git sas-bin", ld)
 	}
 
 	cmdRunner := &testRunner{}
@@ -99,7 +99,7 @@ func TestAURPKGBUILDRepo(t *testing.T) {
 			GitFlags: []string{"--no-replace-objects"},
 		},
 	}
-	newCloned, err := AURPKGBUILDRepo(context.Background(), cmdBuilder, "https://aur.archlinux.org", "yay-bin", "/tmp/doesnt-exist", false)
+	newCloned, err := AURPKGBUILDRepo(context.Background(), cmdBuilder, "https://aur.archlinux.org", "sas-bin", "/tmp/doesnt-exist", false)
 	assert.NoError(t, err)
 	assert.Equal(t, true, newCloned)
 }
@@ -111,15 +111,15 @@ func TestAURPKGBUILDRepoExistsPerms(t *testing.T) {
 	t.Parallel()
 	dir := t.TempDir()
 
-	os.MkdirAll(filepath.Join(dir, "yay-bin", ".git"), 0o777)
+	os.MkdirAll(filepath.Join(dir, "sas-bin", ".git"), 0o777)
 
-	want := fmt.Sprintf("/usr/local/bin/git --no-replace-objects -C %s/yay-bin pull --rebase --autostash", dir)
+	want := fmt.Sprintf("/usr/local/bin/git --no-replace-objects -C %s/sas-bin pull --rebase --autostash", dir)
 	if os.Getuid() == 0 {
 		ld := "systemd-run"
 		if path, _ := exec.LookPath(ld); path != "" {
 			ld = path
 		}
-		want = fmt.Sprintf("%s --service-type=oneshot --pipe --wait --pty --quiet -p DynamicUser=yes -p CacheDirectory=yay -E HOME=/tmp  --no-replace-objects -C %s/yay-bin pull --rebase --autostash", ld, dir)
+		want = fmt.Sprintf("%s --service-type=oneshot --pipe --wait --pty --quiet -p DynamicUser=yes -p CacheDirectory=sas -E HOME=/tmp  --no-replace-objects -C %s/sas-bin pull --rebase --autostash", ld, dir)
 	}
 
 	cmdRunner := &testRunner{}
@@ -133,7 +133,7 @@ func TestAURPKGBUILDRepoExistsPerms(t *testing.T) {
 			GitFlags: []string{"--no-replace-objects"},
 		},
 	}
-	cloned, err := AURPKGBUILDRepo(context.Background(), cmdBuilder, "https://aur.archlinux.org", "yay-bin", dir, false)
+	cloned, err := AURPKGBUILDRepo(context.Background(), cmdBuilder, "https://aur.archlinux.org", "sas-bin", dir, false)
 	assert.NoError(t, err)
 	assert.Equal(t, false, cloned)
 }
@@ -142,9 +142,9 @@ func TestAURPKGBUILDRepos(t *testing.T) {
 	t.Parallel()
 	dir := t.TempDir()
 
-	os.MkdirAll(filepath.Join(dir, "yay-bin", ".git"), 0o777)
+	os.MkdirAll(filepath.Join(dir, "sas-bin", ".git"), 0o777)
 
-	targets := []string{"yay", "yay-bin", "yay-git"}
+	targets := []string{"sas", "sas-bin", "sas-git"}
 	cmdRunner := &testRunner{}
 	cmdBuilder := &testGitBuilder{
 		index: 0,
@@ -159,5 +159,5 @@ func TestAURPKGBUILDRepos(t *testing.T) {
 	cloned, err := AURPKGBUILDRepos(context.Background(), cmdBuilder, newTestLogger(), targets, "https://aur.archlinux.org", dir, false)
 
 	assert.NoError(t, err)
-	assert.EqualValues(t, map[string]bool{"yay": true, "yay-bin": false, "yay-git": true}, cloned)
+	assert.EqualValues(t, map[string]bool{"sas": true, "sas-bin": false, "sas-git": true}, cloned)
 }

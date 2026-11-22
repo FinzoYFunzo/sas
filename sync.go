@@ -8,14 +8,14 @@ import (
 
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/dep"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/sync"
-	"github.com/Jguer/yay/v13/pkg/upgrade"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/dep"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/sync"
+	"github.com/FinzoYFunzo/sas/pkg/upgrade"
 )
 
 func syncInstall(ctx context.Context,

@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
 )
 
 func TestParsePackageList(t *testing.T) {

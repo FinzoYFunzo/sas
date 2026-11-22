@@ -23,7 +23,7 @@ func Test_getCacheHome(t *testing.T) {
 
 	got, err := getCacheHome()
 	require.NoError(t, err)
-	assert.Equal(t, filepath.Join(dir, "yay"), got)
+	assert.Equal(t, filepath.Join(dir, "sas"), got)
 
 	require.NoError(t, os.Unsetenv("TMPDIR"))
 	require.NoError(t, os.Unsetenv("SUDO_USER"))
@@ -36,7 +36,7 @@ func TestGetLuaConfigPath(t *testing.T) {
 
 	assert.Empty(t, GetLuaConfigPath(false))
 
-	luaDir := filepath.Join(configHome, "yay")
+	luaDir := filepath.Join(configHome, "sas")
 	require.NoError(t, os.MkdirAll(luaDir, 0o755))
 	luaPath := filepath.Join(luaDir, "init.lua")
 	require.NoError(t, os.WriteFile(luaPath, []byte("-- test"), 0o600))

@@ -11,19 +11,19 @@ import (
 	alpm "github.com/Jguer/dyalpm"
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/completion"
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/download"
-	"github.com/Jguer/yay/v13/pkg/intrange"
-	"github.com/Jguer/yay/v13/pkg/news"
-	"github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
-	"github.com/Jguer/yay/v13/pkg/upgrade"
-	"github.com/Jguer/yay/v13/pkg/vcs"
+	"github.com/FinzoYFunzo/sas/pkg/completion"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/download"
+	"github.com/FinzoYFunzo/sas/pkg/intrange"
+	"github.com/FinzoYFunzo/sas/pkg/news"
+	"github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/upgrade"
+	"github.com/FinzoYFunzo/sas/pkg/vcs"
 )
 
 type helpOption struct {
@@ -43,7 +43,7 @@ type usageOption struct {
 	description string
 }
 
-func yayOperationHelp() []operationHelp {
+func sasOperationHelp() []operationHelp {
 	strOptions := gotext.Get("options")
 	strDir := gotext.Get("dir")
 	strPackage := gotext.Get("package(s)")
@@ -58,8 +58,8 @@ func yayOperationHelp() []operationHelp {
 		}},
 		{"P", "show", fmt.Sprintf("[%s]", strOptions), []helpOption{
 			{"-c --complete", gotext.Get("Used for completions")},
-			{"-d --defaultconfig", gotext.Get("Print default yay configuration")},
-			{"-g --currentconfig", gotext.Get("Print current yay configuration")},
+			{"-d --defaultconfig", gotext.Get("Print default sas configuration")},
+			{"-g --currentconfig", gotext.Get("Print current sas configuration")},
 			{"-s --stats", gotext.Get("Display system package statistics")},
 			{"-w --news", gotext.Get("Print arch news")},
 			{"-q --quiet", gotext.Get("Only show titles when printing news")},
@@ -68,7 +68,7 @@ func yayOperationHelp() []operationHelp {
 			{"-u --unvote", gotext.Get("Remove a vote from AUR package(s)")},
 			{"-v --vote", gotext.Get("Vote for AUR package(s)")},
 		}},
-		{"Y", "yay", fmt.Sprintf("[%s] [%s]", strOptions, strPackage), []helpOption{
+		{"Y", "sas", fmt.Sprintf("[%s] [%s]", strOptions, strPackage), []helpOption{
 			{"-c --clean", gotext.Get("Remove unneeded dependencies (-cc to ignore optdepends)")},
 			{"   --gendb", gotext.Get("Generates development package DB used for updating")},
 		}},
@@ -76,11 +76,11 @@ func yayOperationHelp() []operationHelp {
 }
 
 func (h *operationHelp) syntax() string {
-	return fmt.Sprintf("yay {-%s --%s}", h.short, h.long)
+	return fmt.Sprintf("sas {-%s --%s}", h.short, h.long)
 }
 
-func findYayOperationHelp(operation string) *operationHelp {
-	operations := yayOperationHelp()
+func findSasOperationHelp(operation string) *operationHelp {
+	operations := sasOperationHelp()
 	for i := range operations {
 		help := &operations[i]
 		if operation == help.short || operation == help.long {
@@ -122,31 +122,31 @@ func usage(logger *text.Logger) {
 	strPackage := gotext.Get("package(s)")
 
 	logger.Println(gotext.Get("Usage:"))
-	logger.Println("    yay")
-	logger.Printf("    yay <%s> [...]\n", strOperation)
-	logger.Printf("    yay <%s>\n", strPackage)
+	logger.Println("    sas")
+	logger.Printf("    sas <%s> [...]\n", strOperation)
+	logger.Printf("    sas <%s>\n", strPackage)
 
 	logger.Println("\n" + gotext.Get("operations:"))
-	logger.Println("    yay {-h --help}")
-	logger.Println("    yay {-V --version}")
-	logger.Printf("    yay {-D --database}    <%s> <%s>\n", strOptions, strPackage)
-	logger.Printf("    yay {-F --files}       [%s] [%s]\n", strOptions, strPackage)
-	logger.Printf("    yay {-Q --query}       [%s] [%s]\n", strOptions, strPackage)
-	logger.Printf("    yay {-R --remove}      [%s] <%s>\n", strOptions, strPackage)
-	logger.Printf("    yay {-S --sync}        [%s] [%s]\n", strOptions, strPackage)
-	logger.Printf("    yay {-T --deptest}     [%s] [%s]\n", strOptions, strPackage)
-	logger.Printf("    yay {-U --upgrade}     [%s] <%s>\n", strOptions, strFile)
+	logger.Println("    sas {-h --help}")
+	logger.Println("    sas {-V --version}")
+	logger.Printf("    sas {-D --database}    <%s> <%s>\n", strOptions, strPackage)
+	logger.Printf("    sas {-F --files}       [%s] [%s]\n", strOptions, strPackage)
+	logger.Printf("    sas {-Q --query}       [%s] [%s]\n", strOptions, strPackage)
+	logger.Printf("    sas {-R --remove}      [%s] <%s>\n", strOptions, strPackage)
+	logger.Printf("    sas {-S --sync}        [%s] [%s]\n", strOptions, strPackage)
+	logger.Printf("    sas {-T --deptest}     [%s] [%s]\n", strOptions, strPackage)
+	logger.Printf("    sas {-U --upgrade}     [%s] <%s>\n", strOptions, strFile)
 
-	// Yay-specific operations
+	// Sas-specific operations
 	logger.Println("\n" + gotext.Get("New operations:"))
-	operations := yayOperationHelp()
+	operations := sasOperationHelp()
 	for i := range operations {
 		help := &operations[i]
 		logger.Printf("    %-22s %s\n", help.syntax(), help.targets)
 	}
-	logger.Println("\n" + gotext.Get("use 'yay {-h --help}' with an operation for available options"))
+	logger.Println("\n" + gotext.Get("use 'sas {-h --help}' with an operation for available options"))
 
-	logger.Println("\n" + gotext.Get("If no operation is specified 'yay -Syu' will be performed"))
+	logger.Println("\n" + gotext.Get("If no operation is specified 'sas -Syu' will be performed"))
 	logger.Println(gotext.Get("If no operation is specified and targets are provided, -Y will be assumed"))
 
 	printUsageOptions(logger, gotext.Get("New options:"), []usageOption{
@@ -214,12 +214,12 @@ func usage(logger *text.Logger) {
 		{},
 		{"--sudo <file>", gotext.Get("sudo command to use")},
 		{"--sudoflags <flags>", gotext.Get("Pass arguments to sudo")},
-		{"--sudoloop", gotext.Get("Loop sudo calls in the background to avoid timeout")},
+		{"--sudoloop", gotext.Get("Ignored: sas always runs pacman through its privileged broker")},
 	})
 }
 
 func operationUsage(logger *text.Logger, operation string) {
-	help := findYayOperationHelp(operation)
+	help := findSasOperationHelp(operation)
 	if help == nil {
 		return
 	}
@@ -229,7 +229,7 @@ func operationUsage(logger *text.Logger, operation string) {
 		logger.Printf("    %-21s %s\n", option.flags, option.description)
 	}
 
-	logger.Println("\n" + gotext.Get("use 'yay {-h --help}' for global options"))
+	logger.Println("\n" + gotext.Get("use 'sas {-h --help}' for global options"))
 }
 
 func handleCmd(ctx context.Context, run *runtime.Runtime,
@@ -244,8 +244,19 @@ func handleCmd(ctx context.Context, run *runtime.Runtime,
 		return handleHelp(ctx, run, cmdArgs)
 	}
 
-	if run.Cfg.SudoLoop && cmdArgs.NeedRoot(run.Cfg.Mode) {
-		run.CmdBuilder.SudoLoop()
+	// sas: every privileged pacman call goes through the privilege-separated
+	// broker. Start it now, while the user is at the terminal; operations
+	// that only turn out to need root later start it on demand.
+	if cmdArgs.NeedRoot(run.Cfg.Mode) {
+		if run.Cfg.SudoLoop {
+			run.Logger.Warnln(gotext.Get("--sudoloop is ignored: sas always runs pacman through its privileged broker"))
+		}
+
+		if err := run.CmdBuilder.StartPrivSep(); err != nil {
+			return err
+		}
+
+		defer run.CmdBuilder.StopPrivSep()
 	}
 
 	switch cmdArgs.Op {
@@ -272,8 +283,8 @@ func handleCmd(ctx context.Context, run *runtime.Runtime,
 		return handleGetpkgbuild(ctx, run, cmdArgs, dbExecutor)
 	case "P", "show":
 		return handlePrint(ctx, run, cmdArgs, dbExecutor)
-	case "Y", "yay":
-		return handleYay(ctx, run, cmdArgs, run.CmdBuilder,
+	case "Y", "sas":
+		return handleSas(ctx, run, cmdArgs, run.CmdBuilder,
 			dbExecutor, run.QueryBuilder)
 	case "W", "web":
 		return handleWeb(ctx, run, cmdArgs)
@@ -320,7 +331,7 @@ func handleQuery(ctx context.Context, run *runtime.Runtime, cmdArgs *parser.Argu
 	if err := run.CmdBuilder.Show(run.CmdBuilder.BuildPacmanCmd(ctx,
 		cmdArgs, run.Cfg.Mode, settings.NoConfirm)); err != nil {
 		if str := err.Error(); strings.Contains(str, "exit status") {
-			// yay -Qdt should not output anything in case of error
+			// sas -Qdt should not output anything in case of error
 			return fmt.Errorf("")
 		}
 
@@ -332,7 +343,7 @@ func handleQuery(ctx context.Context, run *runtime.Runtime, cmdArgs *parser.Argu
 
 func handleHelp(ctx context.Context, run *runtime.Runtime, cmdArgs *parser.Arguments) error {
 	switch cmdArgs.Op {
-	case "Y", "yay", "G", "getpkgbuild", "P", "show", "W", "web", "B", "build":
+	case "Y", "sas", "G", "getpkgbuild", "P", "show", "W", "web", "B", "build":
 		operationUsage(run.Logger, cmdArgs.Op)
 		return nil
 	case "":
@@ -345,13 +356,13 @@ func handleHelp(ctx context.Context, run *runtime.Runtime, cmdArgs *parser.Argum
 }
 
 func handleVersion(logger *text.Logger) {
-	logger.Printf("yay v%s - libalpm v%s\n", yayVersion, alpm.Version())
+	logger.Printf("sas v%s - libalpm v%s\n", sasVersion, alpm.Version())
 }
 
 func handlePrint(ctx context.Context, run *runtime.Runtime, cmdArgs *parser.Arguments, dbExecutor db.Executor) error {
 	switch {
 	case cmdArgs.ExistsArg("d", "defaultconfig"):
-		tmpConfig := settings.DefaultConfig(yayVersion)
+		tmpConfig := settings.DefaultConfig(sasVersion)
 		run.Logger.Printf("%v", tmpConfig)
 
 		return nil
@@ -375,7 +386,7 @@ func handlePrint(ctx context.Context, run *runtime.Runtime, cmdArgs *parser.Argu
 	return nil
 }
 
-func handleYay(ctx context.Context, run *runtime.Runtime,
+func handleSas(ctx context.Context, run *runtime.Runtime,
 	cmdArgs *parser.Arguments, cmdBuilder exe.ICmdBuilder,
 	dbExecutor db.Executor, queryBuilder query.Builder,
 ) error {

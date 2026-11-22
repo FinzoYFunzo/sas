@@ -11,10 +11,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
 )
 
 func TestBuildRuntime(t *testing.T) {
@@ -62,9 +62,9 @@ func TestBuildRuntimeSearchUsesMetadataCacheWhenRPCDisabled(t *testing.T) {
 	cacheContent := []byte(`[
 		{
 			"ID": 1125983,
-			"Name": "yay",
+			"Name": "sas",
 			"PackageBaseID": 115973,
-			"PackageBase": "yay",
+			"PackageBase": "sas",
 			"Version": "11.3.0-1",
 			"Description": "Yet another yogurt. Pacman wrapper and AUR helper written in go.",
 			"NumVotes": 1855,
@@ -90,6 +90,6 @@ func TestBuildRuntimeSearchUsesMetadataCacheWhenRPCDisabled(t *testing.T) {
 	run, err := runtime.NewRuntime(cfg, cmdArgs, "1.0.0")
 	require.NoError(t, err)
 
-	run.QueryBuilder.Execute(context.Background(), &mock.DBExecutor{}, []string{"yay"})
+	run.QueryBuilder.Execute(context.Background(), &mock.DBExecutor{}, []string{"sas"})
 	assert.Equal(t, 1, run.QueryBuilder.Len())
 }

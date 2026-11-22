@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	settingslua "github.com/Jguer/yay/v13/pkg/settings/lua"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	settingslua "github.com/FinzoYFunzo/sas/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -21,14 +21,14 @@ import (
 func TestSourceQueryBuilderSearchFilterHook(t *testing.T) {
 	t.Parallel()
 
-	mockDB, mockAUR := newYayQueryBuilderMocks()
+	mockDB, mockAUR := newSasQueryBuilderMocks()
 
 	w := &strings.Builder{}
 	logger := text.NewLogger(w, io.Discard, strings.NewReader(""), false, "test")
 
 	// Baseline: build without a Lua hook and record count.
 	baselineQB := NewSourceQueryBuilder(mockAUR, logger, "", parser.ModeAny, "", false, false, false)
-	baselineQB.Execute(t.Context(), mockDB, []string{"yay"})
+	baselineQB.Execute(t.Context(), mockDB, []string{"sas"})
 	baselineCount := len(baselineQB.results)
 	require.Greater(t, baselineCount, 0, "baseline query must return at least one result")
 
@@ -41,7 +41,7 @@ func TestSourceQueryBuilderSearchFilterHook(t *testing.T) {
 	}
 	require.Greater(t, aurCount, 0, "baseline must have at least one AUR result")
 
-	// The mock also returns a non-AUR (sync) result for "yay".
+	// The mock also returns a non-AUR (sync) result for "sas".
 	// Confirm there is at least one so the filter actually does something.
 	nonAURCount := baselineCount - aurCount
 	require.Greater(t, nonAURCount, 0, "baseline must have at least one non-AUR result for the filter to exercise")
@@ -51,7 +51,7 @@ func TestSourceQueryBuilderSearchFilterHook(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				local out = {}
 				for _, r in ipairs(event.data.results) do
@@ -66,7 +66,7 @@ func TestSourceQueryBuilderSearchFilterHook(t *testing.T) {
 
 	filteredQB := NewSourceQueryBuilder(mockAUR, logger, "", parser.ModeAny, "", false, false, false)
 	filteredQB.SetLua(e)
-	filteredQB.Execute(t.Context(), mockDB, []string{"yay"})
+	filteredQB.Execute(t.Context(), mockDB, []string{"sas"})
 
 	assert.Equal(t, aurCount, len(filteredQB.results),
 		"filtered results should equal the number of AUR packages in the baseline")
@@ -84,7 +84,7 @@ func TestSourceQueryBuilderSearchFilterHookSkipsUnknownResults(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(_)
 				return {
 					{ source = "aur", name = "known" },

@@ -7,21 +7,21 @@ import (
 	"strings"
 	"testing"
 
-	settingslua "github.com/Jguer/yay/v13/pkg/settings/lua"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	settingslua "github.com/FinzoYFunzo/sas/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 // BenchmarkApplySearchFilter_noLua measures applySearchFilter when no Lua
 // engine is attached (the common fast-path — a nil check and immediate return).
 func BenchmarkApplySearchFilter_noLua(b *testing.B) {
 	logger := text.NewLogger(io.Discard, io.Discard, strings.NewReader(""), false, "bench")
-	mockDB, mockAUR := newYayQueryBuilderMocks()
+	mockDB, mockAUR := newSasQueryBuilderMocks()
 
 	qb := NewSourceQueryBuilder(mockAUR, logger, "", parser.ModeAny, "", false, false, false)
 
 	// Pre-populate results so the benchmark only measures the filter path.
-	qb.Execute(b.Context(), mockDB, []string{"yay"})
+	qb.Execute(b.Context(), mockDB, []string{"sas"})
 
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -36,13 +36,13 @@ func BenchmarkApplySearchFilter_noLua(b *testing.B) {
 // results). This isolates the overhead of the Lua dispatch + table marshaling.
 func BenchmarkApplySearchFilter_withLua(b *testing.B) {
 	logger := text.NewLogger(io.Discard, io.Discard, strings.NewReader(""), false, "bench")
-	mockDB, mockAUR := newYayQueryBuilderMocks()
+	mockDB, mockAUR := newSasQueryBuilderMocks()
 
 	e := settingslua.New()
 	defer e.Close()
 
 	if err := e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				local out = {}
 				for _, r in ipairs(event.data.results) do
@@ -57,7 +57,7 @@ func BenchmarkApplySearchFilter_withLua(b *testing.B) {
 
 	qb := NewSourceQueryBuilder(mockAUR, logger, "", parser.ModeAny, "", false, false, false)
 	qb.SetLua(e)
-	qb.Execute(b.Context(), mockDB, []string{"yay"})
+	qb.Execute(b.Context(), mockDB, []string{"sas"})
 
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -71,14 +71,14 @@ func BenchmarkApplySearchFilter_withLua(b *testing.B) {
 // without a Lua hook.
 func BenchmarkExecute_noLua(b *testing.B) {
 	logger := text.NewLogger(io.Discard, io.Discard, strings.NewReader(""), false, "bench")
-	mockDB, mockAUR := newYayQueryBuilderMocks()
+	mockDB, mockAUR := newSasQueryBuilderMocks()
 
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	for b.Loop() {
 		qb := NewSourceQueryBuilder(mockAUR, logger, "", parser.ModeAny, "", false, false, false)
-		qb.Execute(b.Context(), mockDB, []string{"yay"})
+		qb.Execute(b.Context(), mockDB, []string{"sas"})
 	}
 }
 
@@ -86,13 +86,13 @@ func BenchmarkExecute_noLua(b *testing.B) {
 // SearchFilter hook is in play.
 func BenchmarkExecute_withLuaFilter(b *testing.B) {
 	logger := text.NewLogger(io.Discard, io.Discard, strings.NewReader(""), false, "bench")
-	mockDB, mockAUR := newYayQueryBuilderMocks()
+	mockDB, mockAUR := newSasQueryBuilderMocks()
 
 	e := settingslua.New()
 	defer e.Close()
 
 	if err := e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				local out = {}
 				for _, r in ipairs(event.data.results) do
@@ -113,6 +113,6 @@ func BenchmarkExecute_withLuaFilter(b *testing.B) {
 	for b.Loop() {
 		qb := NewSourceQueryBuilder(mockAUR, logger, "", parser.ModeAny, "", false, false, false)
 		qb.SetLua(e)
-		qb.Execute(b.Context(), mockDB, []string{"yay"})
+		qb.Execute(b.Context(), mockDB, []string{"sas"})
 	}
 }

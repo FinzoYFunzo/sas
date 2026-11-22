@@ -13,8 +13,8 @@ import (
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func TestSelectionMenu(t *testing.T) {
@@ -113,7 +113,9 @@ func (f *fakeMenusCmdBuilder) AddMakepkgFlag(flag string) {}
 
 func (f *fakeMenusCmdBuilder) GetKeepSrc() bool { return false }
 
-func (f *fakeMenusCmdBuilder) SudoLoop() {}
+func (f *fakeMenusCmdBuilder) SudoLoop() error     { return nil }
+func (f *fakeMenusCmdBuilder) StartPrivSep() error { return nil }
+func (f *fakeMenusCmdBuilder) StopPrivSep()        {}
 
 func (f *fakeMenusCmdBuilder) Capture(cmd *exec.Cmd) (string, string, error) {
 	f.captureCnt++

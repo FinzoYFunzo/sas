@@ -22,39 +22,39 @@ func writeLuaFile(t *testing.T, body string) string {
 func TestLoadIntoStrictFailsOnUnknownKey(t *testing.T) {
 	t.Parallel()
 	path := writeLuaFile(t, `
-		yay.opt.unknown_key = true
+		sas.opt.unknown_key = true
 	`)
 
 	cfg := &testConfig{}
 	err := LoadInto(nil, path, cfg)
 	require.Error(t, err)
-	require.Contains(t, err.Error(), "unknown yay.opt key: unknown_key")
+	require.Contains(t, err.Error(), "unknown sas.opt key: unknown_key")
 }
 
 func TestLoadIntoStrictFailsOnTypeMismatch(t *testing.T) {
 	t.Parallel()
 	path := writeLuaFile(t, `
-		yay.opt.devel = "true"
+		sas.opt.devel = "true"
 	`)
 
 	cfg := &testConfig{}
 	err := LoadInto(nil, path, cfg)
 	require.Error(t, err)
-	require.Contains(t, err.Error(), "yay.opt.devel: expected boolean")
+	require.Contains(t, err.Error(), "sas.opt.devel: expected boolean")
 }
 
 func TestLoadIntoAppliesValidValues(t *testing.T) {
 	t.Parallel()
 	path := writeLuaFile(t, `
-		yay.opt.build_dir = "/tmp/yay"
-		yay.opt.request_split_n = 123
-		yay.opt.devel = true
+		sas.opt.build_dir = "/tmp/sas"
+		sas.opt.request_split_n = 123
+		sas.opt.devel = true
 	`)
 
 	cfg := &testConfig{}
 	err := LoadInto(nil, path, cfg)
 	require.NoError(t, err)
-	require.Equal(t, "/tmp/yay", cfg.BuildDir)
+	require.Equal(t, "/tmp/sas", cfg.BuildDir)
 	require.Equal(t, 123, cfg.RequestSplitN)
 	require.True(t, cfg.Devel)
 }
@@ -62,10 +62,10 @@ func TestLoadIntoAppliesValidValues(t *testing.T) {
 func TestLoadReturnsLiveEngine(t *testing.T) {
 	t.Parallel()
 	path := writeLuaFile(t, `
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			callback = function() end,
 		})
-		yay.opt.build_dir = "/tmp/yay"
+		sas.opt.build_dir = "/tmp/sas"
 	`)
 
 	cfg := &testConfig{}
@@ -73,7 +73,7 @@ func TestLoadReturnsLiveEngine(t *testing.T) {
 	require.NoError(t, err)
 	t.Cleanup(engine.Close)
 
-	require.Equal(t, "/tmp/yay", cfg.BuildDir)
+	require.Equal(t, "/tmp/sas", cfg.BuildDir)
 	require.True(t, engine.HasAutocmd(EventAURPreInstall))
 }
 
@@ -84,7 +84,7 @@ func TestLoadIntoResolvesRequireRelativeToConfigDir(t *testing.T) {
 	require.NoError(t, os.Mkdir(filepath.Join(dir, "hooks"), 0o755))
 
 	hookBody := []byte(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			desc = "from required module",
 			callback = function() end,
 		})
@@ -93,7 +93,7 @@ func TestLoadIntoResolvesRequireRelativeToConfigDir(t *testing.T) {
 
 	initBody := []byte(`
 		require("hooks.maintainer_change")
-		yay.opt.build_dir = "/tmp/yay"
+		sas.opt.build_dir = "/tmp/sas"
 	`)
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "init.lua"), initBody, 0o600))
 
@@ -108,7 +108,7 @@ func TestLoadIntoResolvesRequireRelativeToConfigDir(t *testing.T) {
 
 	err = LoadInto(nil, filepath.Join(dir, "init.lua"), cfg)
 	require.NoError(t, err)
-	require.Equal(t, "/tmp/yay", cfg.BuildDir)
+	require.Equal(t, "/tmp/sas", cfg.BuildDir)
 }
 
 func TestLoadDoesNotResolveRequireFromCWD(t *testing.T) {
@@ -141,7 +141,7 @@ func TestSetSearchDirBuildsPackagePath(t *testing.T) {
 	pkg := engine.L.GetGlobal("package")
 	original := string(engine.L.GetField(pkg, "path").(lua.LString))
 
-	const dir = "/etc/yay"
+	const dir = "/etc/sas"
 	engine.SetSearchDir(dir)
 
 	got := string(engine.L.GetField(pkg, "path").(lua.LString))

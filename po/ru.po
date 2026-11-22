@@ -202,8 +202,8 @@ msgid "Automatically resolve conflicts using pacman's ask flag"
 msgstr "Автоматически разрешать конфликты с помощью флага ask pacman'а"
 
 #: main.go:65
-msgid "Avoid running yay as root/sudo."
-msgstr "Избегайте запуска yay от имени root/sudo."
+msgid "Avoid running sas as root/sudo."
+msgstr "Избегайте запуска sas от имени root/sudo."
 
 #: cmd.go:53
 msgid "Build and install a PKGBUILD"
@@ -373,8 +373,8 @@ msgid "Groups"
 msgstr "Группы"
 
 #: cmd.go:141
-msgid "If no operation is specified 'yay -Syu' will be performed"
-msgstr "Если операция не указана, будет выполнено «yay -Syu»"
+msgid "If no operation is specified 'sas -Syu' will be performed"
+msgstr "Если операция не указана, будет выполнено «sas -Syu»"
 
 #: cmd.go:142
 msgid ""
@@ -566,12 +566,12 @@ msgid "Print arch news"
 msgstr "Показать новости Arch"
 
 #: cmd.go:62
-msgid "Print current yay configuration"
-msgstr "Показать текущую конфигурацию yay"
+msgid "Print current sas configuration"
+msgstr "Показать текущую конфигурацию sas"
 
 #: cmd.go:61
-msgid "Print default yay configuration"
-msgstr "Показать конфигурацию yay по умолчанию"
+msgid "Print default sas configuration"
+msgstr "Показать конфигурацию sas по умолчанию"
 
 #: cmd.go:57
 msgid "Print pkgbuild of packages"
@@ -686,8 +686,8 @@ msgid "Size of pacman cache %s: %s"
 msgstr "Размер кэша pacman %s: %s"
 
 #: print.go:98
-msgid "Size of yay cache %s: %s"
-msgstr "Размер кэша yay %s: %s"
+msgid "Size of sas cache %s: %s"
+msgstr "Размер кэша sas %s: %s"
 
 #: cmd.go:198
 msgid "Skip package build if in cache and up to date"
@@ -810,8 +810,8 @@ msgid "Votes"
 msgstr "Голосов"
 
 #: print.go:87
-msgid "Yay version v%s"
-msgstr "Версия Yay: v%s"
+msgid "Sas version v%s"
+msgstr "Версия Sas: v%s"
 
 #: pkg/menus/menu.go:50
 msgid "[N]one"
@@ -855,9 +855,9 @@ msgstr "проверка пакета '%s' не завершена из-за о�
 
 #: pkg/settings/parser/parser.go:667
 msgid ""
-"did you mean yay -Scc (clean caches) or yay -Ycc (clean orphaned packages)?"
+"did you mean sas -Scc (clean caches) or sas -Ycc (clean orphaned packages)?"
 msgstr ""
-"возможно, вы имели в виду yay -Scc (очистка кэша) или yay -Ycc (очистка "
+"возможно, вы имели в виду sas -Scc (очистка кэша) или sas -Ycc (очистка "
 "пакетов-сирот)?"
 
 #: cmd.go:48
@@ -1115,12 +1115,12 @@ msgid "unknown-version"
 msgstr "неизвестная версия"
 
 #: cmd.go:224
-msgid "use 'yay {-h --help}' for global options"
-msgstr "используйте «yay {-h --help}» для глобальных параметров"
+msgid "use 'sas {-h --help}' for global options"
+msgstr "используйте «sas {-h --help}» для глобальных параметров"
 
 #: cmd.go:139
-msgid "use 'yay {-h --help}' with an operation for available options"
-msgstr "используйте «yay {-h --help}» с операцией для доступных параметров"
+msgid "use 'sas {-h --help}' with an operation for available options"
+msgstr "используйте «sas {-h --help}» с операцией для доступных параметров"
 
 #: pkg/text/input.go:47
 msgid "yes"

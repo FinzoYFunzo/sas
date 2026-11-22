@@ -8,7 +8,7 @@ import (
 	alpm "github.com/Jguer/dyalpm"
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 type Pkg = aur.Pkg

@@ -240,12 +240,12 @@ func TestArguments_FormatArgs(t *testing.T) {
 		{name: "simple", fields: fields{
 			Op:      "S",
 			Options: map[string]*Option{},
-			Targets: []string{"yay", "yay-bin", "yay-git"},
+			Targets: []string{"sas", "sas-bin", "sas-git"},
 		}, wantArgs: []string{"-S"}},
 		{name: "only global", fields: fields{
 			Op:      "Y",
 			Options: map[string]*Option{"noconfirm": {Global: true, Args: []string{""}}},
-			Targets: []string{"yay", "yay-bin", "yay-git"},
+			Targets: []string{"sas", "sas-bin", "sas-git"},
 		}, wantArgs: []string{"-Y"}},
 		{name: "options single", fields: fields{
 			Op:      "Y",
@@ -287,12 +287,12 @@ func TestArguments_FormatGlobalArgs(t *testing.T) {
 		{name: "simple", fields: fields{
 			Op:      "S",
 			Options: map[string]*Option{"dbpath": {Global: true, Args: []string{"/tmp/a", "/tmp/b"}}},
-			Targets: []string{"yay", "yay-bin", "yay-git"},
+			Targets: []string{"sas", "sas-bin", "sas-git"},
 		}, wantArgs: []string{"--dbpath", "/tmp/a", "--dbpath", "/tmp/b"}},
 		{name: "only global", fields: fields{
 			Op:      "Y",
 			Options: map[string]*Option{"noconfirm": {Global: true, Args: []string{""}}},
-			Targets: []string{"yay", "yay-bin", "yay-git"},
+			Targets: []string{"sas", "sas-bin", "sas-git"},
 		}, wantArgs: []string{"--noconfirm"}},
 		{name: "options single", fields: fields{
 			Op:      "Y",
@@ -329,7 +329,7 @@ func Test_isArg(t *testing.T) {
 }
 
 func TestArguments_ParseStdin(t *testing.T) {
-	input := []byte("yay")
+	input := []byte("sas")
 
 	r, w, err := os.Pipe()
 	require.NoError(t, err)
@@ -367,7 +367,7 @@ func TestArguments_ParseStdin_broken_pipe(t *testing.T) {
 func TestArguments_ParseTopLevelHelp(t *testing.T) {
 	originalArgs := os.Args
 	t.Cleanup(func() { os.Args = originalArgs })
-	os.Args = []string{"yay", "--help"}
+	os.Args = []string{"sas", "--help"}
 
 	args := MakeArguments()
 	require.NoError(t, args.Parse())

@@ -1,20 +1,20 @@
 package lua
 
 import (
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 
 	glua "github.com/yuin/gopher-lua"
 )
 
 const logTableName = "log"
 
-func (e *Engine) registerLog(yayTbl *glua.LTable) {
+func (e *Engine) registerLog(sasTbl *glua.LTable) {
 	logTbl := e.L.NewTable()
 	e.L.SetField(logTbl, "debug", e.L.NewFunction(e.newLogFn((*text.Logger).Debugln)))
 	e.L.SetField(logTbl, "info", e.L.NewFunction(e.newLogFn((*text.Logger).Infoln)))
 	e.L.SetField(logTbl, "warn", e.L.NewFunction(e.newLogFn((*text.Logger).Warnln)))
 	e.L.SetField(logTbl, "error", e.L.NewFunction(e.newLogFn((*text.Logger).Errorln)))
-	e.L.SetField(yayTbl, logTableName, logTbl)
+	e.L.SetField(sasTbl, logTableName, logTbl)
 }
 
 func (e *Engine) newLogFn(method func(*text.Logger, ...any)) glua.LGFunction {

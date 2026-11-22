@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 	glua "github.com/yuin/gopher-lua"
 
-	"github.com/Jguer/yay/v13/pkg/dep"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	settingslua "github.com/Jguer/yay/v13/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/dep"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	settingslua "github.com/FinzoYFunzo/sas/pkg/settings/lua"
 )
 
 func TestAURPostDownloadEventsUseAURPreInstallPayload(t *testing.T) {
@@ -60,7 +60,7 @@ func TestRunAURPostDownloadLuaHooksRunsBasesInSortedOrder(t *testing.T) {
 		return 0
 	}))
 	require.NoError(t, engine.L.DoString(`
-		yay.create_autocmd("AURPostDownload", {
+		sas.create_autocmd("AURPostDownload", {
 			callback = function(event)
 				record(event.match .. ":" .. event.data.pkgbuild_path)
 			end,

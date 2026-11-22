@@ -1,23 +1,23 @@
--- yay Lua API type definitions for lua-language-server.
+-- sas Lua API type definitions for lua-language-server.
 --
 -- This is a meta file: lua-language-server loads it for type information only
 -- and never executes it. Add this directory to your `workspace.library` so the
--- `yay` global, its options, and autocmd event payloads are recognised and
+-- `sas` global, its options, and autocmd event payloads are recognised and
 -- type-checked in your init.lua. See doc/lua.md "Editor support" for setup.
 --
--- API reference: https://github.com/Jguer/yay/blob/next/doc/lua.md
+-- API reference: https://github.com/FinzoYFunzo/sas/blob/next/doc/lua.md
 
 ---@meta
 
 -- Aliases
 
----@alias yay.menuAnswer "" | "All" | "None" | "Installed" | "NotInstalled" | "abort"
+---@alias sas.menuAnswer "" | "All" | "None" | "Installed" | "NotInstalled" | "abort"
 
----@alias yay.Event "AURPreInstall" | "AURPostDownload" | "UpgradeSelect" | "PostInstall" | "SearchFilter" | "RenderAUR" | "RenderSync"
+---@alias sas.Event "AURPreInstall" | "AURPostDownload" | "UpgradeSelect" | "PostInstall" | "SearchFilter" | "RenderAUR" | "RenderSync"
 
--- Options: yay.opt
+-- Options: sas.opt
 
----@class yay.opt
+---@class sas.opt
 ---@field aururl string Base AUR URL
 ---@field aurrpcurl string AUR RPC endpoint URL; empty uses default endpoint.
 ---@field build_dir string Build/cache directory for AUR packages.
@@ -40,9 +40,9 @@
 ---@field sudo_bin string Privilege elevation command.
 ---@field sudo_flags string Extra flags passed to the sudo command.
 ---@field rebuild "no" | "yes" | "tree" | "all" Build mode.
----@field answer_clean yay.menuAnswer yay v13.0.1+ Pre-select clean menu answer (also accepts menu syntax: ranges, ^n).
----@field answer_diff yay.menuAnswer yay v13.0.1+ Pre-select diff menu answer (also accepts menu syntax: ranges, ^n).
----@field answer_edit yay.menuAnswer yay v13.0.1+ Pre-select edit menu answer (also accepts menu syntax: ranges, ^n).
+---@field answer_clean sas.menuAnswer sas v13.0.1+ Pre-select clean menu answer (also accepts menu syntax: ranges, ^n).
+---@field answer_diff sas.menuAnswer sas v13.0.1+ Pre-select diff menu answer (also accepts menu syntax: ranges, ^n).
+---@field answer_edit sas.menuAnswer sas v13.0.1+ Pre-select edit menu answer (also accepts menu syntax: ranges, ^n).
 ---@field request_split_n integer Max packages per AUR RPC request (use values > 0).
 ---@field completion_refresh_time integer Completion cache refresh days: -1 (never), 0 (always), >0 (every N days).
 ---@field max_concurrent_downloads integer Parallel PKGBUILD source downloads; 0 uses CPU count.
@@ -65,9 +65,9 @@
 ---@field rpc boolean Use AUR RPC for dependency/query operations.
 ---@field double_confirm boolean Ask for confirmation before and after builds during upgrades.
 
--- Logging: yay.log
+-- Logging: sas.log
 
----@class yay.log
+---@class sas.log
 ---@field debug fun(...: any)
 ---@field info fun(...: any)
 ---@field warn fun(...: any)
@@ -76,7 +76,7 @@
 -- Event payloads: AURPreInstall / AURPostDownload
 -- Both events share the same data shape; only the `event` string differs.
 
----@class yay.AURPreInstallPackage
+---@class sas.AURPreInstallPackage
 ---@field name string
 ---@field version string
 ---@field local_version string
@@ -84,7 +84,7 @@
 ---@field upgrade boolean
 ---@field devel boolean
 
----@class yay.AURPreInstallSRCINFO
+---@class sas.AURPreInstallSRCINFO
 ---@field pkgbase string
 ---@field pkgver string
 ---@field pkgrel string
@@ -102,7 +102,7 @@
 ---@field conflicts string[]
 ---@field replaces string[]
 
----@class yay.AURInstallData
+---@class sas.AURInstallData
 ---@field base string
 ---@field dir string
 ---@field pkgbuild_path string
@@ -111,22 +111,22 @@
 ---@field version string
 ---@field last_modified integer
 ---@field installed boolean
----@field packages yay.AURPreInstallPackage[]
----@field srcinfo yay.AURPreInstallSRCINFO
+---@field packages sas.AURPreInstallPackage[]
+---@field srcinfo sas.AURPreInstallSRCINFO
 
----@class yay.AURPreInstallEvent
+---@class sas.AURPreInstallEvent
 ---@field event "AURPreInstall"
 ---@field match string
----@field data yay.AURInstallData
+---@field data sas.AURInstallData
 
----@class yay.AURPostDownloadEvent
+---@class sas.AURPostDownloadEvent
 ---@field event "AURPostDownload"
 ---@field match string
----@field data yay.AURInstallData
+---@field data sas.AURInstallData
 
 -- Event payloads: UpgradeSelect
 
----@class yay.UpgradeSelectPackage
+---@class sas.UpgradeSelectPackage
 ---@field id integer
 ---@field name string
 ---@field base string
@@ -137,37 +137,37 @@
 ---@field last_modified integer
 ---@field maintainer string
 
----@class yay.UpgradeSelectData
----@field upgrades yay.UpgradeSelectPackage[]
----@field pulled_dependencies yay.UpgradeSelectPackage[]
+---@class sas.UpgradeSelectData
+---@field upgrades sas.UpgradeSelectPackage[]
+---@field pulled_dependencies sas.UpgradeSelectPackage[]
 
----@class yay.UpgradeSelectEvent
+---@class sas.UpgradeSelectEvent
 ---@field event "UpgradeSelect"
----@field data yay.UpgradeSelectData
+---@field data sas.UpgradeSelectData
 
----@class yay.UpgradeSelectResult
+---@class sas.UpgradeSelectResult
 ---@field exclude string[]
 ---@field skip_menu boolean
 
 -- Event payloads: PostInstall
 
----@class yay.PostInstallPackage
+---@class sas.PostInstallPackage
 ---@field name string
 ---@field version string
 ---@field local_version string
 ---@field source string
 ---@field reason string
 
----@class yay.PostInstallData
----@field packages yay.PostInstallPackage[]
+---@class sas.PostInstallData
+---@field packages sas.PostInstallPackage[]
 
----@class yay.PostInstallEvent
+---@class sas.PostInstallEvent
 ---@field event "PostInstall"
----@field data yay.PostInstallData
+---@field data sas.PostInstallData
 
 -- Event payloads: SearchFilter
 
----@class yay.SearchResultPackage
+---@class sas.SearchResultPackage
 ---@field source string
 ---@field name string
 ---@field description string
@@ -177,42 +177,42 @@
 ---@field first_submitted integer
 ---@field last_modified integer
 
----@class yay.SearchFilterData
----@field results yay.SearchResultPackage[]
+---@class sas.SearchFilterData
+---@field results sas.SearchResultPackage[]
 
----@class yay.SearchFilterEvent
+---@class sas.SearchFilterEvent
 ---@field event "SearchFilter"
----@field data yay.SearchFilterData
+---@field data sas.SearchFilterData
 
----@class yay.SearchResultRef
+---@class sas.SearchResultRef
 ---@field source string
 ---@field name string
 
 -- create_autocmd opts: one per event so the callback payload is typed.
 
----@class yay.AURPreInstallOpts
+---@class sas.AURPreInstallOpts
 ---@field desc? string
----@field callback fun(event: yay.AURPreInstallEvent)
+---@field callback fun(event: sas.AURPreInstallEvent)
 
----@class yay.AURPostDownloadOpts
+---@class sas.AURPostDownloadOpts
 ---@field desc? string
----@field callback fun(event: yay.AURPostDownloadEvent)
+---@field callback fun(event: sas.AURPostDownloadEvent)
 
----@class yay.UpgradeSelectOpts
+---@class sas.UpgradeSelectOpts
 ---@field desc? string
----@field callback fun(event: yay.UpgradeSelectEvent): yay.UpgradeSelectResult?
+---@field callback fun(event: sas.UpgradeSelectEvent): sas.UpgradeSelectResult?
 
----@class yay.PostInstallOpts
+---@class sas.PostInstallOpts
 ---@field desc? string
----@field callback fun(event: yay.PostInstallEvent)
+---@field callback fun(event: sas.PostInstallEvent)
 
----@class yay.SearchFilterOpts
+---@class sas.SearchFilterOpts
 ---@field desc? string
----@field callback fun(event: yay.SearchFilterEvent): yay.SearchResultRef[]?
+---@field callback fun(event: sas.SearchFilterEvent): sas.SearchResultRef[]?
 
 -- Event payloads: RenderAUR
 
----@class yay.RenderAURData
+---@class sas.RenderAURData
 ---@field name string
 ---@field version string
 ---@field description string
@@ -225,17 +225,17 @@
 ---@field last_modified integer
 ---@field local_version string
 
----@class yay.RenderAUREvent
+---@class sas.RenderAUREvent
 ---@field event "RenderAUR"
----@field data yay.RenderAURData
+---@field data sas.RenderAURData
 
----@class yay.RenderAUROpts
+---@class sas.RenderAUROpts
 ---@field desc? string
----@field callback fun(event: yay.RenderAUREvent): string?
+---@field callback fun(event: sas.RenderAUREvent): string?
 
 -- Event payloads: RenderSync
 
----@class yay.RenderSyncData
+---@class sas.RenderSyncData
 ---@field repository string
 ---@field name string
 ---@field description string
@@ -243,30 +243,30 @@
 ---@field groups string[]
 ---@field local_version string
 
----@class yay.RenderSyncEvent
+---@class sas.RenderSyncEvent
 ---@field event "RenderSync"
----@field data yay.RenderSyncData
+---@field data sas.RenderSyncData
 
----@class yay.RenderSyncOpts
+---@class sas.RenderSyncOpts
 ---@field desc? string
----@field callback fun(event: yay.RenderSyncEvent): string?
+---@field callback fun(event: sas.RenderSyncEvent): string?
 
----@overload fun(event: "AURPreInstall", opts: yay.AURPreInstallOpts)
----@overload fun(event: "AURPostDownload", opts: yay.AURPostDownloadOpts)
----@overload fun(event: "UpgradeSelect", opts: yay.UpgradeSelectOpts)
----@overload fun(event: "PostInstall", opts: yay.PostInstallOpts)
----@overload fun(event: "SearchFilter", opts: yay.SearchFilterOpts)
----@overload fun(event: "RenderAUR", opts: yay.RenderAUROpts)
----@overload fun(event: "RenderSync", opts: yay.RenderSyncOpts)
----@class yay.create_autocmd
+---@overload fun(event: "AURPreInstall", opts: sas.AURPreInstallOpts)
+---@overload fun(event: "AURPostDownload", opts: sas.AURPostDownloadOpts)
+---@overload fun(event: "UpgradeSelect", opts: sas.UpgradeSelectOpts)
+---@overload fun(event: "PostInstall", opts: sas.PostInstallOpts)
+---@overload fun(event: "SearchFilter", opts: sas.SearchFilterOpts)
+---@overload fun(event: "RenderAUR", opts: sas.RenderAUROpts)
+---@overload fun(event: "RenderSync", opts: sas.RenderSyncOpts)
+---@class sas.create_autocmd
 
--- The yay global
+-- The sas global
 
----@class yay
----@field opt? yay.opt
----@field log? yay.log
+---@class sas
+---@field opt? sas.opt
+---@field log? sas.log
 ---@field abort? fun(reason: string)
----@field create_autocmd? yay.create_autocmd
+---@field create_autocmd? sas.create_autocmd
 
----@type yay
-yay = {}
+---@type sas
+sas = {}

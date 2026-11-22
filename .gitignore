@@ -23,8 +23,8 @@ _cgo_export.*
 *.exe
 *.test
 *.prof
-yay
-yay_*/
+sas
+sas_*/
 *.tar.gz
 qemu-*
 .go

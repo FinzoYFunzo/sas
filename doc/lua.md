@@ -1,25 +1,25 @@
 # Lua configuration (`init.lua`)
 
-yay can optionally load a Lua configuration file, `init.lua`. `init.lua` overlays whatever is in `config.json`, and any command-line flag you pass still wins over `init.lua`.
+sas can optionally load a Lua configuration file, `init.lua`. `init.lua` overlays whatever is in `config.json`, and any command-line flag you pass still wins over `init.lua`.
 
-yay uses the [Lua 5.1 interpreter](https://www.lua.org/manual/5.1/) to run `init.lua`. The Lua standard library is available.
+sas uses the [Lua 5.1 interpreter](https://www.lua.org/manual/5.1/) to run `init.lua`. The Lua standard library is available.
 
 ## Location
 
 `init.lua` is looked up, in order:
 
-1. `$XDG_CONFIG_HOME/yay/init.lua`
-2. `$HOME/.config/yay/init.lua`
+1. `$XDG_CONFIG_HOME/sas/init.lua`
+2. `$HOME/.config/sas/init.lua`
 
 [Example init.lua](./init.lua)
 
 ## Editor support
 
-<p class="api-since">Available from yay v13.1.0</p>
+<p class="api-since">Available from sas v13.1.0</p>
 
-yay ships a [lua-language-server](https://luals.github.io/) type definition file
-at [`meta/yay.d.lua`](../meta/yay.d.lua). It declares the `yay` global,
-every `yay.opt` field, and all autocmd event payloads so your editor can provide
+sas ships a [lua-language-server](https://luals.github.io/) type definition file
+at [`meta/sas.d.lua`](../meta/sas.d.lua). It declares the `sas` global,
+every `sas.opt` field, and all autocmd event payloads so your editor can provide
 completion, hover documentation, and catch typos such as unknown option names or
 misspelled event fields.
 
@@ -33,33 +33,33 @@ With a `.luarc.json` in your project root, next to `init.lua`:
 {
   "runtime": { "version": "Lua 5.1" },
   "workspace": {
-    "library": ["/usr/share/yay/meta"]
+    "library": ["/usr/share/sas/meta"]
   }
 }
 ```
 
-Replace `/usr/share/yay/meta` with the path to the `meta/` directory in your
-local yay checkout or installation. The runtime version should be `Lua 5.1`
-because yay runs `init.lua` through the [gopher-lua](https://github.com/yuin/gopher-lua) Lua 5.1 interpreter.
+Replace `/usr/share/sas/meta` with the path to the `meta/` directory in your
+local sas checkout or installation. The runtime version should be `Lua 5.1`
+because sas runs `init.lua` through the [gopher-lua](https://github.com/yuin/gopher-lua) Lua 5.1 interpreter.
 
 lua-language-server is available for [VS Code](https://marketplace.visualstudio.com/items?itemName=sumneko.lua), [Neovim](https://luals.github.io/#neovim-install), [JetBrains](https://plugins.jetbrains.com/plugin/22315-sumnekolua), and [other editors](https://luals.github.io/#other-install) that support the Language Server Protocol.
 
-## Setting options with `yay.opt`
+## Setting options with `sas.opt`
 
-<p class="api-since">Available from yay v13.0.0</p>
+<p class="api-since">Available from sas v13.0.0</p>
 
-Assign to keys on the `yay.opt` table using the exact option names shown
+Assign to keys on the `sas.opt` table using the exact option names shown
 below.
 
 ```lua
-yay.opt.bottom_up = false
-yay.opt.clean_after = true
-yay.opt.sort_by = "votes"
-yay.opt.request_split_n = 150
-yay.opt.editor = os.getenv("EDITOR") or "vi"
+sas.opt.bottom_up = false
+sas.opt.clean_after = true
+sas.opt.sort_by = "votes"
+sas.opt.request_split_n = 150
+sas.opt.editor = os.getenv("EDITOR") or "vi"
 ```
 
-Unknown keys and values of the wrong type are treated as errors. yay aborts
+Unknown keys and values of the wrong type are treated as errors. sas aborts
 startup and reports the offending keys/values so misconfigurations fail fast.
 
 ### Available options
@@ -71,7 +71,7 @@ startup and reports the offending keys/values so misconfigurations fail fast.
 `gpg_bin`, `gpg_flags`, `mflags`, `sort_by`, `search_by`, `git_flags`,
 `remove_make`, `sudo_bin`, `sudo_flags`
 
-**Strings (Available from yay v13.0.1)**
+**Strings (Available from sas v13.0.1)**
 
 `answer_clean`, `answer_diff`, `answer_edit`
 
@@ -89,36 +89,36 @@ startup and reports the offending keys/values so misconfigurations fail fast.
 A ready-to-copy example
 lives at [`doc/init.lua`](init.lua).
 
-## Logging with `yay.log`
+## Logging with `sas.log`
 
-<p class="api-since">Available from yay v13.0.0</p>
+<p class="api-since">Available from sas v13.0.0</p>
 
-Lua config and hooks can write through yay's normal logger:
+Lua config and hooks can write through sas's normal logger:
 
 ```lua
-yay.log.debug("build dir:", yay.opt.build_dir)
-yay.log.info("loaded init.lua")
-yay.log.warn("skipping", "pkgname")
-yay.log.error("policy check failed")
+sas.log.debug("build dir:", sas.opt.build_dir)
+sas.log.info("loaded init.lua")
+sas.log.warn("skipping", "pkgname")
+sas.log.error("policy check failed")
 ```
 
 `debug` only prints when debug logging is enabled. `error` logs an error-level
-message and does not stop execution; use `yay.abort("message")` for controlled
+message and does not stop execution; use `sas.abort("message")` for controlled
 hook stops.
 
 ## Requiring modules with `require()`
 
-<p class="api-since">Available from yay v13.0.1</p>
+<p class="api-since">Available from sas v13.0.1</p>
 
 `init.lua` can pull in other Lua files with the standard `require()`
-function. yay prepends the directory that contains `init.lua` to
-`package.path`, so modules resolve relative to your yay config directory
-rather than the directory you run yay from.
+function. sas prepends the directory that contains `init.lua` to
+`package.path`, so modules resolve relative to your sas config directory
+rather than the directory you run sas from.
 
 Given this layout:
 
 ```
-$XDG_CONFIG_HOME/yay/
+$XDG_CONFIG_HOME/sas/
   init.lua
   hooks/
     maintainer_change.lua
@@ -141,27 +141,27 @@ Dotted module names map onto the filesystem, so
 helpers across multiple files and keep `init.lua` small.
 
 Required modules run in the same Lua state as `init.lua`, so anything they
-register through `yay.create_autocmd` or assign to `yay.opt` takes effect just
+register through `sas.create_autocmd` or assign to `sas.opt` takes effect just
 as if it were written inline.
 
 ## Upgrade selection hooks
 
-<p class="api-since">Available from yay v13.0.0</p>
+<p class="api-since">Available from sas v13.0.0</p>
 
-`UpgradeSelect` runs during `yay -Syu` after yay has built and sorted the
+`UpgradeSelect` runs during `sas -Syu` after sas has built and sorted the
 upgrade graph, and before the native "Packages to exclude" menu is printed.
-The hook can return package names to exclude. By default, yay still shows the
+The hook can return package names to exclude. By default, sas still shows the
 native menu after applying hook exclusions.
 
 ```lua
-yay.create_autocmd("UpgradeSelect", {
+sas.create_autocmd("UpgradeSelect", {
   desc = "skip recently modified AUR upgrades",
   callback = function(event)
     local exclude = {}
     local recent_cutoff = os.time() - (3 * 24 * 60 * 60)
     for _, pkg in ipairs(event.data.upgrades) do
       if pkg.repository == "aur" and pkg.last_modified >= recent_cutoff then
-        yay.log.debug("pre-excluding recently modified AUR package:", pkg.name)
+        sas.log.debug("pre-excluding recently modified AUR package:", pkg.name)
         table.insert(exclude, pkg.name)
       end
     end
@@ -172,13 +172,13 @@ yay.create_autocmd("UpgradeSelect", {
 ```
 
 Multiple `UpgradeSelect` hooks run in registration order. Their `exclude`
-lists are unioned. If any hook returns `skip_menu = true`, yay applies all hook
+lists are unioned. If any hook returns `skip_menu = true`, sas applies all hook
 exclusions and skips the native menu. With `skip_menu = false` or no return
 value, hook exclusions are applied first and then the native menu is shown.
 
-More examples: [`doc/examples/recently_modified.lua`](https://github.com/Jguer/yay/blob/next/doc/examples/recently_modified.lua)
+More examples: [`doc/examples/recently_modified.lua`](examples/recently_modified.lua)
 (pre-exclude recently modified AUR upgrades) and
-[`doc/examples/maintainer_change.lua`](https://github.com/Jguer/yay/blob/next/doc/examples/maintainer_change.lua) (warn on
+[`doc/examples/maintainer_change.lua`](examples/maintainer_change.lua) (warn on
 AUR maintainer changes).
 
 Returned exclusions must name packages from `event.data.upgrades`. Unknown
@@ -226,17 +226,17 @@ The callback receives this table:
 ```
 
 For selectable `data.upgrades` entries, `id` matches the number shown in the
-native menu. `pulled_dependencies` entries are shown separately by yay and use
+native menu. `pulled_dependencies` entries are shown separately by sas and use
 `id = 0` because they are not directly selectable.
 
 ## AUR pre-install hooks
 
-<p class="api-since">Available from yay v13.0.0</p>
+<p class="api-since">Available from sas v13.0.0</p>
 
 `init.lua` can register hooks with a small autocmd API:
 
 ```lua
-yay.create_autocmd("AURPreInstall", {
+sas.create_autocmd("AURPreInstall", {
   desc = "inspect or modify AUR package files",
   callback = function(event)
     -- event.match is the package base.
@@ -249,11 +249,11 @@ yay.create_autocmd("AURPreInstall", {
 after the AUR PKGBUILD repositories are downloaded and merged. It runs before
 the clean, diff, and edit menus, and before source downloads or builds.
 
-Use `yay.abort("message")` for controlled policy stops without a Lua
-traceback. If a callback raises a Lua error, yay aborts the install before
+Use `sas.abort("message")` for controlled policy stops without a Lua
+traceback. If a callback raises a Lua error, sas aborts the install before
 build work starts and includes the Lua traceback for debugging.
 
-Changing fields in the Lua `event` table does not change yay's internal
+Changing fields in the Lua `event` table does not change sas's internal
 package state. Hooks can still edit files through Lua's normal `io` and `os`
 libraries; later menus and build steps will see those file changes.
 
@@ -313,12 +313,12 @@ listed separately. `reason` is one of `explicit`, `dependency`,
 ### Example
 
 ```lua
-yay.create_autocmd("AURPreInstall", {
+sas.create_autocmd("AURPreInstall", {
   desc = "block forbidden sources and patch a PKGBUILD",
   callback = function(event)
     if event.data.pkgbuild:match("forbidden.example") then
-      yay.log.warn(event.match .. ": forbidden source URL")
-      yay.abort(event.match .. ": forbidden source URL")
+      sas.log.warn(event.match .. ": forbidden source URL")
+      sas.abort(event.match .. ": forbidden source URL")
     end
 
     if event.match == "demo-pkg" then
@@ -339,13 +339,13 @@ yay.create_autocmd("AURPreInstall", {
 
 ## AUR post-download hooks
 
-<p class="api-since">Available from yay v13.0.0</p>
+<p class="api-since">Available from sas v13.0.0</p>
 
 `AURPostDownload` runs once per AUR package base, in sorted package-base order,
-after yay runs `makepkg --verifysource` for package sources and before
+after sas runs `makepkg --verifysource` for package sources and before
 compatibility checks, PGP key import prompts, builds, or package installs.
 
-Use `yay.abort("message")` to stop the operation without a Lua traceback.
+Use `sas.abort("message")` to stop the operation without a Lua traceback.
 `AURPostDownload` receives the same payload shape as `AURPreInstall`; only the
 `event` value differs.
 
@@ -375,11 +375,11 @@ The callback receives this table:
 ### Example
 
 ```lua
-yay.create_autocmd("AURPostDownload", {
+sas.create_autocmd("AURPostDownload", {
   desc = "block forbidden source URLs after download",
   callback = function(event)
     if event.data.pkgbuild:match("forbidden.example") then
-      yay.abort(event.match .. ": forbidden source URL")
+      sas.abort(event.match .. ": forbidden source URL")
     end
   end,
 })
@@ -387,11 +387,11 @@ yay.create_autocmd("AURPostDownload", {
 
 ## Post-install hooks
 
-<p class="api-since">Available from yay v13.0.0</p>
+<p class="api-since">Available from sas v13.0.0</p>
 
 `PostInstall` fires once after a successful install/upgrade transaction, before
-yay exits. It is skipped when `--downloadonly` (`-w`) is used. Because the
-installation is already complete when the callback runs, calling `yay.abort`
+sas exits. It is skipped when `--downloadonly` (`-w`) is used. Because the
+installation is already complete when the callback runs, calling `sas.abort`
 logs the message but cannot roll back anything.
 
 ### PostInstall event
@@ -408,28 +408,28 @@ logs the message but cannot roll back anything.
         source        = "aur",        -- "aur" | "sync" | "local" | "srcinfo" | "missing"
         reason        = "explicit",   -- "explicit" | "dependency" | "make_dependency" | "check_dependency" | "unknown"
       },
-      -- one entry per package yay resolved; sorted alphabetically
+      -- one entry per package sas resolved; sorted alphabetically
     },
   },
 }
 ```
 
-The `packages` array covers every node yay resolved into the transaction (all
+The `packages` array covers every node sas resolved into the transaction (all
 sources, all topo layers). Transitive repo dependencies pulled in by pacman
-but not explicitly tracked by yay are **not** included. The callback is
+but not explicitly tracked by sas are **not** included. The callback is
 fire-and-forget: no return value is read.
 
-More examples: [`doc/examples/install_log.lua`](https://github.com/Jguer/yay/blob/next/doc/examples/install_log.lua)
+More examples: [`doc/examples/install_log.lua`](examples/install_log.lua)
 (append every installed/upgraded package to a persistent log file).
 
 ### Example
 
 ```lua
-yay.create_autocmd("PostInstall", {
-  desc = "log every package yay installed",
+sas.create_autocmd("PostInstall", {
+  desc = "log every package sas installed",
   callback = function(event)
     for _, pkg in ipairs(event.data.packages) do
-      yay.log.info(pkg.name .. " " .. pkg.version .. " (" .. pkg.source .. ")")
+      sas.log.info(pkg.name .. " " .. pkg.version .. " (" .. pkg.source .. ")")
     end
   end,
 })
@@ -437,7 +437,7 @@ yay.create_autocmd("PostInstall", {
 
 ## Search-filter hooks
 
-`SearchFilter` runs during `yay -Ss` and the `yay -S` number menu, after
+`SearchFilter` runs during `sas -Ss` and the `sas -S` number menu, after
 results are ranked and sorted but before they are displayed. The callback
 receives the full ordered result list and may return a filtered or reordered
 subset. Returning `nil` (or nothing) leaves the list unchanged.
@@ -449,7 +449,7 @@ the **unfiltered** results are shown rather than aborting the command.
 
 ### SearchFilter event
 
-<p class="api-since">Available from yay v13.0.0</p>
+<p class="api-since">Available from sas v13.0.0</p>
 
 ```lua
 {
@@ -475,13 +475,13 @@ the **unfiltered** results are shown rather than aborting the command.
 The callback must return `nil` or an array of `{source=, name=}` tables. Every
 `(source, name)` pair must exist in the input; unknown pairs are an error.
 
-More examples: [`doc/examples/hide_first_submitted.lua`](https://github.com/Jguer/yay/blob/next/doc/examples/hide_first_submitted.lua)
+More examples: [`doc/examples/hide_first_submitted.lua`](examples/hide_first_submitted.lua)
 (hide AUR packages submitted in the last 14 days).
 
 ### Example
 
 ```lua
-yay.create_autocmd("SearchFilter", {
+sas.create_autocmd("SearchFilter", {
   desc = "show only AUR results",
   callback = function(event)
     local out = {}
@@ -497,14 +497,14 @@ yay.create_autocmd("SearchFilter", {
 
 ## Render hooks
 
-`RenderAUR` and `RenderSync` fire once per result row during `yay -Ss` and
-the `yay <pkg>` number menu, after results are ranked, sorted, and (optionally)
+`RenderAUR` and `RenderSync` fire once per result row during `sas -Ss` and
+the `sas <pkg>` number menu, after results are ranked, sorted, and (optionally)
 filtered. The callback receives per-package metadata and may return a `string`
-that fully replaces what yay would print for that row. Returning `nil` (or
-nothing) falls back to yay's built-in formatting.
+that fully replaces what sas would print for that row. Returning `nil` (or
+nothing) falls back to sas's built-in formatting.
 
 The menu number prefix (magenta index shown in the number menu) is always
-prepended by yay itself; the callback controls only the package portion of the
+prepended by sas itself; the callback controls only the package portion of the
 line. `-q`/`--quiet` (minimal verbosity) is unaffected — name-only output
 never calls these hooks. Hook errors are logged and that row falls back to
 default rendering rather than aborting the command.
@@ -513,13 +513,13 @@ Multiple hooks of the same event **run in registration order**; the **last**
 hook that returns a non-`nil` string wins. A later hook returning `nil` does
 not undo an earlier hook's string.
 
-More examples: [`doc/examples/single_line.lua`](https://github.com/Jguer/yay/blob/next/doc/examples/single_line.lua)
-(reproduces `yay.opt.single_line_results` with colored, single-line AUR and
+More examples: [`doc/examples/single_line.lua`](examples/single_line.lua)
+(reproduces `sas.opt.single_line_results` with colored, single-line AUR and
 sync results).
 
 ### RenderAUR event
 
-<p class="api-since">Available from yay v13.1.0</p>
+<p class="api-since">Available from sas v13.1.0</p>
 
 ```lua
 {
@@ -542,7 +542,7 @@ sync results).
 
 ### RenderSync event
 
-<p class="api-since">Available from yay v13.1.0</p>
+<p class="api-since">Available from sas v13.1.0</p>
 
 ```lua
 {
@@ -561,7 +561,7 @@ sync results).
 ### Example
 
 ```lua
-yay.create_autocmd("RenderAUR", {
+sas.create_autocmd("RenderAUR", {
   desc = "compact AUR search lines",
   callback = function(event)
     local d = event.data
@@ -571,7 +571,7 @@ yay.create_autocmd("RenderAUR", {
   end,
 })
 
-yay.create_autocmd("RenderSync", {
+sas.create_autocmd("RenderSync", {
   desc = "compact sync search lines",
   callback = function(event)
     local d = event.data

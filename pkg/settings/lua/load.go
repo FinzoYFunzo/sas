@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
-// Load loads path, applies its yay.opt values onto cfg, and returns the live engine.
+// Load loads path, applies its sas.opt values onto cfg, and returns the live engine.
 func Load(logger *text.Logger, path string, cfg any) (*Engine, error) {
 	var luaLogger *text.Logger
 	if logger != nil {
@@ -32,7 +32,7 @@ func Load(logger *text.Logger, path string, cfg any) (*Engine, error) {
 	var joinErrs []error
 
 	for _, key := range unknown {
-		joinErrs = append(joinErrs, fmt.Errorf("init.lua: unknown yay.opt key: %s", key))
+		joinErrs = append(joinErrs, fmt.Errorf("init.lua: unknown sas.opt key: %s", key))
 	}
 
 	for _, err := range errs {
@@ -47,7 +47,7 @@ func Load(logger *text.Logger, path string, cfg any) (*Engine, error) {
 	return engine, nil
 }
 
-// LoadInto applies the yay.opt values from path onto cfg.
+// LoadInto applies the sas.opt values from path onto cfg.
 func LoadInto(logger *text.Logger, path string, cfg any) error {
 	engine, err := Load(logger, path, cfg)
 	if engine != nil {

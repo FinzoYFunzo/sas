@@ -20,7 +20,7 @@ func TestRunPostInstallEventTableShape(t *testing.T) {
 	}))
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("PostInstall", {
+		sas.create_autocmd("PostInstall", {
 			callback = function(event)
 				if event.event ~= "PostInstall" then error("bad event name") end
 				if event.data == nil then error("missing data") end
@@ -58,9 +58,9 @@ func TestRunPostInstallReturnsAbortWithoutTraceback(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("PostInstall", {
+		sas.create_autocmd("PostInstall", {
 			callback = function()
-				yay.abort("blocked")
+				sas.abort("blocked")
 			end,
 		})
 	`))
@@ -78,7 +78,7 @@ func TestRunSearchFilterEventTableShapeAndReturn(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				if event.event ~= "SearchFilter" then error("bad event name") end
 				local r = event.data.results[1]
@@ -129,7 +129,7 @@ func TestRunSearchFilterNilReturnMeansUnchanged(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				-- return nothing
 			end,
@@ -156,7 +156,7 @@ func TestRunSearchFilterRejectsUnknownResult(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function()
 				return { { source = "x", name = "ghost" } }
 			end,
@@ -181,7 +181,7 @@ func TestRunSearchFilterChainsMultipleHooks(t *testing.T) {
 	// First hook drops pkgC.
 	// Second hook sees only pkgA and pkgB, reorders them.
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				-- drop pkgC
 				return {
@@ -190,7 +190,7 @@ func TestRunSearchFilterChainsMultipleHooks(t *testing.T) {
 				}
 			end,
 		})
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				if #event.data.results ~= 2 then error("expected 2 results, got " .. #event.data.results) end
 				-- reorder: B then A
@@ -228,7 +228,7 @@ func TestRunSearchFilterSecondHookCannotReintroduce(t *testing.T) {
 	// Hook 1: drops pkgC.
 	// Hook 2: attempts to return pkgC which it did not receive.
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				-- returns only pkgA and pkgB; drops pkgC
 				return {
@@ -237,7 +237,7 @@ func TestRunSearchFilterSecondHookCannotReintroduce(t *testing.T) {
 				}
 			end,
 		})
-		yay.create_autocmd("SearchFilter", {
+		sas.create_autocmd("SearchFilter", {
 			callback = function(event)
 				-- tries to smuggle in pkgC which was dropped by hook 1
 				return {

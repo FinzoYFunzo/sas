@@ -1,19 +1,19 @@
-# Contributing to yay
+# Contributing to sas
 
 ## Translation
 
-[Transifex](https://www.transifex.com/yay-1/yay/)
+Translations are inherited from yay's [Transifex](https://www.transifex.com/yay-1/yay/) project.
 
 ## Quality Assurance
 
 ```sh
-pacman -S --needed git base-devel
-git clone https://aur.archlinux.org/yay-git.git
-cd yay-git
-makepkg -si
+pacman -S --needed go git base-devel
+git clone https://github.com/FinzoYFunzo/sas.git
+cd sas
+make
 ```
 
-Installing `yay-git` and using issues to help determine what's broken is already
+Building from source and using issues to help determine what's broken is already
 a very big help.
 
 ## Development
@@ -27,7 +27,7 @@ Otherwise send us a pull request and we will be happy to review it.
 
 ### Vision
 
-Yay is based on the design of [yaourt](https://github.com/archlinuxfr/yaourt), [apacman](https://github.com/oshazard/apacman) and [pacaur](https://github.com/rmarquis/pacaur). It is developed with these objectives in mind:
+sas is a fork of [yay](https://github.com/Jguer/yay), which is based on the design of [yaourt](https://github.com/archlinuxfr/yaourt), [apacman](https://github.com/oshazard/apacman) and [pacaur](https://github.com/rmarquis/pacaur). It is developed with these objectives in mind:
 
 - Provide an interface for pacman
 - Yaourt-style interactive search/install
@@ -36,18 +36,18 @@ Yay is based on the design of [yaourt](https://github.com/archlinuxfr/yaourt), [
 
 ### Dependencies
 
-Yay depends on:
+Sas depends on:
 
 - go (make only)
 - git
 - base-devel
 - pacman
 
-Note: Yay also depends on a few other projects, these are pulled as go modules.
+Note: Sas also depends on a few other projects, these are pulled as go modules.
 
 ### Building
 
-Run `make` to build Yay. This command will generate a binary called `yay` in
+Run `make` to build Sas. This command will generate a binary called `sas` in
 the same directory as the Makefile.
 
 #### Docker Release
@@ -75,5 +75,5 @@ linters configured for this repository.
 
 ### Testing
 
-Run `make test` to test Yay. This command will verify that the code is
+Run `make test` to test Sas. This command will verify that the code is
 formatted correctly, run the code through `go vet`, and run unit tests.

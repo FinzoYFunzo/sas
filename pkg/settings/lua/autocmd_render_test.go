@@ -13,7 +13,7 @@ func TestRunRenderAUREventShapeAndStringReturn(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("RenderAUR", {
+		sas.create_autocmd("RenderAUR", {
 			callback = function(event)
 				if event.event ~= "RenderAUR" then error("bad event name: " .. tostring(event.event)) end
 				local d = event.data
@@ -58,7 +58,7 @@ func TestRunRenderAURNilReturnFallsBack(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("RenderAUR", {
+		sas.create_autocmd("RenderAUR", {
 			callback = function(event)
 				return nil
 			end,
@@ -78,7 +78,7 @@ func TestRunRenderAURNonStringReturnIsError(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("RenderAUR", {
+		sas.create_autocmd("RenderAUR", {
 			callback = function(event)
 				return 42
 			end,
@@ -98,13 +98,13 @@ func TestRunRenderAURHooksReceiveIndependentEventTables(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("RenderAUR", {
+		sas.create_autocmd("RenderAUR", {
 			callback = function(event)
 				event.data.name = "mutated"
 				return nil
 			end,
 		})
-		yay.create_autocmd("RenderAUR", {
+		sas.create_autocmd("RenderAUR", {
 			callback = function(event)
 				return event.data.name
 			end,
@@ -128,10 +128,10 @@ func TestRunRenderAURLastHookWins(t *testing.T) {
 		defer e.Close()
 
 		require.NoError(t, e.L.DoString(`
-			yay.create_autocmd("RenderAUR", {
+			sas.create_autocmd("RenderAUR", {
 				callback = function(event) return "A" end,
 			})
-			yay.create_autocmd("RenderAUR", {
+			sas.create_autocmd("RenderAUR", {
 				callback = function(event) return "B" end,
 			})
 		`))
@@ -150,10 +150,10 @@ func TestRunRenderAURLastHookWins(t *testing.T) {
 		defer e.Close()
 
 		require.NoError(t, e.L.DoString(`
-			yay.create_autocmd("RenderAUR", {
+			sas.create_autocmd("RenderAUR", {
 				callback = function(event) return "A" end,
 			})
-			yay.create_autocmd("RenderAUR", {
+			sas.create_autocmd("RenderAUR", {
 				callback = function(event) return nil end,
 			})
 		`))
@@ -172,9 +172,9 @@ func TestRunRenderAURAbort(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("RenderAUR", {
+		sas.create_autocmd("RenderAUR", {
 			callback = function(event)
-				yay.abort("blocked")
+				sas.abort("blocked")
 			end,
 		})
 	`))
@@ -190,7 +190,7 @@ func TestRunRenderSyncEventShapeAndStringReturn(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("RenderSync", {
+		sas.create_autocmd("RenderSync", {
 			callback = function(event)
 				if event.event ~= "RenderSync" then error("bad event name") end
 				local d = event.data

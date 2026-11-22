@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func newTestLogger() *text.Logger {
@@ -22,7 +22,7 @@ func newTestLogger() *text.Logger {
 func TestMigrationNothingToDo(t *testing.T) {
 	t.Parallel()
 	// Create temporary file for config
-	configFile, err := os.CreateTemp("/tmp", "yay-*-config.json")
+	configFile, err := os.CreateTemp("/tmp", "sas-*-config.json")
 	require.NoError(t, err)
 
 	testFilePath := configFile.Name()
@@ -122,7 +122,7 @@ func TestProvidesMigration(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.desc, func(t *testing.T) {
 			// Create temporary file for config
-			configFile, err := os.CreateTemp("/tmp", "yay-*-config.json")
+			configFile, err := os.CreateTemp("/tmp", "sas-*-config.json")
 			require.NoError(t, err)
 
 			testFilePath := configFile.Name()
@@ -234,7 +234,7 @@ func TestSortByMigration(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.desc, func(t *testing.T) {
 			// Create temporary file for config
-			configFile, err := os.CreateTemp("/tmp", "yay-*-config.json")
+			configFile, err := os.CreateTemp("/tmp", "sas-*-config.json")
 			require.NoError(t, err)
 
 			testFilePath := configFile.Name()

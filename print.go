@@ -15,14 +15,14 @@ import (
 	"github.com/leonelquinteros/gotext"
 	"golang.org/x/sys/unix"
 
-	"github.com/Jguer/yay/v13/pkg/db"
-	"github.com/Jguer/yay/v13/pkg/dep"
-	"github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
-	"github.com/Jguer/yay/v13/pkg/upgrade"
+	"github.com/FinzoYFunzo/sas/pkg/db"
+	"github.com/FinzoYFunzo/sas/pkg/dep"
+	"github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/upgrade"
 )
 
 // printInfo prints package info like pacman -Si.
@@ -84,7 +84,7 @@ func localStatistics(ctx context.Context, run *runtime.Runtime, dbExecutor db.Ex
 
 	remoteNames := dbExecutor.InstalledRemotePackageNames()
 	remote := dbExecutor.InstalledRemotePackages()
-	run.Logger.Infoln(gotext.Get("Yay version v%s", yayVersion))
+	run.Logger.Infoln(gotext.Get("Sas version v%s", sasVersion))
 	run.Logger.Println(text.Bold(text.Cyan("===========================================")))
 	run.Logger.Infoln(gotext.Get("Total installed packages: %s", text.Cyan(strconv.Itoa(info.Totaln))))
 	run.Logger.Infoln(gotext.Get("Foreign installed packages: %s", text.Cyan(strconv.Itoa(len(remoteNames)))))
@@ -95,7 +95,7 @@ func localStatistics(ctx context.Context, run *runtime.Runtime, dbExecutor db.Ex
 		run.Logger.Infoln(gotext.Get("Size of pacman cache %s: %s", path, text.Cyan(text.Human(size))))
 	}
 
-	run.Logger.Infoln(gotext.Get("Size of yay cache %s: %s", run.Cfg.BuildDir, text.Cyan(text.Human(info.yayCache))))
+	run.Logger.Infoln(gotext.Get("Size of sas cache %s: %s", run.Cfg.BuildDir, text.Cyan(text.Human(info.sasCache))))
 	run.Logger.Println(text.Bold(text.Cyan("===========================================")))
 	run.Logger.Infoln(gotext.Get("Ten biggest packages:"))
 	biggestPackages(run.Logger, dbExecutor)

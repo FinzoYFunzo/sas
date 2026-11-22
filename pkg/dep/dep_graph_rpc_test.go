@@ -17,10 +17,10 @@ import (
 	aurc "github.com/Jguer/aur"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	mockaur "github.com/Jguer/yay/v13/pkg/dep/mock"
-	aur "github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	mockaur "github.com/FinzoYFunzo/sas/pkg/dep/mock"
+	aur "github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 // TestGrapher_ReliableParser_AWSCliGit tests the reliable parsing capability

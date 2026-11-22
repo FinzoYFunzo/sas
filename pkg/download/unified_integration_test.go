@@ -15,10 +15,10 @@ import (
 
 	"github.com/Jguer/aur"
 
-	mockaur "github.com/Jguer/yay/v13/pkg/dep/mock"
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	mockaur "github.com/FinzoYFunzo/sas/pkg/dep/mock"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func integrationCmdBuilder(t *testing.T) (*text.Logger, *exe.CmdBuilder) {

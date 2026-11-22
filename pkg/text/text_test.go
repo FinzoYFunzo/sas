@@ -91,7 +91,7 @@ msgstr "да"`
 	err := os.MkdirAll(dirname, os.ModePerm)
 	require.NoError(t, err)
 
-	fDefault, err := os.Create(path.Join(dirname, "yay.po"))
+	fDefault, err := os.Create(path.Join(dirname, "sas.po"))
 	require.NoError(t, err)
 
 	defer fDefault.Close()
@@ -99,7 +99,7 @@ msgstr "да"`
 	_, err = fDefault.WriteString(strCustom)
 	require.NoError(t, err)
 
-	gotext.Configure(tmpDir, "en_US", "yay")
+	gotext.Configure(tmpDir, "en_US", "sas")
 	require.Equal(t, "да", gotext.Get("yes"))
 
 	type args struct {
@@ -160,9 +160,9 @@ func TestCreateRepoLink(t *testing.T) {
 			useColor: true,
 			repo:     "aur",
 			arch:     "any",
-			pkgName:  "yay",
-			text:     "aur/yay",
-			want:     "\033]8;;https://aur.archlinux.org/packages/yay\033\\aur/yay\033]8;;\033\\",
+			pkgName:  "sas",
+			text:     "aur/sas",
+			want:     "\033]8;;https://aur.archlinux.org/packages/sas\033\\aur/sas\033]8;;\033\\",
 		},
 		{
 			name:     "core repo uses arch in url",

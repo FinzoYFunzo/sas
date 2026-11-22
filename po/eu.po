@@ -197,8 +197,8 @@ msgid "Automatically resolve conflicts using pacman's ask flag"
 msgstr ""
 
 #: main.go:65
-msgid "Avoid running yay as root/sudo."
-msgstr "Saihestu yay root/sudo bezala exekutatzea."
+msgid "Avoid running sas as root/sudo."
+msgstr "Saihestu sas root/sudo bezala exekutatzea."
 
 #: cmd.go:53
 msgid "Build and install a PKGBUILD"
@@ -370,7 +370,7 @@ msgid "Groups"
 msgstr "Taldeak"
 
 #: cmd.go:141
-msgid "If no operation is specified 'yay -Syu' will be performed"
+msgid "If no operation is specified 'sas -Syu' will be performed"
 msgstr ""
 
 #: cmd.go:142
@@ -571,11 +571,11 @@ msgid "Print arch news"
 msgstr ""
 
 #: cmd.go:62
-msgid "Print current yay configuration"
+msgid "Print current sas configuration"
 msgstr ""
 
 #: cmd.go:61
-msgid "Print default yay configuration"
+msgid "Print default sas configuration"
 msgstr ""
 
 #: cmd.go:57
@@ -695,7 +695,7 @@ msgstr "%s analizatzeak huts egin du: %s"
 
 #: print.go:98
 #, fuzzy
-msgid "Size of yay cache %s: %s"
+msgid "Size of sas cache %s: %s"
 msgstr "%s analizatzeak huts egin du: %s"
 
 #: cmd.go:198
@@ -820,8 +820,8 @@ msgid "Votes"
 msgstr "Botoak"
 
 #: print.go:87
-msgid "Yay version v%s"
-msgstr "Yay bertsioa v%s"
+msgid "Sas version v%s"
+msgstr "Sas bertsioa v%s"
 
 #: pkg/menus/menu.go:50
 msgid "[N]one"
@@ -867,7 +867,7 @@ msgstr ""
 
 #: pkg/settings/parser/parser.go:667
 msgid ""
-"did you mean yay -Scc (clean caches) or yay -Ycc (clean orphaned packages)?"
+"did you mean sas -Scc (clean caches) or sas -Ycc (clean orphaned packages)?"
 msgstr ""
 
 #: cmd.go:48
@@ -1137,11 +1137,11 @@ msgid "unknown-version"
 msgstr "bertsio ezezaguna"
 
 #: cmd.go:224
-msgid "use 'yay {-h --help}' for global options"
+msgid "use 'sas {-h --help}' for global options"
 msgstr ""
 
 #: cmd.go:139
-msgid "use 'yay {-h --help}' with an operation for available options"
+msgid "use 'sas {-h --help}' with an operation for available options"
 msgstr ""
 
 #: pkg/text/input.go:47
@@ -1222,9 +1222,9 @@ msgstr "bai"
 #~ msgid "failed to read vcs file '%s': %s"
 #~ msgstr "'%s' VCS fitxategia irakurtzeak huts egin du: %s"
 
-#~ msgid "invalid sort mode. Fix with yay -Y --bottomup --save"
+#~ msgid "invalid sort mode. Fix with sas -Y --bottomup --save"
 #~ msgstr ""
-#~ "ordenatzeko modu baliogabea. Konpondu 'yay -Y --bottomup --save' "
+#~ "ordenatzeko modu baliogabea. Konpondu 'sas -Y --bottomup --save' "
 #~ "exekutatzen"
 
 #~ msgid "no packages match search"

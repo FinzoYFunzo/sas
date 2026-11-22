@@ -4,8 +4,8 @@ import (
 	"maps"
 	"slices"
 
-	"github.com/Jguer/yay/v13/pkg/dep"
-	settingslua "github.com/Jguer/yay/v13/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/dep"
+	settingslua "github.com/FinzoYFunzo/sas/pkg/settings/lua"
 )
 
 // postInstallEvent flattens the resolved topo layers into the PostInstall payload.

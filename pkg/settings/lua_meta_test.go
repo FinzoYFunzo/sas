@@ -16,8 +16,8 @@ import (
 
 var luaMetaFieldRe = regexp.MustCompile(`^---@field\s+([A-Za-z_][A-Za-z0-9_]*)`)
 
-// luaMetaOptFields returns the field names declared on the yay.opt class in
-// meta/yay.d.lua.
+// luaMetaOptFields returns the field names declared on the sas.opt class in
+// meta/sas.d.lua.
 func luaMetaOptFields(meta string) map[string]bool {
 	fields := map[string]bool{}
 
@@ -26,7 +26,7 @@ func luaMetaOptFields(meta string) map[string]bool {
 	for line := range strings.SplitSeq(meta, "\n") {
 		switch {
 		case strings.HasPrefix(line, "---@class "):
-			inOpt = strings.TrimSpace(strings.TrimPrefix(line, "---@class ")) == "yay.opt"
+			inOpt = strings.TrimSpace(strings.TrimPrefix(line, "---@class ")) == "sas.opt"
 		case inOpt:
 			if m := luaMetaFieldRe.FindStringSubmatch(line); m != nil {
 				fields[m[1]] = true
@@ -37,11 +37,11 @@ func luaMetaOptFields(meta string) map[string]bool {
 	return fields
 }
 
-// TestLuaMetaCoversAllOptions guards meta/yay.d.lua against drifting from the
+// TestLuaMetaCoversAllOptions guards meta/sas.d.lua against drifting from the
 // lua-tagged fields of Configuration: lua-language-server users would otherwise
 // lose completion and type checking for newly added options.
 func TestLuaMetaCoversAllOptions(t *testing.T) {
-	meta, err := os.ReadFile(filepath.Join("..", "..", "meta", "yay.d.lua"))
+	meta, err := os.ReadFile(filepath.Join("..", "..", "meta", "sas.d.lua"))
 	require.NoError(t, err)
 
 	metaFields := luaMetaOptFields(string(meta))
@@ -56,15 +56,15 @@ func TestLuaMetaCoversAllOptions(t *testing.T) {
 	}
 
 	for name := range configFields {
-		assert.Contains(t, metaFields, name, "meta/yay.d.lua is missing yay.opt field %q", name)
+		assert.Contains(t, metaFields, name, "meta/sas.d.lua is missing sas.opt field %q", name)
 	}
 
 	for name := range metaFields {
-		assert.True(t, configFields[name], "meta/yay.d.lua declares unknown yay.opt field %q", name)
+		assert.True(t, configFields[name], "meta/sas.d.lua declares unknown sas.opt field %q", name)
 	}
 }
 
 func TestLuaMetaOptFields(t *testing.T) {
-	meta := "---@class yay.opt\n---@field a string\n---@field b string\n\n---@class yay.log\n---@field c string\n"
+	meta := "---@class sas.opt\n---@field a string\n---@field b string\n\n---@class sas.log\n---@field c string\n"
 	assert.Equal(t, map[string]bool{"a": true, "b": true}, luaMetaOptFields(meta))
 }

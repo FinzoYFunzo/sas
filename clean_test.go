@@ -16,11 +16,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
 )
 
 func TestCleanHanging(t *testing.T) {
@@ -119,7 +119,7 @@ func TestCleanHanging(t *testing.T) {
 
 func TestIntegrationCleanAUR(t *testing.T) {
 	buildDir := filepath.Join(t.TempDir(), "build")
-	yayGitDir := filepath.Join(buildDir, "yay-git")
+	sasGitDir := filepath.Join(buildDir, "sas-git")
 	zoomDir := filepath.Join(buildDir, "zoom")
 
 	t.Parallel()
@@ -188,7 +188,7 @@ func TestIntegrationCleanAUR(t *testing.T) {
 			cmdArgs.AddArg(tc.args...)
 
 			// Create the package directories to be cleaned
-			err := os.MkdirAll(yayGitDir, 0o755)
+			err := os.MkdirAll(sasGitDir, 0o755)
 			require.NoError(t, err)
 			err = os.MkdirAll(zoomDir, 0o755)
 			require.NoError(t, err)

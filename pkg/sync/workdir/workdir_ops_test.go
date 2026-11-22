@@ -10,10 +10,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
 )
 
 func TestMergePkgbuilds(t *testing.T) {
@@ -100,7 +100,9 @@ func (f *fakeWorkdirCmdBuilder) BuildGPGCmd(ctx context.Context, extraArgs ...st
 
 func (f *fakeWorkdirCmdBuilder) AddMakepkgFlag(string) {}
 func (f *fakeWorkdirCmdBuilder) GetKeepSrc() bool      { return false }
-func (f *fakeWorkdirCmdBuilder) SudoLoop()             {}
+func (f *fakeWorkdirCmdBuilder) SudoLoop() error       { return nil }
+func (f *fakeWorkdirCmdBuilder) StartPrivSep() error   { return nil }
+func (f *fakeWorkdirCmdBuilder) StopPrivSep()          {}
 
 func (f *fakeWorkdirCmdBuilder) Capture(cmd *exec.Cmd) (string, string, error) {
 	f.captureCalls = append(f.captureCalls, cmd.String())

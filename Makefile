@@ -4,10 +4,10 @@ export GOPROXY
 
 BUILD_TAG = devel
 ARCH ?= $(shell uname -m)
-BIN := yay
+BIN := sas
 DESTDIR :=
 GO ?= go
-PKGNAME := yay
+PKGNAME := sas
 PREFIX := /usr/local
 
 MAJORVERSION := 13
@@ -26,7 +26,7 @@ MOFILES := $(POFILES:.po=.mo)
 
 FLAGS ?= -trimpath -mod=readonly -modcacherw
 EXTRA_FLAGS ?= -buildmode=pie
-LDFLAGS := -X "main.yayVersion=${VERSION}" -X "main.localePath=${SYSTEMLOCALEPATH}" -linkmode=external -compressdwarf=false
+LDFLAGS := -X "main.sasVersion=${VERSION}" -X "main.localePath=${SYSTEMLOCALEPATH}" -linkmode=external -compressdwarf=false
 
 RELEASE_DIR := ${PKGNAME}_${VERSION}_${ARCH}
 PACKAGE := $(RELEASE_DIR).tar.gz
@@ -69,16 +69,16 @@ docker-release-all:
 	make docker-release-aarch64 ARCH=aarch64
 
 docker-release:
-	docker create --name yay-$(ARCH) yay:${ARCH} /bin/sh
-	docker cp yay-$(ARCH):/app/${PACKAGE} $(PACKAGE)
-	docker container rm yay-$(ARCH)
+	docker create --name sas-$(ARCH) sas:${ARCH} /bin/sh
+	docker cp sas-$(ARCH):/app/${PACKAGE} $(PACKAGE)
+	docker container rm sas-$(ARCH)
 
 .PHONY: docker-build
 docker-build:
-	docker build -t yay-$(ARCH):${VERSION} .
-	docker run -e="ARCH=$(ARCH)" --name yay-$(ARCH) yay-$(ARCH):${VERSION} make build VERSION=${VERSION} PREFIX=${PREFIX}
-	docker cp yay-$(ARCH):/app/${BIN} $(BIN)
-	docker container rm yay-$(ARCH)
+	docker build -t sas-$(ARCH):${VERSION} .
+	docker run -e="ARCH=$(ARCH)" --name sas-$(ARCH) sas-$(ARCH):${VERSION} make build VERSION=${VERSION} PREFIX=${PREFIX}
+	docker cp sas-$(ARCH):/app/${BIN} $(BIN)
+	docker container rm sas-$(ARCH)
 
 .PHONY: lint
 lint:
@@ -95,7 +95,7 @@ install: build ${MOFILES}
 	install -Dm644 completions/bash $(DESTDIR)$(PREFIX)/share/bash-completion/completions/${PKGNAME}
 	install -Dm644 completions/zsh $(DESTDIR)$(PREFIX)/share/zsh/site-functions/_${PKGNAME}
 	install -Dm644 completions/fish $(DESTDIR)$(PREFIX)/share/fish/vendor_completions.d/${PKGNAME}.fish
-	install -Dm644 meta/yay.d.lua $(DESTDIR)$(PREFIX)/share/${PKGNAME}/meta/yay.d.lua
+	install -Dm644 meta/sas.d.lua $(DESTDIR)$(PREFIX)/share/${PKGNAME}/meta/sas.d.lua
 	for lang in ${LANGS}; do \
 		install -Dm644 ${LOCALEDIR}/$${lang}.mo $(DESTDIR)$(PREFIX)/share/locale/$$lang/LC_MESSAGES/${PKGNAME}.mo; \
 	done
@@ -107,7 +107,7 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/share/bash-completion/completions/${PKGNAME}
 	rm -f $(DESTDIR)$(PREFIX)/share/zsh/site-functions/_${PKGNAME}
 	rm -f $(DESTDIR)$(PREFIX)/share/fish/vendor_completions.d/${PKGNAME}.fish
-	rm -f $(DESTDIR)$(PREFIX)/share/${PKGNAME}/meta/yay.d.lua
+	rm -f $(DESTDIR)$(PREFIX)/share/${PKGNAME}/meta/sas.d.lua
 	for lang in ${LANGS}; do \
 		rm -f $(DESTDIR)$(PREFIX)/share/locale/$$lang/LC_MESSAGES/${PKGNAME}.mo; \
 	done

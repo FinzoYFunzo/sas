@@ -16,15 +16,15 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Jguer/yay/v13/pkg/db/mock"
-	mockaur "github.com/Jguer/yay/v13/pkg/dep/mock"
-	"github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/runtime"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
-	"github.com/Jguer/yay/v13/pkg/vcs"
+	"github.com/FinzoYFunzo/sas/pkg/db/mock"
+	mockaur "github.com/FinzoYFunzo/sas/pkg/dep/mock"
+	"github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/runtime"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/vcs"
 )
 
 func TestHandleHelp(t *testing.T) {
@@ -36,8 +36,8 @@ func TestHandleHelp(t *testing.T) {
 		wantOutput string
 		wantCalls  int
 	}{
-		{"top-level", "", "Usage:\n    yay", 0},
-		{"yay operation", "Y", "Usage: yay {-Y --yay}", 0},
+		{"top-level", "", "Usage:\n    sas", 0},
+		{"sas operation", "Y", "Usage: sas {-Y --sas}", 0},
 		{"pacman operation", "S", "", 1},
 	}
 
@@ -102,7 +102,7 @@ func TestYogurtMenuAURDB(t *testing.T) {
 
 	cmdArgs := parser.MakeArguments()
 	cmdArgs.AddArg("Y")
-	cmdArgs.AddTarget("yay")
+	cmdArgs.AddTarget("sas")
 
 	db := &mock.DBExecutor{
 		AlpmArchitecturesFn: func() ([]string, error) {
@@ -117,8 +117,8 @@ func TestYogurtMenuAURDB(t *testing.T) {
 		SyncPackagesFn: func(s ...string) []mock.IPackage { //nolint:unparam // signature fixed by mock.DBExecutor
 			return []mock.IPackage{
 				&mock.Package{
-					PName:    "yay",
-					PBase:    "yay",
+					PName:    "sas",
+					PBase:    "sas",
 					PVersion: "10.0.0",
 					PDB:      mock.NewDB("aur"),
 				},
@@ -132,8 +132,8 @@ func TestYogurtMenuAURDB(t *testing.T) {
 		GetFn: func(ctx context.Context, query *aur.Query) ([]aur.Pkg, error) { //nolint:unparam // signature fixed by mockaur.MockAUR
 			return []aur.Pkg{
 				{
-					Name:        "yay",
-					PackageBase: "yay",
+					Name:        "sas",
+					PackageBase: "sas",
 					Version:     "10.0.0",
 				},
 			}, nil

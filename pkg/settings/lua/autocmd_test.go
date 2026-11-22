@@ -19,13 +19,13 @@ func TestCreateAutocmdRegistersAndRunsInOrder(t *testing.T) {
 	}))
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			desc = "first",
 			callback = function(event)
 				record("first:" .. event.match .. ":" .. event.data.packages[1].name .. ":" .. event.data.srcinfo.pkgbase)
 			end,
 		})
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			callback = function()
 				record("second")
 			end,
@@ -55,7 +55,7 @@ func TestCreateAutocmdRegistersUpgradeSelect(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			desc = "filter upgrades",
 			callback = function() end,
 		})
@@ -73,7 +73,7 @@ func TestCreateAutocmdRegistersAURPostDownload(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("AURPostDownload", {
+		sas.create_autocmd("AURPostDownload", {
 			desc = "inspect downloaded sources",
 			callback = function() end,
 		})
@@ -91,7 +91,7 @@ func TestCreateAutocmdRejectsInvalidEvent(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	err := e.L.DoString(`
-		yay.create_autocmd("User", {
+		sas.create_autocmd("User", {
 			callback = function() end,
 		})
 	`)
@@ -105,7 +105,7 @@ func TestCreateAutocmdRejectsMissingCallback(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	err := e.L.DoString(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			desc = "missing callback",
 		})
 	`)
@@ -119,7 +119,7 @@ func TestRunAURPreInstallReturnsCallbackErrorWithEventAndBase(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			callback = function()
 				error("blocked by policy")
 			end,
@@ -138,9 +138,9 @@ func TestRunAURPreInstallReturnsAbortWithoutTraceback(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("AURPreInstall", {
+		sas.create_autocmd("AURPreInstall", {
 			callback = function()
-				yay.abort("blocked by policy")
+				sas.abort("blocked by policy")
 			end,
 		})
 	`))
@@ -161,7 +161,7 @@ func TestRunAURPostDownloadEventTableShape(t *testing.T) {
 	}))
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("AURPostDownload", {
+		sas.create_autocmd("AURPostDownload", {
 			callback = function(event)
 				if event.event ~= "AURPostDownload" then error("bad event") end
 				if event.match ~= "demo-base" then error("bad match") end
@@ -210,9 +210,9 @@ func TestRunAURPostDownloadReturnsAbortWithoutTraceback(t *testing.T) {
 	t.Cleanup(e.Close)
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("AURPostDownload", {
+		sas.create_autocmd("AURPostDownload", {
 			callback = function()
-				yay.abort("blocked by policy")
+				sas.abort("blocked by policy")
 			end,
 		})
 	`))
@@ -226,7 +226,7 @@ func TestRunUpgradeSelectEventTableShapeAndReturn(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function(event)
 				if event.event ~= "UpgradeSelect" then error("bad event") end
 				if event.data.upgrades[1].id ~= 2 then error("bad upgrade id") end
@@ -258,7 +258,7 @@ func TestRunUpgradeSelectEventTableShapeAndReturn(t *testing.T) {
 				Reason:        "explicit",
 				LastModified:  123,
 			},
-			{ID: 1, Name: "yay", Base: "yay", Repository: "aur"},
+			{ID: 1, Name: "sas", Base: "sas", Repository: "aur"},
 		},
 		PulledDependencies: []UpgradeSelectPackage{
 			{ID: 0, Name: "new-dep", Repository: "core", Reason: "dependency"},
@@ -273,7 +273,7 @@ func TestRunUpgradeSelectNilReturnMeansNoExclusionsAndNoSkip(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function() end,
 		})
 	`))
@@ -291,12 +291,12 @@ func TestRunUpgradeSelectMultipleHooksUnionExclusionsAndSkip(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function()
 				return { exclude = { "pkg-a" } }
 			end,
 		})
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function()
 				return { exclude = { "pkg-b", "pkg-a" }, skip_menu = true }
 			end,
@@ -316,7 +316,7 @@ func TestRunUpgradeSelectRejectsUnknownExcludedPackage(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function()
 				return { exclude = { "typo" } }
 			end,
@@ -336,9 +336,9 @@ func TestRunUpgradeSelectReturnsAbortWithoutTraceback(t *testing.T) {
 	defer e.Close()
 
 	require.NoError(t, e.L.DoString(`
-		yay.create_autocmd("UpgradeSelect", {
+		sas.create_autocmd("UpgradeSelect", {
 			callback = function()
-				yay.abort("blocked by policy")
+				sas.abort("blocked by policy")
 			end,
 		})
 	`))

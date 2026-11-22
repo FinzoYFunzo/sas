@@ -10,13 +10,13 @@ import (
 
 	"github.com/leonelquinteros/gotext"
 
-	"github.com/Jguer/yay/v13/pkg/query"
-	"github.com/Jguer/yay/v13/pkg/settings"
-	"github.com/Jguer/yay/v13/pkg/settings/exe"
-	settingslua "github.com/Jguer/yay/v13/pkg/settings/lua"
-	"github.com/Jguer/yay/v13/pkg/settings/parser"
-	"github.com/Jguer/yay/v13/pkg/text"
-	"github.com/Jguer/yay/v13/pkg/vcs"
+	"github.com/FinzoYFunzo/sas/pkg/query"
+	"github.com/FinzoYFunzo/sas/pkg/settings"
+	"github.com/FinzoYFunzo/sas/pkg/settings/exe"
+	settingslua "github.com/FinzoYFunzo/sas/pkg/settings/lua"
+	"github.com/FinzoYFunzo/sas/pkg/settings/parser"
+	"github.com/FinzoYFunzo/sas/pkg/text"
+	"github.com/FinzoYFunzo/sas/pkg/vcs"
 
 	"github.com/Jguer/aur"
 	"github.com/Jguer/aur/metadata"
@@ -69,7 +69,7 @@ func NewRuntime(cfg *settings.Configuration, cmdArgs *parser.Arguments, version 
 		Transport: transport,
 	}
 
-	userAgent := fmt.Sprintf("Yay/%s", version)
+	userAgent := fmt.Sprintf("Sas/%s", version)
 	voteClient, errVote := vote.NewClient(vote.WithUserAgent(userAgent),
 		vote.WithHTTPClient(httpClient))
 	if errVote != nil {
